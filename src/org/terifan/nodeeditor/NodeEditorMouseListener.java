@@ -17,7 +17,7 @@ import static org.terifan.nodeeditor.Styles.MIN_HEIGHT;
 import static org.terifan.nodeeditor.Styles.MIN_WIDTH;
 
 
-class NodeEditorMouseListener<T extends Node, U extends NodeEditorPane> extends BoxComponentMouseListener<Node, NodeEditorPane>
+class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditorPane>
 {
 	private boolean mIgnoreNextMouseRelease;
 	private final boolean mConnectorSelectionAllowed = true;
