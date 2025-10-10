@@ -321,8 +321,9 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 
 
 	@Override
-	public String toString()
-	{
-		return "Node{" + mTitle + '}';
+	public String toString() {
+		return "Node <" + getTitle() + "> {" +
+				"mBounds=" + mBounds +
+				'}';
 	}
 }

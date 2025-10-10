@@ -65,6 +65,7 @@ public class BoxComponentMouseListener<T extends BoxComponent, U extends BoxComp
 				model.moveTop(mSelectedNode);
 
 				if (mCursor != Cursor.DEFAULT_CURSOR)
+				System.out.println(mSelectedNode);
 				{
 					mStartBounds = new Rectangle(mSelectedNode.getBounds());
 					mViewPort.getSelectedNodes().clear();
@@ -76,6 +77,7 @@ public class BoxComponentMouseListener<T extends BoxComponent, U extends BoxComp
 				if (bounds.contains(mClickPoint) && getMinimizeButtonBounds(mSelectedNode).contains(mClickPoint))
 				{
 					updateMinimize(aEvent, mSelectedNode);
+					System.out.println("Сворачиваю: " + mSelectedNode.toString());
 				}
 			}
 
