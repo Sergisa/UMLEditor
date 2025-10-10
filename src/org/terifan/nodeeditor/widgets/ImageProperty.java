@@ -1,12 +1,12 @@
 package org.terifan.nodeeditor.widgets;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import static java.awt.Transparency.OPAQUE;
-import java.awt.image.BufferedImage;
 import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.Property;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import static java.awt.Transparency.OPAQUE;
 import static org.terifan.nodeeditor.Styles.CHECKERS_BRIGHT;
 import static org.terifan.nodeeditor.Styles.CHECKERS_DARK;
 

@@ -1,21 +1,13 @@
 package org.terifan.nodeeditor.widgets;
 
-import java.awt.Graphics2D;
-import java.awt.LinearGradientPaint;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import org.terifan.nodeeditor.Connector;
-import org.terifan.nodeeditor.Context;
-import org.terifan.nodeeditor.Direction;
-import org.terifan.nodeeditor.NodeEditorPane;
-import org.terifan.nodeeditor.Property;
-import org.terifan.nodeeditor.Styles;
+import org.terifan.nodeeditor.*;
+import org.terifan.nodeeditor.graphics.Arrow;
 import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
+
+import java.awt.*;
+
 import static org.terifan.nodeeditor.Styles.FIELD_CORNER;
-import org.terifan.nodeeditor.graphics.Arrow;
 
 
 public class SliderProperty extends Property<SliderProperty>

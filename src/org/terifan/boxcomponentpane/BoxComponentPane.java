@@ -1,17 +1,13 @@
 package org.terifan.boxcomponentpane;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import org.terifan.nodeeditor.Styles;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import javax.swing.JComponent;
-import org.terifan.nodeeditor.Styles;
+
 import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
 
 

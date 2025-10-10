@@ -1,7 +1,6 @@
 package org.terifan.nodeeditor.graphics;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 
 public class Arrow

@@ -1,23 +1,19 @@
 package examples.deprecated;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.util.Random;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import org.terifan.nodeeditor.Direction;
-import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.Node;
+import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.NodeModel;
+import org.terifan.nodeeditor.util.SimpleNodesFactory;
 import org.terifan.nodeeditor.widgets.ImageProperty;
 import org.terifan.nodeeditor.widgets.ValueProperty;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
 import static org.terifan.nodeeditor.Direction.OUT;
 import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.PURPLE;
-import org.terifan.nodeeditor.util.SimpleNodesFactory;
 
 
 public class TestEditor

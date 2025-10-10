@@ -1,18 +1,13 @@
 package org.terifan.nodeeditor.widgets;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.LinearGradientPaint;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Stroke;
 import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
-import static org.terifan.nodeeditor.Styles.FIELD_BACKGROUND_COLOR;
 import org.terifan.ui.Anchor;
-import static org.terifan.nodeeditor.Styles.FIELD_BACKGROUND_SELECTED_COLOR;
-import static org.terifan.nodeeditor.Styles.FIELD_CORNER;
+
+import java.awt.*;
+
+import static org.terifan.nodeeditor.Styles.*;
 
 
 public class CheckBoxProperty extends Property<CheckBoxProperty>

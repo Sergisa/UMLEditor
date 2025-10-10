@@ -1,29 +1,14 @@
 package org.terifan.boxcomponentpane;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.io.Serializable;
 import org.terifan.nodeeditor.Styles;
+import org.terifan.nodeeditor.graphics.Arrow;
 import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
-import static org.terifan.nodeeditor.Styles.BORDE_RADIUS;
-import static org.terifan.nodeeditor.Styles.BOX_BACKGROUND_COLOR;
-import static org.terifan.nodeeditor.Styles.BOX_BORDER_COLOR;
-import static org.terifan.nodeeditor.Styles.BOX_BORDER_SELECTED_COLOR;
-import static org.terifan.nodeeditor.Styles.BOX_BORDER_TITLE_COLOR;
-import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_COLOR;
-import static org.terifan.nodeeditor.Styles.TITLE_HEIGHT;
-import static org.terifan.nodeeditor.Styles.COLLAPSE_BUTTON_WIDTH;
-import static org.terifan.nodeeditor.Styles.TITLE_HEIGHT_PADDED;
-import static org.terifan.nodeeditor.Styles.BOX_SHADOW;
-import static org.terifan.nodeeditor.Styles.BOX_SHADOW_SIZE;
-import static org.terifan.nodeeditor.Styles.BOX_SHADOW_STRENGTH;
-import static org.terifan.nodeeditor.Styles.BOX_TITLE_TEXT_SHADOW_COLOR;
-import org.terifan.nodeeditor.graphics.Arrow;
+
+import java.awt.*;
+import java.io.Serializable;
+
+import static org.terifan.nodeeditor.Styles.*;
 
 
 public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponentPane> implements Serializable, Renderable<T, U>

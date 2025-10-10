@@ -1,20 +1,20 @@
 package org.terifan.nodeeditor;
 
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Rectangle;
+import org.terifan.boxcomponentpane.BoxComponent;
+import org.terifan.boxcomponentpane.BoxComponentMouseListener;
+import org.terifan.nodeeditor.graphics.Popup;
+import org.terifan.nodeeditor.graphics.SplineRenderer;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.SwingUtilities;
-import org.terifan.boxcomponentpane.BoxComponent;
-import org.terifan.boxcomponentpane.BoxComponentMouseListener;
+
 import static org.terifan.nodeeditor.Styles.MIN_HEIGHT;
 import static org.terifan.nodeeditor.Styles.MIN_WIDTH;
-import org.terifan.nodeeditor.graphics.Popup;
-import org.terifan.nodeeditor.graphics.SplineRenderer;
 
 
 class NodeEditorMouseListener<T extends Node, U extends NodeEditorPane> extends BoxComponentMouseListener<Node, NodeEditorPane>

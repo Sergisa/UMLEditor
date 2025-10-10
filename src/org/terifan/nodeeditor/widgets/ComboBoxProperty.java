@@ -1,23 +1,21 @@
 package org.terifan.nodeeditor.widgets;
 
-import java.awt.Graphics2D;
-import java.awt.LinearGradientPaint;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.terifan.nodeeditor.Context;
 import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.Property;
+import org.terifan.nodeeditor.Styles;
+import org.terifan.nodeeditor.graphics.Arrow;
 import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.Popup.Option;
-import org.terifan.nodeeditor.Styles;
-import static org.terifan.nodeeditor.Styles.BOX_TITLE_TEXT_SHADOW_COLOR;
-import static org.terifan.nodeeditor.Styles.COMBOBOX_ARROW_COLOR;
-import org.terifan.nodeeditor.graphics.Arrow;
 import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.terifan.nodeeditor.Styles.BOX_TITLE_TEXT_SHADOW_COLOR;
+import static org.terifan.nodeeditor.Styles.COMBOBOX_ARROW_COLOR;
 
 
 public class ComboBoxProperty extends Property<ComboBoxProperty>

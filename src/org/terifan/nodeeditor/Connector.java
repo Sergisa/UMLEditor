@@ -1,10 +1,9 @@
 package org.terifan.nodeeditor;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
+
 import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.YELLOW;
 
 

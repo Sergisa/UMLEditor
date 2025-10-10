@@ -1,13 +1,14 @@
 package org.terifan.nodeeditor;
 
-import java.awt.Point;
-import java.awt.Rectangle;
+import org.terifan.boxcomponentpane.BoxComponentModel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.terifan.boxcomponentpane.BoxComponentModel;
-import static org.terifan.util.Assert.*;
+
+import static org.terifan.util.Assert.assertEquals;
+import static org.terifan.util.Assert.assertNotNull;
 
 
 public class NodeModel extends BoxComponentModel<Node> implements Serializable

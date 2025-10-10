@@ -1,7 +1,6 @@
 package org.terifan.boxcomponentpane;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 
 
 public interface Renderable<T extends BoxComponent, U extends BoxComponentPane>

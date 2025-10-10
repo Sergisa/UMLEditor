@@ -1,19 +1,13 @@
 package org.terifan.nodeeditor.widgets;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import javax.swing.JColorChooser;
-import org.terifan.nodeeditor.Connector;
-import org.terifan.nodeeditor.Context;
-import org.terifan.nodeeditor.Direction;
-import org.terifan.nodeeditor.NodeEditorPane;
-import org.terifan.nodeeditor.Property;
-import org.terifan.nodeeditor.Styles;
-import static org.terifan.nodeeditor.Styles.FIELD_CORNER;
+import org.terifan.nodeeditor.*;
 import org.terifan.ui.Anchor;
 import org.terifan.vecmath.Vec4d;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static org.terifan.nodeeditor.Styles.FIELD_CORNER;
 
 
 public class ColorChooserProperty extends Property<ColorChooserProperty>

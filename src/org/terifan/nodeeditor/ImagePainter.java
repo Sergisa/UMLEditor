@@ -1,8 +1,8 @@
 package org.terifan.nodeeditor;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import org.terifan.nodeeditor.widgets.ImageProperty;
+
+import java.awt.*;
 
 
 public interface ImagePainter

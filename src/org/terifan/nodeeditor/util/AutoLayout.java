@@ -1,10 +1,10 @@
 package org.terifan.nodeeditor.util;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.util.ArrayList;
 import org.terifan.nodeeditor.Node;
 import org.terifan.nodeeditor.NodeModel;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 
 public class AutoLayout

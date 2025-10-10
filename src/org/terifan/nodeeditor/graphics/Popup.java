@@ -1,13 +1,5 @@
 package org.terifan.nodeeditor.graphics;
 
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.geom.Path2D;
-import java.util.List;
 import org.terifan.boxcomponentpane.Renderable;
 import org.terifan.nodeeditor.Node;
 import org.terifan.nodeeditor.NodeEditorPane;
@@ -16,6 +8,12 @@ import org.terifan.nodeeditor.Styles;
 import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
 import org.terifan.util.Strings;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.geom.Path2D;
+import java.util.List;
 
 
 public class Popup implements Renderable<Node, NodeEditorPane>
