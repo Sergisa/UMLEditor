@@ -6,6 +6,7 @@ import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 import static org.terifan.nodeeditor.Styles.*;
@@ -13,6 +14,7 @@ import static org.terifan.nodeeditor.Styles.*;
 
 public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponentPane> implements Serializable, Renderable<T, U>
 {
+	@Serial
 	private final static long serialVersionUID = 1L;
 
 	protected final Rectangle mBounds;

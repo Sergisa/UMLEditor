@@ -4,10 +4,12 @@ import org.terifan.nodeeditor.*;
 import org.terifan.ui.Anchor;
 
 import java.awt.*;
+import java.io.Serial;
 
 
 public class ValueProperty extends Property<ValueProperty>
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private Object mValue;

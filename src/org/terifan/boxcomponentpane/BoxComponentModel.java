@@ -1,12 +1,14 @@
 package org.terifan.boxcomponentpane;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 
 public class BoxComponentModel<T extends BoxComponent> implements Serializable
 {
+	@Serial
 	private final static long serialVersionUID = 1L;
 	protected final ArrayList<T> mComponents;
 

@@ -3,6 +3,7 @@ package org.terifan.nodeeditor;
 import org.terifan.boxcomponentpane.BoxComponent;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import static org.terifan.nodeeditor.Styles.*;
 
 public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializable
 {
+	@Serial
 	private final static long serialVersionUID = 1L;
 
 	protected final ArrayList<Property> mProperties;

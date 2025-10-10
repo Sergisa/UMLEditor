@@ -1,6 +1,7 @@
 package org.terifan.nodeeditor;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.YELLOW;
 
 public class Connector implements Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	protected final Rectangle mBounds;

@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serial;
 import java.util.ArrayList;
 
 import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
@@ -13,6 +14,7 @@ import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
 
 public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane> extends JComponent
 {
+	@Serial
 	private final static long serialVersionUID = 1L;
 
 	private double mScale;

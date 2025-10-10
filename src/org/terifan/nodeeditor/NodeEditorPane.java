@@ -6,12 +6,14 @@ import org.terifan.nodeeditor.graphics.SplineRenderer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.function.Function;
 
 
 public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private transient Function<String, BufferedImage> mIconProvider;

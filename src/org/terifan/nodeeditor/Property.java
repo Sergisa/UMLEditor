@@ -3,6 +3,7 @@ package org.terifan.nodeeditor;
 import org.terifan.ui.TextBox;
 
 import java.awt.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_SHADOW_COLOR;
 
 public abstract class Property<T extends Property> implements Serializable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final ArrayList<Connector> mConnectors;

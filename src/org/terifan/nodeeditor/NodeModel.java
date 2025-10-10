@@ -2,6 +2,7 @@ package org.terifan.nodeeditor;
 
 import org.terifan.boxcomponentpane.BoxComponentModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import static org.terifan.util.Assert.assertNotNull;
 
 public class NodeModel extends BoxComponentModel<Node> implements Serializable
 {
+	@Serial
 	private final static long serialVersionUID = 1L;
 
 	private ArrayList<Connection> mConnections;

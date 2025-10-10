@@ -11,6 +11,7 @@ import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
 
 import java.awt.*;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,6 +21,7 @@ import static org.terifan.nodeeditor.Styles.COMBOBOX_ARROW_COLOR;
 
 public class ComboBoxProperty extends Property<ComboBoxProperty>
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final static float[] RANGES = new float[]
