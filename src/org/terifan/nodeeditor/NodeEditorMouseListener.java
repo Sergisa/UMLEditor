@@ -20,17 +20,14 @@ import static org.terifan.nodeeditor.Styles.MIN_WIDTH;
 class NodeEditorMouseListener<T extends Node, U extends NodeEditorPane> extends BoxComponentMouseListener<Node, NodeEditorPane>
 {
 	private boolean mIgnoreNextMouseRelease;
-	private boolean mConnectorSelectionAllowed;
-	private boolean mRemoveInConnectionsOnDrop;
+	private final boolean mConnectorSelectionAllowed = true;
+	private final boolean mRemoveInConnectionsOnDrop = false;
 	private Property mSelectedProperty;
 
 
 	public NodeEditorMouseListener(NodeEditorPane aPane)
 	{
 		super(aPane);
-
-		mRemoveInConnectionsOnDrop = true;
-		mConnectorSelectionAllowed = true;
 	}
 
 
