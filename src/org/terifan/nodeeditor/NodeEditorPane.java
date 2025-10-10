@@ -1,18 +1,14 @@
 package org.terifan.nodeeditor;
 
-import java.awt.Color;
-import org.terifan.nodeeditor.graphics.Popup;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.Function;
 import org.terifan.boxcomponentpane.BoxComponentPane;
+import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.SplineRenderer;
 import org.terifan.nodeeditor.widgets.ButtonProperty;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.function.Function;
 
 
 public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
@@ -26,7 +22,6 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 	private transient Popup mPopup;
 	private transient Connection mSelectedConnection;
 	private transient Connector mConnectorDragFrom;
-	private transient HashMap<String, NodeFunction> mBindings;
 
 	private boolean mConnectorSelectionAllowed;
 	private boolean mRemoveInConnectionsOnDrop;
@@ -36,36 +31,12 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 	{
 		super(aModel);
 
-		mBindings = new HashMap<>();
+		//mBindings = new HashMap<>();
 		mButtonHandlers = new ArrayList<>();
 		mRemoveInConnectionsOnDrop = true;
 
 		setIconProvider(Styles::loadIcon);
 	}
-
-
-	public NodeEditorPane bind(String aId, NodeFunction aFunction)
-	{
-		if (mBindings.containsKey(aId))
-		{
-			throw new IllegalArgumentException("ID already bound: " + aId);
-		}
-		mBindings.put(aId, aFunction);
-		return this;
-	}
-
-
-	public HashMap<String, NodeFunction> getBindings()
-	{
-		return mBindings;
-	}
-
-
-	public void invoke(String aId, Property aProperty)
-	{
-		mBindings.get(aId).invoke(new Context(this), aProperty);
-	}
-
 
 	public NodeEditorPane setIconProvider(Function<String, BufferedImage> aProvider)
 	{

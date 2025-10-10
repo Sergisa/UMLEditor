@@ -1,12 +1,9 @@
 package org.terifan.nodeeditor.widgets;
 
-import java.awt.Graphics2D;
-import org.terifan.nodeeditor.Connector;
-import org.terifan.nodeeditor.Context;
-import org.terifan.nodeeditor.Direction;
-import org.terifan.nodeeditor.Property;
-import org.terifan.nodeeditor.NodeEditorPane;
+import org.terifan.nodeeditor.*;
 import org.terifan.ui.Anchor;
+
+import java.awt.*;
 
 
 public class ValueProperty extends Property<ValueProperty>
@@ -55,10 +52,6 @@ public class ValueProperty extends Property<ValueProperty>
 		if (in != null)
 		{
 			return in.getConnectedProperties().get(0).execute(aContext);
-		}
-		else if (mProducer != null)
-		{
-			return aContext.invoke(this, mProducer);
 		}
 
 		return mValue;

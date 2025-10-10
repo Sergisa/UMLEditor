@@ -1,35 +1,24 @@
 package examples;
 
-import java.awt.BorderLayout;
+import org.terifan.nodeeditor.Node;
+import org.terifan.nodeeditor.NodeEditorPane;
+import org.terifan.nodeeditor.NodeModel;
+import org.terifan.nodeeditor.Styles.DefaultNodeColors;
+import org.terifan.nodeeditor.util.SimpleNodesFactory;
+import org.terifan.nodeeditor.widgets.SliderProperty;
+import org.terifan.nodeeditor.widgets.ValueProperty;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.AbstractAction;
-import org.terifan.nodeeditor.widgets.SliderProperty;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import org.terifan.nodeeditor.Direction;
+
 import static org.terifan.nodeeditor.Direction.IN;
 import static org.terifan.nodeeditor.Direction.OUT;
-import org.terifan.nodeeditor.NodeEditorPane;
-import org.terifan.nodeeditor.Node;
-import org.terifan.nodeeditor.NodeModel;
-import org.terifan.nodeeditor.widgets.ValueProperty;
-import org.terifan.nodeeditor.NodeFunction;
-import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.GRAY;
-import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.PURPLE;
-import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.YELLOW;
-import org.terifan.nodeeditor.Styles.DefaultIcons;
-import org.terifan.nodeeditor.Styles.DefaultNodeColors;
-import org.terifan.nodeeditor.util.SimpleNodesFactory;
-import org.terifan.nodeeditor.widgets.ButtonProperty;
-import org.terifan.nodeeditor.widgets.ImageProperty;
-import org.terifan.vecmath.Vec2d;
-import org.terifan.vecmath.Vec4d;
+import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.*;
 
 
 public class MandelbrotExample
@@ -83,11 +72,6 @@ public class MandelbrotExample
 
 			NodeEditorPane editor = new NodeEditorPane(model)
 				.center();
-
-			SimpleNodesFactory.install(editor);
-
-
-
 
 			JToolBar toolbar = new JToolBar();
 

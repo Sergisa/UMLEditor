@@ -1,16 +1,15 @@
 package org.terifan.nodeeditor.widgets;
 
-import java.awt.Graphics2D;
-import java.awt.LinearGradientPaint;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
 import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
-import static org.terifan.nodeeditor.Styles.FIELD_CORNER;
 import org.terifan.ui.Anchor;
 import org.terifan.ui.ImageResizer;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import static org.terifan.nodeeditor.Styles.FIELD_CORNER;
 
 
 public class ButtonProperty extends Property<ButtonProperty>
@@ -90,16 +89,6 @@ public class ButtonProperty extends Property<ButtonProperty>
 	protected boolean mousePressed(NodeEditorPane aEditor, Point aClickPoint)
 	{
 		mArmed = true;
-
-		try
-		{
-			aEditor.invoke(mModelId, this);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace(System.out);
-		}
-
 		return true;
 	}
 

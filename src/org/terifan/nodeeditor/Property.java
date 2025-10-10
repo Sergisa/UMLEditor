@@ -1,17 +1,15 @@
 package org.terifan.nodeeditor;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import org.terifan.ui.TextBox;
+
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_COLOR;
 import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_SHADOW_COLOR;
-import org.terifan.ui.TextBox;
 
 
 public abstract class Property<T extends Property> implements Serializable
@@ -74,10 +72,6 @@ public abstract class Property<T extends Property> implements Serializable
 		if (in != null)
 		{
 			return in.getConnectedProperties().get(0).execute(aContext);
-		}
-		else if (mProducer != null)
-		{
-			return aContext.invoke(this, mProducer);
 		}
 
 		return null;

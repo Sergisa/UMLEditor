@@ -1,9 +1,5 @@
 package org.terifan.nodeeditor;
 
-import org.terifan.nodeeditor.widgets.ValueProperty;
-
-
-
 public class Context
 {
 	private final NodeEditorPane mEditor;
@@ -20,9 +16,4 @@ public class Context
 		return mEditor;
 	}
 
-
-	public Object invoke(Property aProperty, String aProducer)
-	{
-		return mEditor.getBindings().get(aProducer).invoke(this, aProperty);
-	}
 }
