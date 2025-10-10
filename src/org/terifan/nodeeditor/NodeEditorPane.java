@@ -54,9 +54,9 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 	protected void setupListeners()
 	{
 		NodeEditorMouseListener mouseListener = new NodeEditorMouseListener(this);
-		super.addMouseMotionListener(mouseListener);
-		super.addMouseListener(mouseListener);
-		super.addMouseWheelListener(mouseListener);
+		addMouseMotionListener(mouseListener);
+		addMouseListener(mouseListener);
+		addMouseWheelListener(mouseListener);
 	}
 
 
@@ -176,45 +176,6 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 
 		return nearest;
 	}
-
-
-//	public Connector findNearestNodeConnector(Point aPoint, Node aNode)
-//	{
-//		Connector nearest = null;
-//		double dist = 25;
-//		boolean hitBox = false;
-//
-//		if (mDragConnector != null && mDragConnector.getProperty().getNode() == aNode)
-//		{
-//			return null;
-//		}
-//
-//		int x = aPoint.x - aNode.getBounds().x;
-//		int y = aPoint.y - aNode.getBounds().y;
-//
-//		for (Property item : aNode.getProperties())
-//		{
-//			for (Connector c : (ArrayList<Connector>)item.getConnectors())
-//			{
-//				double dx = x - c.getBounds().getCenterX();
-//				double dy = y - c.getBounds().getCenterY();
-//				double d = Math.sqrt(dx * dx + dy * dy);
-//				if (d < dist)
-//				{
-//					hitBox = aNode.getBounds().contains(aPoint);
-//					nearest = c;
-//					dist = d;
-//				}
-//			}
-//		}
-//
-//		if (hitBox && nearest != null && dist > 8)
-//		{
-//			nearest = null;
-//		}
-//
-//		return nearest;
-//	}
 
 
 	@Override

@@ -38,10 +38,10 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 
 	protected void setupListeners()
 	{
-		BoxComponentMouseListener<T, U> mouseListener = new BoxComponentMouseListener<>((U)this);
-		super.addMouseMotionListener(mouseListener);
-		super.addMouseListener(mouseListener);
-		super.addMouseWheelListener(mouseListener);
+		BoxComponentMouseListener<T, U> mouseListener = new BoxComponentMouseListener<>((U) this);
+		addMouseMotionListener(mouseListener);
+		addMouseListener(mouseListener);
+		addMouseWheelListener(mouseListener);
 	}
 
 
