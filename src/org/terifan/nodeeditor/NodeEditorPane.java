@@ -3,7 +3,6 @@ package org.terifan.nodeeditor;
 import org.terifan.boxcomponentpane.BoxComponentPane;
 import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.SplineRenderer;
-import org.terifan.nodeeditor.widgets.ButtonProperty;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,7 +16,6 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 
 	private transient Function<String, BufferedImage> mIconProvider;
 
-	private transient final ArrayList<OnClickHandler> mButtonHandlers;
 	private transient Property mClickedItem;
 	private transient Popup mPopup;
 	private transient Connection mSelectedConnection;
@@ -32,7 +30,6 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 		super(aModel);
 
 		//mBindings = new HashMap<>();
-		mButtonHandlers = new ArrayList<>();
 		mRemoveInConnectionsOnDrop = true;
 
 		setIconProvider(Styles::loadIcon);
@@ -140,25 +137,6 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 	public void setConnectorDragFrom(Connector aConnectorDragFrom)
 	{
 		mConnectorDragFrom = aConnectorDragFrom;
-	}
-
-
-	public NodeEditorPane addButtonHandler(OnClickHandler aHandler)
-	{
-		mButtonHandlers.add(aHandler);
-		return this;
-	}
-
-
-	public void fireButtonClicked(ButtonProperty aButton)
-	{
-		for (OnClickHandler handler : mButtonHandlers)
-		{
-			if (handler.onClick(aButton))
-			{
-				return;
-			}
-		}
 	}
 
 

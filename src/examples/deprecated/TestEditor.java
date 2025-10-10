@@ -1,11 +1,9 @@
 package examples.deprecated;
 
-import org.terifan.nodeeditor.Direction;
 import org.terifan.nodeeditor.Node;
 import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.NodeModel;
 import org.terifan.nodeeditor.util.SimpleNodesFactory;
-import org.terifan.nodeeditor.widgets.ImageProperty;
 import org.terifan.nodeeditor.widgets.ValueProperty;
 
 import javax.swing.*;
@@ -64,21 +62,6 @@ public class TestEditor
 				public void actionPerformed(ActionEvent aE)
 				{
 					model.addComponent(SimpleNodesFactory.createSourceTexture());
-					editor.repaint();
-				}
-			});
-
-			toolbar.add(new AbstractAction("RenderOutput")
-			{
-				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
-					model.addComponent(new Node("RenderOutput",
-						new ValueProperty("Color").addConnector(Direction.IN),
-						new ValueProperty("Alpha").addConnector(Direction.IN),
-						new ImageProperty("undefined", 200, 200)
-					).setLocation(0, 0));
-
 					editor.repaint();
 				}
 			});

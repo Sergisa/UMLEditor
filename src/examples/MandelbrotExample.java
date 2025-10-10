@@ -5,7 +5,6 @@ import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.NodeModel;
 import org.terifan.nodeeditor.Styles.DefaultNodeColors;
 import org.terifan.nodeeditor.util.SimpleNodesFactory;
-import org.terifan.nodeeditor.widgets.SliderProperty;
 import org.terifan.nodeeditor.widgets.ValueProperty;
 
 import javax.swing.*;
@@ -35,19 +34,19 @@ public class MandelbrotExample
 					.setBounds(-500, 100, 150, 0)
 					.addProperty(new ValueProperty("Iterations").addConnector(OUT, GRAY).setProducer("mandelbrot"))
 					.addProperty(new ValueProperty("Coordinate").setId("coord").addConnector(OUT, PURPLE).bind("coordinate"))
-					.addProperty(new SliderProperty("X").setRange(-2, 2, 0.06755, 0.0001).setId("x"))
-					.addProperty(new SliderProperty("Y").setRange(-2, 2, 0.635, 0.0001).setId("y"))
-					.addProperty(new SliderProperty("Zoom", 30000, 1).setId("zoom"))
-					.addProperty(new SliderProperty("Limit", 200000, 1).setId("limit"))
+					.addProperty(new ValueProperty("X").setId("x"))
+					.addProperty(new ValueProperty("Y").setId("y"))
+					.addProperty(new ValueProperty("Zoom").setId("zoom"))
+					.addProperty(new ValueProperty("Limit").setId("limit"))
 				)
 				.addComponent(new Node("Palette")
 					.setTitleBackground(DefaultNodeColors.GREEN)
 					.setBounds(0, -20, 150, 0)
 					.addProperty(new ValueProperty("Color").addConnector(OUT, YELLOW).setProducer("palette"))
-					.addProperty(new SliderProperty("Red", 0.0, 0.01).setId("rf"))
-					.addProperty(new SliderProperty("Green", 13.42, 0.01).setId("gf"))
-					.addProperty(new SliderProperty("Blue", 30.26, 0.01).setId("bf"))
-					.addProperty(new SliderProperty("Scale", 20.5, 0.01).setId("sf"))
+					.addProperty(new ValueProperty("Red").setId("rf"))
+					.addProperty(new ValueProperty("Green").setId("gf"))
+					.addProperty(new ValueProperty("Blue").setId("bf"))
+					.addProperty(new ValueProperty("Scale").setId("sf"))
 					.addProperty(new ValueProperty("Iterations").setId("iterations").addConnector(IN, GRAY))
 				)
 				.addComponent(SimpleNodesFactory.createIntermediateColorMix().setLocation(220, -140))
