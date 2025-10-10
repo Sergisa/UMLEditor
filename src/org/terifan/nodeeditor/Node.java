@@ -217,12 +217,12 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 				{
 					if (connector.getDirection() == Direction.IN)
 					{
-						connector.getBounds().setBounds(1, by0, 9, 9);
+						connector.getBounds().setLocation(1, by0);
 						by0 += 15;
 					}
 					else
 					{
-						connector.getBounds().setBounds(mBounds.width - (1 + 9), by1, 9, 9);
+						connector.getBounds().setLocation(mBounds.width - (1 + 9), by1);
 						by1 += 15;
 					}
 				}
@@ -258,13 +258,13 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 					if (connector.getDirection() == Direction.IN)
 					{
 						Point pt = calcPoint(c0, n0);
-						connector.getBounds().setBounds(1 + 4 - pt.x, pt.y, 9, 9);
+						connector.getBounds().setLocation(1 + 4 - pt.x, pt.y);
 						c0++;
 					}
 					else
 					{
 						Point pt = calcPoint(c1, n1);
-						connector.getBounds().setBounds(mBounds.width - (1 + 9) - 4 + pt.x, pt.y, 9, 9);
+						connector.getBounds().setLocation(mBounds.width - (1 + 9) - 4 + pt.x, pt.y);
 						c1++;
 					}
 				}
@@ -290,6 +290,7 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		{
 			for (Connector connector : (ArrayList<Connector>)item.getConnectors())
 			{
+				System.out.println(connector.toString());
 				Rectangle r = connector.getBounds();
 				aGraphics.setColor(connector.getColor());
 				aGraphics.fillOval(r.x, r.y, r.width, r.height);

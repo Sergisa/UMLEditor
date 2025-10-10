@@ -13,6 +13,7 @@ public class Connector implements Serializable
 	@Serial
 	private static final long serialVersionUID = 1L;
 
+	private final int connectorRadius = 9;
 	protected final Rectangle mBounds;
 	protected Direction mDirection;
 	protected Property mProperty;
@@ -21,7 +22,7 @@ public class Connector implements Serializable
 
 	public Connector()
 	{
-		mBounds = new Rectangle();
+		mBounds = new Rectangle(connectorRadius, connectorRadius);
 	}
 
 
@@ -33,7 +34,7 @@ public class Connector implements Serializable
 
 	public Connector(Direction aDirection, Color aColor)
 	{
-		mBounds = new Rectangle();
+		this();
 		mDirection = aDirection;
 		mColor = aColor;
 	}
@@ -88,6 +89,7 @@ public class Connector implements Serializable
 	@Override
 	public String toString()
 	{
-		return "Connector{" + "Node:" + getProperty().getNode().getTitle() + ", Property:" + getProperty().getId() + ", " + "mDirection=" + mDirection + '}';
+		return "Connector{" + "Node:" + getProperty().getNode().getTitle() + ", Property:" + getProperty().getId() + ", " + "mDirection=" + mDirection + "}\n\t"+
+				getBounds().toString();
 	}
 }
