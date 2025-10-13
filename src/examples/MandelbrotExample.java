@@ -20,14 +20,11 @@ import static org.terifan.nodeeditor.Direction.OUT;
 import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.*;
 
 
-public class MandelbrotExample
-{
+public class MandelbrotExample {
 
 
-	public static void main(String... args)
-	{
-		try
-		{
+	public static void main(String... args) {
+		try {
 			NodeModel __model = new NodeModel()
 				.addComponent(new Node("Mandelbrot")
 					.setTitleBackground(DefaultNodeColors.BROWN)
@@ -58,14 +55,12 @@ public class MandelbrotExample
 
 			// -- debugging only, serialize/deserialize model to ensure it's stateless
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			try (ObjectOutputStream dos = new ObjectOutputStream(baos))
-			{
+			try (ObjectOutputStream dos = new ObjectOutputStream(baos)) {
 				dos.writeObject(__model);
 			}
 			NodeModel model;
-			try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray())))
-			{
-				model = (NodeModel)ois.readObject();
+			try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()))) {
+				model = (NodeModel) ois.readObject();
 			}
 			// --
 
@@ -74,71 +69,57 @@ public class MandelbrotExample
 
 			JToolBar toolbar = new JToolBar();
 
-			toolbar.add(new AbstractAction("Math")
-			{
+			toolbar.add(new AbstractAction("Math") {
 				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
+				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createIntermediateMath());
 					editor.repaint();
 				}
 			});
 
-			toolbar.add(new AbstractAction("Mix")
-			{
+			toolbar.add(new AbstractAction("Mix") {
 				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
+				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createIntermediateColorMix());
 					editor.repaint();
 				}
 			});
 
-			toolbar.add(new AbstractAction("Alpha")
-			{
+			toolbar.add(new AbstractAction("Alpha") {
 				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
+				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createSourceAlpha());
 					editor.repaint();
 				}
 			});
 
-			toolbar.add(new AbstractAction("Color")
-			{
+			toolbar.add(new AbstractAction("Color") {
 				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
+				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createSourceColor());
 					editor.repaint();
 				}
 			});
 
-			toolbar.add(new AbstractAction("RGB")
-			{
+			toolbar.add(new AbstractAction("RGB") {
 				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
+				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createSourceColorRGB());
 					editor.repaint();
 				}
 			});
 
-			toolbar.add(new AbstractAction("RGBA")
-			{
+			toolbar.add(new AbstractAction("RGBA") {
 				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
+				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createSourceColorRGBA());
 					editor.repaint();
 				}
 			});
 
-			toolbar.add(new AbstractAction("Value")
-			{
+			toolbar.add(new AbstractAction("Value") {
 				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
+				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createSourceValue());
 					editor.repaint();
 				}
@@ -159,17 +140,13 @@ public class MandelbrotExample
 			panel.add(editor, BorderLayout.CENTER);
 
 
-
-
 			JFrame frame = new JFrame();
 			frame.add(panel);
 			frame.setSize(1600, 1000);
 			frame.setLocationRelativeTo(null);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
-		}
-		catch (Throwable e)
-		{
+		} catch (Throwable e) {
 			e.printStackTrace(System.out);
 		}
 	}
