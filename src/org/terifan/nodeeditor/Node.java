@@ -91,7 +91,7 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 
 		for (Property pi : mProperties)
 		{
-			Property ab = (Property)pi;
+			Property ab = pi;
 
 			if (id.equals(ab.getId()))
 			{
@@ -208,6 +208,7 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 	{
 		if (!mMinimized)
 		{
+			final int PROPERTY_VERTICAL_HEIGHT = 15;
 			for (Property item : mProperties)
 			{
 				int by0 = item.getBounds().y + Math.min(item.getBounds().height, TITLE_HEIGHT_PADDED + 4) / 2 - 5;
@@ -218,12 +219,12 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 					if (connector.getDirection() == Direction.IN)
 					{
 						connector.getBounds().setLocation(1, by0);
-						by0 += 15;
+						by0 += PROPERTY_VERTICAL_HEIGHT;
 					}
 					else
 					{
 						connector.getBounds().setLocation(mBounds.width - (1 + 9), by1);
-						by1 += 15;
+						by1 += PROPERTY_VERTICAL_HEIGHT;
 					}
 				}
 			}
