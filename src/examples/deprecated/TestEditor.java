@@ -10,32 +10,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static org.terifan.nodeeditor.Direction.OUT;
-import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.PURPLE;
-
 
 public class TestEditor
 {
-	public static void main(String... args)
+	static void main(String... args)
 	{
 		try
 		{
 			NodeModel model = new NodeModel();
 
 			NodeEditorPane editor = new NodeEditorPane(model);
-//			editor.addButtonHandler(item -> {
-//				((ImageProperty)item.getNode().getProperty("Image")).setImagePath(new String[]{"Big_pebbles_pxr128.jpg","Big_pebbles_pxr128_bmp.jpg","Big_pebbles_pxr128_normal.jpg"}[new Random().nextInt(3)]);
-//				return true;
-//			});
-//			editor.addImagePainter((aPane, aNode, aProperty, aGraphics, aBounds) ->
-//			{
-//				if (aNode.getTitle().equals("Output") && aProperty.getImagePath() != null)
-//				{
-//					BufferedImage image = ImageIO.read(TestJavaSerializingNodeModel.class.getResource(aProperty.getImagePath()));
-//					aGraphics.drawImage(image, aBounds.x, aBounds.y, aBounds.width, aBounds.height, null);
-//				}
-//				return true;
-//			});
+
 			editor.center();
 			editor.setScale(1);
 
@@ -48,8 +33,7 @@ public class TestEditor
 				{
 					model.addComponent(new Node("TexturCoordinate")
 						.setSize(200, 0)
-						.addProperty(new ValueProperty("UV")
-							.addConnector(OUT, PURPLE))
+						.addProperty(new ValueProperty("UV"))
 					);
 
 					editor.repaint();

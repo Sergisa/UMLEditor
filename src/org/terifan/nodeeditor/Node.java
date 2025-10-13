@@ -173,53 +173,7 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 
 
 	protected void layoutConnectors() {
-		if (!mMinimized) {
-			final int PROPERTY_VERTICAL_HEIGHT = 15;
-			for (Property item : mProperties) {
-				int by0 = item.getBounds().y + Math.min(item.getBounds().height, TITLE_HEIGHT_PADDED + 4) / 2 - 5;
-				int by1 = by0;
 
-				for (Connector connector : (ArrayList<Connector>) item.getConnectors()) {
-					if (connector.getDirection() == Direction.IN) {
-						connector.getBounds().setLocation(1, by0);
-						by0 += PROPERTY_VERTICAL_HEIGHT;
-					} else {
-						connector.getBounds().setLocation(mBounds.width - (1 + 9), by1);
-						by1 += PROPERTY_VERTICAL_HEIGHT;
-					}
-				}
-			}
-		} else {
-			int n0 = 0;
-			int n1 = 0;
-
-			for (Property item : mProperties) {
-				for (Connector connector : (ArrayList<Connector>) item.getConnectors()) {
-					if (connector.getDirection() == Direction.IN) {
-						n0++;
-					} else {
-						n1++;
-					}
-				}
-			}
-
-			int c0 = 0;
-			int c1 = 0;
-
-			for (Property item : mProperties) {
-				for (Connector connector : (ArrayList<Connector>) item.getConnectors()) {
-					if (connector.getDirection() == Direction.IN) {
-						Point pt = calcPoint(c0, n0);
-						connector.getBounds().setLocation(1 + 4 - pt.x, pt.y);
-						c0++;
-					} else {
-						Point pt = calcPoint(c1, n1);
-						connector.getBounds().setLocation(mBounds.width - (1 + 9) - 4 + pt.x, pt.y);
-						c1++;
-					}
-				}
-			}
-		}
 	}
 
 
@@ -234,16 +188,7 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 
 
 	public void paintConnectors(Graphics2D aGraphics) {//расчёт в координатах
-		for (Property item : mProperties) {
-			for (Connector connector : (ArrayList<Connector>) item.getConnectors()) {
-				System.out.println(connector.toString());
-				Rectangle r = connector.getBounds();
-				aGraphics.setColor(connector.getColor());
-				aGraphics.fillOval(r.x, r.y, r.width, r.height);
-				aGraphics.setColor(Color.BLACK); //Drawing OUTLINE
-				aGraphics.drawOval(r.x, r.y, r.width, r.height);
-			}
-		}
+		
 	}
 
 

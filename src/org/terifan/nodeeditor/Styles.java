@@ -177,30 +177,30 @@ public class Styles {
 	public static Color POPUP_BACKGROUND = new Color(16, 16, 16, 220);
 
 
-	public static interface DefaultIcons {
-		public String FOLDER = "folder";
-		public String RUN = "run";
+	public interface DefaultIcons {
+		String FOLDER = "folder";
+		String RUN = "run";
 	}
 
 
-	public static interface DefaultConnectorColors {
-		public Color PURPLE = new Color(0x6363C7);
-		public Color GRAY = new Color(0xA1A1A1);
-		public Color YELLOW = new Color(0xC7C729);
-		public Color GREEN = new Color(0x63C763);
+	public interface DefaultConnectorColors {
+		Color PURPLE = new Color(0x6363C7);
+		Color GRAY = new Color(0xA1A1A1);
+		Color YELLOW = new Color(0xC7C729);
+		Color GREEN = new Color(0x63C763);
 	}
 
 
-	public static interface DefaultNodeColors {
-		public Color GRAY = new Color(67, 67, 67, a);
-		public Color RED = new Color(0x83314A);
-		public Color GREEN = new Color(0x2B652B);
-		public Color YELLOW = new Color(0x6E6E1D);
-		public Color DARKRED = new Color(0x3C1D26);
-		public Color BLUE = new Color(0x246283);
-		public Color PURPLE = new Color(0x3C3C83);
-		public Color BROWN = new Color(0x79461D);
-		public Color DARKCYAN = new Color(0x203C3C);
+	public interface DefaultNodeColors {
+		Color GRAY = new Color(67, 67, 67, a);
+		Color RED = new Color(0x83314A);
+		Color GREEN = new Color(0x2B652B);
+		Color YELLOW = new Color(0x6E6E1D);
+		Color DARKRED = new Color(0x3C1D26);
+		Color BLUE = new Color(0x246283);
+		Color PURPLE = new Color(0x3C3C83);
+		Color BROWN = new Color(0x79461D);
+		Color DARKCYAN = new Color(0x203C3C);
 	}
 
 	public static BasicStroke SELECTION_RECTANGLE_STROKE = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]

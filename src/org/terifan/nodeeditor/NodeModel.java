@@ -8,15 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.terifan.util.Assert.assertEquals;
-import static org.terifan.util.Assert.assertNotNull;
-
 
 public class NodeModel extends BoxComponentModel<Node> implements Serializable {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
-	private ArrayList<Connection> mConnections;
+	private final ArrayList<Connection> mConnections;
 
 
 	public NodeModel() {
@@ -30,11 +27,6 @@ public class NodeModel extends BoxComponentModel<Node> implements Serializable {
 
 		aNode.bind(this);
 
-		for (Property item : aNode.mProperties) {
-			for (Connector connector : (ArrayList<Connector>) item.getConnectors()) {
-				connector.bind(item);
-			}
-		}
 
 		return this;
 	}
@@ -44,89 +36,22 @@ public class NodeModel extends BoxComponentModel<Node> implements Serializable {
 		return mConnections;
 	}
 
-
-	public NodeModel addConnection(int aFromNodeIndex, int aFromPropertyIndex, int aToNodeIndex, int aToPropertyIndex) {
-		Connector out = getConnector(aFromNodeIndex, aFromPropertyIndex, Direction.OUT);
-		Connector in = getConnector(aToNodeIndex, aToPropertyIndex, Direction.IN);
-
-		assertNotNull(out, "The 'From' parameters are not referencing a node/property with direction OUT: " + aFromNodeIndex + ", " + aFromPropertyIndex);
-		assertNotNull(in, "The 'To' parameters are not referencing a node/property with direction IN: " + aToNodeIndex + ", " + aToPropertyIndex);
-
-		return addConnection(out, in);
-	}
-
-
 	public NodeModel addConnection(Property aFromItem, Property aToItem) {
-		Connector out = null;
-		Connector in = null;
-
-		for (Connector connector : (ArrayList<Connector>) aFromItem.getConnectors()) {
-			if (connector.getDirection() == Direction.OUT) {
-				out = connector;
-			}
-		}
-
-		for (Connector connector : (ArrayList<Connector>) aToItem.getConnectors()) {
-			if (connector.getDirection() == Direction.IN) {
-				in = connector;
-			}
-		}
-
-		assertNotNull(out, "The 'FromItem' has no connectors.");
-		assertNotNull(in, "The 'ToItem' has no connectors.");
-
-		return addConnection(out, in);
-	}
-
-
-	public NodeModel addConnection(Connector aFromConnector, Connector aToConnector) {
-		assertNotNull(aFromConnector, "Expected OUT connector");
-		assertNotNull(aToConnector, "Expected IN connector");
-		assertEquals(aFromConnector.getDirection(), Direction.OUT, "Expected OUT connector");
-		assertEquals(aToConnector.getDirection(), Direction.IN, "Expected IN connector");
-
-		mConnections.add(new Connection(aFromConnector, aToConnector));
-
+		mConnections.add(new Connection(aFromItem,aToItem));
 		return this;
 	}
 
-
 	public List<Connection> getConnectionsTo(Property aProperty) {
 		return mConnections.stream()
-			.filter(e -> e.getIn().getProperty() == aProperty)
-			.collect(Collectors.toList());
-	}
-
-
-	public List<Property> getConnectionsTo(Connector aConnector) {
-		return mConnections.stream()
-			.filter(e -> e.getIn() == aConnector)
-			.map(e -> e.getOut().getProperty())
+			.filter(connection -> connection.getIn() == aProperty)
 			.collect(Collectors.toList());
 	}
 
 
 	public List<Connection> getConnectionsFrom(Property aProperty) {
 		return mConnections.stream()
-			.filter(e -> e.getOut().getProperty() == aProperty)
+			.filter(connection -> connection.getOut() == aProperty)
 			.collect(Collectors.toList());
-	}
-
-
-	public List<Property> getConnectionsFrom(Connector aConnector) {
-		return mConnections.stream()
-			.filter(e -> e.getOut() == aConnector)
-			.map(e -> e.getIn().getProperty())
-			.collect(Collectors.toList());
-	}
-
-
-	public Connector getConnector(int aNodeIndex, int aConnectorIndex, Direction aDirection) {
-		return getComponents()
-			.get(aNodeIndex)
-			.getProperties()
-			.get(aConnectorIndex)
-			.getConnector(aDirection);
 	}
 
 
@@ -134,25 +59,12 @@ public class NodeModel extends BoxComponentModel<Node> implements Serializable {
 		ArrayList<Node> result = new ArrayList<>();
 
 		for (Connection conn : mConnections) {
-			if (conn.getOut().getProperty().getNode() == aNode) {
-				result.add(conn.getIn().getProperty().getNode());
+			if (conn.getOut().getNode() == aNode) {
+				result.add(conn.getIn().getNode());
 			}
 		}
 
 		return result;
-	}
-
-
-	public <T extends Property> T getProperty(String aBindId) {
-		for (int i = 0; i < size(); i++) {
-			Node node = getComponent(i);
-			for (Property p : node.getProperties()) {
-				if (aBindId.equals(p.getModelId())) {
-					return (T) p;
-				}
-			}
-		}
-		return null;
 	}
 
 

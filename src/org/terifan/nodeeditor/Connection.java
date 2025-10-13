@@ -8,32 +8,32 @@ public class Connection implements Serializable {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
-	protected Connector mOut;
-	protected Connector mIn;
+	protected Property mOut;
+	protected Property mIn;
 
 
-	public Connection(Connector aOut, Connector aIn) {
+	public Connection(Property aOut, Property aIn) {
 		mOut = aOut;
 		mIn = aIn;
 	}
 
 
-	public Connector getOut() {
+	public Property getOut() {
 		return mOut;
 	}
 
 
-	public void setOut(Connector aOut) {
+	public void setOut(Property aOut) {
 		mOut = aOut;
 	}
 
 
-	public Connector getIn() {
+	public Property getIn() {
 		return mIn;
 	}
 
 
-	public void setIn(Connector aIn) {
+	public void setIn(Property aIn) {
 		mIn = aIn;
 	}
 

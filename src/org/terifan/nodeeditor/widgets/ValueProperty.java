@@ -1,7 +1,7 @@
 package org.terifan.nodeeditor.widgets;
 
-import org.terifan.nodeeditor.*;
-import org.terifan.ui.Anchor;
+import org.terifan.nodeeditor.NodeEditorPane;
+import org.terifan.nodeeditor.Property;
 
 import java.awt.*;
 import java.io.Serial;
@@ -25,7 +25,6 @@ public class ValueProperty extends Property<ValueProperty> {
 	protected void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover) {
 		mTextBox
 			.setBounds(getBounds())
-			.setAnchor(getConnectors().isEmpty() || getConnectors().get(0).getDirection() == Direction.IN ? Anchor.WEST : Anchor.EAST)
 			.render(aGraphics);
 	}
 
@@ -38,18 +37,6 @@ public class ValueProperty extends Property<ValueProperty> {
 	public ValueProperty setValue(Object aValue) {
 		mValue = aValue;
 		return this;
-	}
-
-
-	@Override
-	public Object execute(Context aContext) {
-		Connector in = getConnector(Direction.IN);
-
-		if (in != null) {
-			return in.getConnectedProperties().get(0).execute(aContext);
-		}
-
-		return mValue;
 	}
 
 

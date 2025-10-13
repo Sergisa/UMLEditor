@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.terifan.nodeeditor.Styles.MIN_HEIGHT;
 import static org.terifan.nodeeditor.Styles.MIN_WIDTH;
@@ -35,8 +33,6 @@ class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditor
 
 		if (popup != null) {
 			popup.mouseMoved(point);
-		} else if (mViewPort.findNearestConnector(point, mSelectedNode, false) != null) {
-			updateCursor(Cursor.HAND_CURSOR);
 		} else {
 			super.mouseMoved(aEvent);
 		}
@@ -65,34 +61,6 @@ class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditor
 			return;
 		}
 
-		Connector dragConnector = mViewPort.findNearestConnector(mClickPoint, mSelectedNode, false);
-
-		if (dragConnector != null) {
-			mViewPort.setConnectorDragFrom(dragConnector);
-
-			boolean done = false;
-			if (dragConnector.getDirection() == Direction.IN) {
-				List<Connection> list = model.getConnectionsTo(dragConnector.getProperty());
-				if (list.size() == 1) {
-					Connector out = list.get(0).getOut();
-
-					mViewPort.setConnectorDragFrom(out);
-					mViewPort.setDragEndLocation(out.getConnectorPoint());
-					mViewPort.setDragStartLocation(out.getConnectorPoint());
-
-					model.getConnections().remove(list.get(0));
-
-					done = true;
-				}
-			}
-
-			if (!done) {
-				mViewPort.setDragStartLocation(dragConnector.getConnectorPoint());
-			}
-			return;
-		}
-
-
 		if (mCursor != Cursor.DEFAULT_CURSOR && mCursor != Cursor.HAND_CURSOR) {
 			mStartBounds = new Rectangle(mSelectedNode.getBounds());
 
@@ -118,7 +86,7 @@ class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditor
 
 		updateSelections(aEvent, mSelectedNode);
 
-		if (!mIsClickedNode && dragConnector == null) {
+		if (!mIsClickedNode) {
 			mViewPort.setSelectionRectangle(new Rectangle(mClickPoint));
 		}
 
@@ -153,33 +121,6 @@ class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditor
 			mSelectedProperty = null;
 			mViewPort.repaint();
 			return;
-		}
-
-		if (mViewPort.getConnectorDragFrom() != null) {
-			Connector nearestConnector = mViewPort.findNearestConnector(mClickPoint, mSelectedNode, true);
-
-			if (nearestConnector != null && mViewPort.getConnectorDragFrom().getDirection() != nearestConnector.getDirection()) {
-				if (mRemoveInConnectionsOnDrop) {
-					if (nearestConnector.getDirection() == Direction.IN) {
-						model.getConnections().removeAll(model.getConnectionsTo(nearestConnector.getProperty()));
-					}
-					if (nearestConnector.getDirection() == Direction.OUT) {
-						model.getConnections().removeAll(model.getConnectionsTo(mViewPort.getConnectorDragFrom().getProperty()));
-					}
-				}
-
-				if (mViewPort.getConnectorDragFrom().getDirection() == Direction.IN) {
-					model.addConnection(nearestConnector, mViewPort.getConnectorDragFrom());
-				} else {
-					model.addConnection(mViewPort.getConnectorDragFrom(), nearestConnector);
-				}
-
-				nearestConnector.getProperty().connectionsChanged(mViewPort, mClickPoint);
-			}
-
-			mViewPort.setConnectorDragFrom(null);
-			mViewPort.setDragStartLocation(null);
-			mViewPort.setDragEndLocation(null);
 		}
 
 		Rectangle selectionRectangle = mViewPort.getSelectionRectangle();
@@ -247,15 +188,8 @@ class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditor
 				paneScroll.x += (aEvent.getX() - mDragPoint.x);
 				paneScroll.y += (aEvent.getY() - mDragPoint.y);
 				mDragPoint = aEvent.getPoint();
-			} else if (mViewPort.getConnectorDragFrom() != null) {
-				mViewPort.setDragEndLocation(mClickPoint);
-
-				Connector connector = mViewPort.findNearestConnector(mViewPort.getDragEndLocation(), null, true);
-				if (connector != null && mViewPort.getConnectorDragFrom().getDirection() != connector.getDirection()) {
-					mViewPort.setDragEndLocation(connector.getConnectorPoint());
-				}
 			} else if (mIsClickedNode || SwingUtilities.isRightMouseButton(aEvent)) {
-				for (Node node : (ArrayList<Node>) mViewPort.getSelectedNodes()) {
+				for (Node node : mViewPort.getSelectedNodes()) {
 					Point pt = node.getBounds().getLocation();
 					pt.x += mClickPoint.x - oldPoint.x;
 					pt.y += mClickPoint.y - oldPoint.y;

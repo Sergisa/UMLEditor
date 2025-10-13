@@ -119,13 +119,11 @@ public class SplineRenderer {
 		Rectangle from = aConnection.getOut().getBounds();
 		Rectangle to = aConnection.getIn().getBounds();
 
-		Rectangle b0 = aConnection.getOut().getProperty().getNode().getBounds();
-		Rectangle b1 = aConnection.getIn().getProperty().getNode().getBounds();
 
-		int x0 = (int) from.getCenterX() + b0.x;
-		int y0 = (int) from.getCenterY() + b0.y;
-		int x1 = (int) to.getCenterX() + b1.x;
-		int y1 = (int) to.getCenterY() + b1.y;
+		int x0 = (int) from.getCenterX();
+		int y0 = (int) from.getCenterY();
+		int x1 = (int) to.getCenterX();
+		int y1 = (int) to.getCenterY();
 		int d0 = 16;
 		int d1 = -16;
 

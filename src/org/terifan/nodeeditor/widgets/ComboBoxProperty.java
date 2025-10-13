@@ -1,6 +1,5 @@
 package org.terifan.nodeeditor.widgets;
 
-import org.terifan.nodeeditor.Context;
 import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
@@ -112,12 +111,6 @@ public class ComboBoxProperty extends Property<ComboBoxProperty> {
 
 		aPane.setPopup(null);
 		aPane.repaint();
-	}
-
-
-	@Override
-	public Object execute(Context aContext) {
-		return mOptions.get(mSelectedIndex);
 	}
 
 

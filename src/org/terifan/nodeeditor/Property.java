@@ -5,9 +5,6 @@ import org.terifan.ui.TextBox;
 import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_COLOR;
 import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_SHADOW_COLOR;
@@ -17,7 +14,7 @@ public abstract class Property<T extends Property> implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private final ArrayList<Connector> mConnectors;
+
 	private final Rectangle mBounds;
 
 	protected Node mNode;
@@ -29,7 +26,6 @@ public abstract class Property<T extends Property> implements Serializable {
 
 
 	public Property() {
-		mConnectors = new ArrayList<>();
 		mPreferredSize = new Dimension();
 		mBounds = new Rectangle();
 		mTextBox = new TextBox("")
@@ -48,17 +44,6 @@ public abstract class Property<T extends Property> implements Serializable {
 
 
 	protected abstract void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover);
-
-
-	public Object execute(Context aContext) {
-		Connector in = getConnector(Direction.IN);
-
-		if (in != null) {
-			return in.getConnectedProperties().get(0).execute(aContext);
-		}
-
-		return null;
-	}
 
 
 	public String getId() {
@@ -82,17 +67,6 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-	public T bind(String aModelId) {
-		mModelId = aModelId;
-		return (T) this;
-	}
-
-
-	public String getModelId() {
-		return mModelId;
-	}
-
-
 	public String getText() {
 		return mTextBox.getText();
 	}
@@ -103,42 +77,6 @@ public abstract class Property<T extends Property> implements Serializable {
 		return (T) this;
 	}
 
-
-	public T addConnector(Connector aConnector) {
-		mConnectors.add(aConnector);
-		return (T) this;
-	}
-
-
-	public T addConnector(Direction aDirection) {
-		return addConnector(aDirection, Color.YELLOW);
-	}
-
-
-	public T addConnector(Direction aDirection, Color aColor) {
-		return addConnector(new Connector(aDirection, aColor));
-	}
-
-
-	public ArrayList<Connector> getConnectors() {
-		return mConnectors;
-	}
-
-
-	public List<Connector> getConnectors(Direction aDirection) {
-		return mConnectors.stream().filter(c -> c.getDirection() == aDirection).collect(Collectors.toList());
-	}
-
-
-	public Connector getConnector(Direction aDirection) {
-		return mConnectors.stream().filter(c -> c.getDirection() == aDirection).findFirst().orElse(null);
-	}
-
-
-	public boolean isConnected(Direction aDirection) {
-		Connector c = getConnector(aDirection);
-		return c != null && !c.getConnectedProperties().isEmpty();
-	}
 
 
 	protected Dimension measure() {
