@@ -25,7 +25,6 @@ public abstract class Property<T extends Property> implements Serializable {
 	protected boolean mUserSetSize;
 	protected String mId;
 	protected String mModelId;
-	protected String mProducer;
 	protected TextBox mTextBox;
 
 
@@ -49,17 +48,6 @@ public abstract class Property<T extends Property> implements Serializable {
 
 
 	protected abstract void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover);
-
-
-	public String getProducer() {
-		return mProducer;
-	}
-
-
-	public T setProducer(String aProducer) {
-		mProducer = aProducer;
-		return (T) this;
-	}
 
 
 	public Object execute(Context aContext) {
