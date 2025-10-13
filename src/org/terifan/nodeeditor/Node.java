@@ -285,7 +285,7 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 
 
 	public void paintConnectors(Graphics2D aGraphics)
-	{
+	{//расчёт в координатах
 		for (Property item : mProperties)
 		{
 			for (Connector connector : (ArrayList<Connector>)item.getConnectors())
@@ -294,7 +294,7 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 				Rectangle r = connector.getBounds();
 				aGraphics.setColor(connector.getColor());
 				aGraphics.fillOval(r.x, r.y, r.width, r.height);
-				aGraphics.setColor(Color.BLACK);
+				aGraphics.setColor(Color.BLACK); //Drawing OUTLINE
 				aGraphics.drawOval(r.x, r.y, r.width, r.height);
 			}
 		}
