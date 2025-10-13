@@ -31,7 +31,7 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		mSelectedBoxes = new ArrayList<>();
 		mScale = 1;
 		mModel = aModel;
-
+		setFocusable(true);
 		setupListeners();
 	}
 

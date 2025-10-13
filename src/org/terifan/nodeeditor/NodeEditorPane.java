@@ -5,6 +5,8 @@ import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.SplineRenderer;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.util.ArrayList;
@@ -33,7 +35,18 @@ public class NodeEditorPane extends BoxComponentPane<Node, NodeEditorPane>
 
 		//mBindings = new HashMap<>();
 		mRemoveInConnectionsOnDrop = true;
-
+		setFocusable(true);
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DELETE){
+					if(!getSelectedNodes().isEmpty()){
+						getModel().removeComponents(getSelectedNodes());
+						repaint();
+					}
+				}
+			}
+		});
 		setIconProvider(Styles::loadIcon);
 	}
 

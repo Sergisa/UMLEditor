@@ -30,7 +30,6 @@ class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditor
 		super(aPane);
 	}
 
-
 	@Override
 	public void mouseMoved(MouseEvent aEvent)
 	{
@@ -55,6 +54,8 @@ class NodeEditorMouseListener extends BoxComponentMouseListener<Node, NodeEditor
 	@Override
 	public void mousePressed(MouseEvent aEvent)
 	{
+		mViewPort.requestFocus();
+		mViewPort.grabFocus();
 		NodeModel model = mViewPort.getModel();
 		Popup popup = mViewPort.getPopup();
 

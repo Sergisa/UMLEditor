@@ -1,9 +1,12 @@
 package org.terifan.boxcomponentpane;
 
+import org.terifan.nodeeditor.Node;
+
 import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class BoxComponentModel<T extends BoxComponent> implements Serializable
@@ -67,5 +70,22 @@ public class BoxComponentModel<T extends BoxComponent> implements Serializable
 		}
 
 		return null;
+	}
+
+	public void removeComponents(List<Node> components){
+		components.forEach(this::removeComponent);
+	}
+
+	public void removeComponent(Node component){
+
+		component.getProperties().forEach(property -> {
+			component.getModel().getConnectionsTo(property).forEach(connection -> {
+				component.getModel().getConnections().remove(connection);
+			});
+			component.getModel().getConnectionsFrom(property).forEach(connection -> {
+				component.getModel().getConnections().remove(connection);
+			});
+		});
+		mComponents.remove(component);
 	}
 }

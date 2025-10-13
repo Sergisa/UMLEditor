@@ -1,15 +1,14 @@
 package org.terifan.boxcomponentpane;
 
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Rectangle;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.SwingUtilities;
+
 import static org.terifan.nodeeditor.Styles.MIN_HEIGHT;
 import static org.terifan.nodeeditor.Styles.MIN_WIDTH;
 
@@ -28,7 +27,7 @@ public class BoxComponentMouseListener<T extends BoxComponent, U extends BoxComp
 
 	public BoxComponentMouseListener(U aPane)
 	{
-		mZoomSpeed = 1.1;
+		mZoomSpeed = 0.1;
 		mCursor = Cursor.DEFAULT_CURSOR;
 		mViewPort = aPane;
 	}
@@ -50,31 +49,34 @@ public class BoxComponentMouseListener<T extends BoxComponent, U extends BoxComp
 		mClickPoint = mViewPort.calcMousePoint(aEvent.getPoint());
 		mSelectedNode = model.getComponentAt(mClickPoint);
 
-		if (SwingUtilities.isMiddleMouseButton(aEvent))
+		if (SwingUtilities.isMiddleMouseButton(aEvent))// жали средней клавишей
 		{
 			updateCursor(Cursor.MOVE_CURSOR);
 		}
-		else if (SwingUtilities.isLeftMouseButton(aEvent))
+		else if (SwingUtilities.isLeftMouseButton(aEvent)) //жали основной кнопкой мыши
 		{
-			if (mSelectedNode == null)
+			if (mSelectedNode == null)// нажали на пустое поле и нет выделенного Node - делаем выделение
 			{
 				mViewPort.setSelectionRectangle(new Rectangle(mClickPoint));
 			}
 			else
-			{
-				model.moveTop(mSelectedNode);
-
-				if (mCursor != Cursor.DEFAULT_CURSOR)
+			{ //есть фиксированный Node
+				model.moveTop(mSelectedNode); //поднимаем Node на первый уровень
 				System.out.println(mSelectedNode);
+
+				mViewPort.getSelectedNodes().clear();
+				mViewPort.getSelectedNodes().add(mSelectedNode);
+				mViewPort.repaint();
+				/*if (mCursor != Cursor.DEFAULT_CURSOR) //TODO: что здесь происходит не ясно
 				{
 					mStartBounds = new Rectangle(mSelectedNode.getBounds());
 					mViewPort.getSelectedNodes().clear();
 					mViewPort.getSelectedNodes().add(mSelectedNode);
 					mViewPort.repaint();
-				}
+				}*/
 
 				Rectangle bounds = mSelectedNode.getBounds();
-				if (bounds.contains(mClickPoint) && getMinimizeButtonBounds(mSelectedNode).contains(mClickPoint))
+				if (bounds.contains(mClickPoint) && getMinimizeButtonBounds(mSelectedNode).contains(mClickPoint)) // начали сворачивать блок
 				{
 					updateMinimize(aEvent, mSelectedNode);
 					System.out.println("Сворачиваю: " + mSelectedNode.toString());
