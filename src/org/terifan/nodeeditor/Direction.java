@@ -1,8 +1,7 @@
 package org.terifan.nodeeditor;
 
 
-public enum Direction
-{
+public enum Direction {
 	IN,
 	OUT
 }

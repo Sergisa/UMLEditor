@@ -13,8 +13,7 @@ import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_COLOR;
 import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_SHADOW_COLOR;
 
 
-public abstract class Property<T extends Property> implements Serializable
-{
+public abstract class Property<T extends Property> implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -30,8 +29,7 @@ public abstract class Property<T extends Property> implements Serializable
 	protected TextBox mTextBox;
 
 
-	public Property()
-	{
+	public Property() {
 		mConnectors = new ArrayList<>();
 		mPreferredSize = new Dimension();
 		mBounds = new Rectangle();
@@ -42,8 +40,7 @@ public abstract class Property<T extends Property> implements Serializable
 	}
 
 
-	protected Property(String aText)
-	{
+	protected Property(String aText) {
 		this();
 
 		mTextBox.setText(aText);
@@ -54,25 +51,21 @@ public abstract class Property<T extends Property> implements Serializable
 	protected abstract void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover);
 
 
-	public String getProducer()
-	{
+	public String getProducer() {
 		return mProducer;
 	}
 
 
-	public T setProducer(String aProducer)
-	{
+	public T setProducer(String aProducer) {
 		mProducer = aProducer;
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public Object execute(Context aContext)
-	{
+	public Object execute(Context aContext) {
 		Connector in = getConnector(Direction.IN);
 
-		if (in != null)
-		{
+		if (in != null) {
 			return in.getConnectedProperties().get(0).execute(aContext);
 		}
 
@@ -80,165 +73,139 @@ public abstract class Property<T extends Property> implements Serializable
 	}
 
 
-	public String getId()
-	{
+	public String getId() {
 		return mId;
 	}
 
 
-	public T setId(String aId)
-	{
+	public T setId(String aId) {
 		mId = aId;
-		return (T)this;
+		return (T) this;
 	}
 
 
-	void bind(Node aNode)
-	{
+	void bind(Node aNode) {
 		mNode = aNode;
 	}
 
 
-	public Node getNode()
-	{
+	public Node getNode() {
 		return mNode;
 	}
 
 
-	public T bind(String aModelId)
-	{
+	public T bind(String aModelId) {
 		mModelId = aModelId;
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public String getModelId()
-	{
+	public String getModelId() {
 		return mModelId;
 	}
 
 
-	public String getText()
-	{
+	public String getText() {
 		return mTextBox.getText();
 	}
 
 
-	public T setText(String aText)
-	{
+	public T setText(String aText) {
 		mTextBox.setText(aText);
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public T addConnector(Connector aConnector)
-	{
+	public T addConnector(Connector aConnector) {
 		mConnectors.add(aConnector);
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public T addConnector(Direction aDirection)
-	{
+	public T addConnector(Direction aDirection) {
 		return addConnector(aDirection, Color.YELLOW);
 	}
 
 
-	public T addConnector(Direction aDirection, Color aColor)
-	{
+	public T addConnector(Direction aDirection, Color aColor) {
 		return addConnector(new Connector(aDirection, aColor));
 	}
 
 
-	public ArrayList<Connector> getConnectors()
-	{
+	public ArrayList<Connector> getConnectors() {
 		return mConnectors;
 	}
 
 
-	public List<Connector> getConnectors(Direction aDirection)
-	{
+	public List<Connector> getConnectors(Direction aDirection) {
 		return mConnectors.stream().filter(c -> c.getDirection() == aDirection).collect(Collectors.toList());
 	}
 
 
-	public Connector getConnector(Direction aDirection)
-	{
+	public Connector getConnector(Direction aDirection) {
 		return mConnectors.stream().filter(c -> c.getDirection() == aDirection).findFirst().orElse(null);
 	}
 
 
-	public boolean isConnected(Direction aDirection)
-	{
+	public boolean isConnected(Direction aDirection) {
 		Connector c = getConnector(aDirection);
 		return c != null && !c.getConnectedProperties().isEmpty();
 	}
 
 
-	protected Dimension measure()
-	{
-		if (!mUserSetSize && mTextBox.isLayoutRequired())
-		{
+	protected Dimension measure() {
+		if (!mUserSetSize && mTextBox.isLayoutRequired()) {
 			mPreferredSize.setSize(mTextBox.measure().getSize());
 		}
 
-		return (Dimension)mPreferredSize.clone();
+		return (Dimension) mPreferredSize.clone();
 	}
 
 
-	public Dimension getPreferredSize()
-	{
+	public Dimension getPreferredSize() {
 		return mPreferredSize;
 	}
 
 
-	public void setPreferredSize(Dimension aPreferredSize)
-	{
+	public void setPreferredSize(Dimension aPreferredSize) {
 		mUserSetSize = true;
 		mPreferredSize.setSize(aPreferredSize);
 	}
 
 
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		return mBounds;
 	}
 
 
-	protected void connectionsChanged(NodeEditorPane aPane, Point aClickPoint)
-	{
+	protected void connectionsChanged(NodeEditorPane aPane, Point aClickPoint) {
 	}
 
 
 	/**
 	 * Should return true if the clicked point will perform an action. This method return false.
 	 */
-	protected boolean mousePressed(NodeEditorPane aPane, Point aClickPoint)
-	{
+	protected boolean mousePressed(NodeEditorPane aPane, Point aClickPoint) {
 		return false;
 	}
 
 
-	protected void mouseReleased(NodeEditorPane aPane, Point aClickPoint)
-	{
+	protected void mouseReleased(NodeEditorPane aPane, Point aClickPoint) {
 	}
 
 
-	protected void mouseDragged(NodeEditorPane aPane, Point aClickPoint, Point aDragPoint)
-	{
+	protected void mouseDragged(NodeEditorPane aPane, Point aClickPoint, Point aDragPoint) {
 	}
 
 
 	// ugly, remove somehow
-	public void fireMouseReleased(NodeEditorPane aPane, Point aPoint)
-	{
+	public void fireMouseReleased(NodeEditorPane aPane, Point aPoint) {
 		mouseReleased(aPane, aPoint);
 	}
 
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Property{" + "mId=" + getId() + ", Node=" + mNode + "}";
 	}
 }

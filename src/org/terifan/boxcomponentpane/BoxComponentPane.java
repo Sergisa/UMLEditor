@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
 
 
-public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane> extends JComponent
-{
+public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane> extends JComponent {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
@@ -26,8 +25,7 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	private ArrayList<T> mSelectedBoxes;
 
 
-	public BoxComponentPane(BoxComponentModel aModel)
-	{
+	public BoxComponentPane(BoxComponentModel aModel) {
 		mSelectedBoxes = new ArrayList<>();
 		mScale = 1;
 		mModel = aModel;
@@ -36,8 +34,7 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	protected void setupListeners()
-	{
+	protected void setupListeners() {
 		BoxComponentMouseListener<T, U> mouseListener = new BoxComponentMouseListener<>((U) this);
 		addMouseMotionListener(mouseListener);
 		addMouseListener(mouseListener);
@@ -45,76 +42,64 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	public double getScale()
-	{
+	public double getScale() {
 		return mScale;
 	}
 
 
-	public U setScale(double aScale)
-	{
+	public U setScale(double aScale) {
 		mScale = aScale;
-		return (U)this;
+		return (U) this;
 	}
 
 
-	public BoxComponentModel<T> getModel()
-	{
+	public BoxComponentModel<T> getModel() {
 		return mModel;
 	}
 
 
-	public ArrayList<T> getSelectedNodes()
-	{
+	public ArrayList<T> getSelectedNodes() {
 		return mSelectedBoxes;
 	}
 
 
-	public U setSelectedBoxes(ArrayList<T> aSelectedBoxes)
-	{
+	public U setSelectedBoxes(ArrayList<T> aSelectedBoxes) {
 		mSelectedBoxes = aSelectedBoxes;
-		return (U)this;
+		return (U) this;
 	}
 
 
-	public Point2D.Double getPaneScroll()
-	{
+	public Point2D.Double getPaneScroll() {
 		return mScroll;
 	}
 
 
-	public Rectangle getSelectionRectangle()
-	{
+	public Rectangle getSelectionRectangle() {
 		return mSelectionRectangle;
 	}
 
 
-	public void setSelectionRectangle(Rectangle aSelectionRectangle)
-	{
+	public void setSelectionRectangle(Rectangle aSelectionRectangle) {
 		mSelectionRectangle = aSelectionRectangle;
 	}
 
 
-	public Point getDragStartLocation()
-	{
+	public Point getDragStartLocation() {
 		return mDragStartLocation;
 	}
 
 
-	public void setDragStartLocation(Point aDragStartLocation)
-	{
+	public void setDragStartLocation(Point aDragStartLocation) {
 		mDragStartLocation = aDragStartLocation;
 	}
 
 
-	public Point getDragEndLocation()
-	{
+	public Point getDragEndLocation() {
 		return mDragEndLocation;
 	}
 
 
-	public void setDragEndLocation(Point aDragEndLocation)
-	{
+	public void setDragEndLocation(Point aDragEndLocation) {
 		mDragEndLocation = aDragEndLocation;
 	}
 
@@ -122,46 +107,37 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	/**
 	 * Move all nodes to the center of the screen
 	 */
-	public U center()
-	{
-		if (mModel.getComponents().isEmpty())
-		{
-			return (U)this;
+	public U center() {
+		if (mModel.getComponents().isEmpty()) {
+			return (U) this;
 		}
 
 		Rectangle bounds = new Rectangle(mModel.getComponents().get(0).getBounds());
-		for (BoxComponent box : mModel.getComponents())
-		{
+		for (BoxComponent box : mModel.getComponents()) {
 			box.layout();
 			bounds.add(box.getBounds());
 		}
 
-		int dx = -(int)bounds.getCenterX();
-		int dy = -(int)bounds.getCenterY();
+		int dx = -(int) bounds.getCenterX();
+		int dy = -(int) bounds.getCenterY();
 
-		for (BoxComponent box : mModel.getComponents())
-		{
+		for (BoxComponent box : mModel.getComponents()) {
 			box.getBounds().translate(dx, dy);
 		}
 
 		mScroll = null; // will be centered when pane is repainted
-		return (U)this;
+		return (U) this;
 	}
 
 
 	@Override
-	public Dimension getPreferredSize()
-	{
+	public Dimension getPreferredSize() {
 		Rectangle bounds = null;
-		for (T box : mModel.getComponents())
-		{
+		for (T box : mModel.getComponents()) {
 			box.layout();
-			if (bounds == null)
-			{
+			if (bounds == null) {
 				bounds = box.getBounds();
-			}
-			else
-			{
+			} else {
 				bounds.add(box.getBounds());
 			}
 		}
@@ -170,12 +146,11 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	protected void paintBackground(Graphics2D aGraphics)
-	{
+	protected void paintBackground(Graphics2D aGraphics) {
 		int w = getWidth();
 		int h = getHeight();
-		int sx = (int)mScroll.x;
-		int sy = (int)mScroll.y;
+		int sx = (int) mScroll.x;
+		int sy = (int) mScroll.y;
 
 		float gcr = Styles.PANE_GRID_COLOR_3.getRed() / 255f;
 		float gcg = Styles.PANE_GRID_COLOR_3.getGreen() / 255f;
@@ -184,12 +159,10 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		aGraphics.setColor(Styles.PANE_BACKGROUND_COLOR);
 		aGraphics.fillRect(0, 0, w, h);
 
-		for (int i = 0; i < 10; i++)
-		{
+		for (int i = 0; i < 10; i++) {
 			double s = mScale * Math.pow(5, i);
-			if (s > 15 && s < w)
-			{
-				aGraphics.setColor(new Color(gcr, gcg, gcb, Math.min((float)(s / 200), 1f)));
+			if (s > 15 && s < w) {
+				aGraphics.setColor(new Color(gcr, gcg, gcb, Math.min((float) (s / 200), 1f)));
 				drawGrid(aGraphics, w, h, s);
 			}
 		}
@@ -205,24 +178,21 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	private void drawGrid(Graphics2D aGraphics, int aW, int aH, double aScale)
-	{
-		int xi = (int)((mScroll.x - aW / 2) / aScale);
-		int yi = (int)((mScroll.y - aH / 2) / aScale);
-		int wr = (int)Math.ceil(1 + aW / 2 / aScale);
-		int hr = (int)Math.ceil(1 + aH / 2 / aScale);
+	private void drawGrid(Graphics2D aGraphics, int aW, int aH, double aScale) {
+		int xi = (int) ((mScroll.x - aW / 2) / aScale);
+		int yi = (int) ((mScroll.y - aH / 2) / aScale);
+		int wr = (int) Math.ceil(1 + aW / 2 / aScale);
+		int hr = (int) Math.ceil(1 + aH / 2 / aScale);
 
-		for (int i = 0; i < wr; i++)
-		{
-			int x0 = (int)((-i - xi) * aScale + mScroll.x);
-			int x1 = (int)((+i - xi) * aScale + mScroll.x);
+		for (int i = 0; i < wr; i++) {
+			int x0 = (int) ((-i - xi) * aScale + mScroll.x);
+			int x1 = (int) ((+i - xi) * aScale + mScroll.x);
 			aGraphics.drawLine(x0, 0, x0, aH);
 			aGraphics.drawLine(x1, 0, x1, aH);
 		}
-		for (int i = 0; i < hr; i++)
-		{
-			int y0 = (int)((-i - yi) * aScale + mScroll.y);
-			int y1 = (int)((+i - yi) * aScale + mScroll.y);
+		for (int i = 0; i < hr; i++) {
+			int y0 = (int) ((-i - yi) * aScale + mScroll.y);
+			int y1 = (int) ((+i - yi) * aScale + mScroll.y);
 			aGraphics.drawLine(0, y0, aW, y0);
 			aGraphics.drawLine(0, y1, aW, y1);
 		}
@@ -230,24 +200,21 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 
 
 	@Override
-	protected void paintComponent(Graphics aGraphics)
-	{
-		if (mScroll == null)
-		{
+	protected void paintComponent(Graphics aGraphics) {
+		if (mScroll == null) {
 			mScroll = new Point.Double(getWidth() / 2.0, getHeight() / 2.0);
 		}
 
-		for (T box : mModel.getComponents())
-		{
+		for (T box : mModel.getComponents()) {
 			box.layout();
 		}
 
-		Graphics2D g = (Graphics2D)aGraphics;
+		Graphics2D g = (Graphics2D) aGraphics;
 		AffineTransform oldTransform = g.getTransform();
 
 		paintBackground(g);
 
-		g.translate((int)mScroll.x, (int)mScroll.y);
+		g.translate((int) mScroll.x, (int) mScroll.y);
 		paintBoxComponents(g);
 		paintSelectionRectangle(g);
 		g.setTransform(oldTransform);
@@ -256,14 +223,12 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	protected void paintBoxComponents(Graphics2D aGraphics)
-	{
+	protected void paintBoxComponents(Graphics2D aGraphics) {
 		aGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 		aGraphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
-		for (T box : mModel.getComponents())
-		{
+		for (T box : mModel.getComponents()) {
 			paintBoxComponent(aGraphics, box, mSelectedBoxes.contains(box));
 		}
 
@@ -271,10 +236,8 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	protected void paintSelectionRectangle(Graphics2D aGraphics)
-	{
-		if (mSelectionRectangle != null)
-		{
+	protected void paintSelectionRectangle(Graphics2D aGraphics) {
+		if (mSelectionRectangle != null) {
 			aGraphics.setColor(Styles.PANE_SELECTION_RECTANGLE_BACKGROUND);
 			aGraphics.fillRect(mSelectionRectangle.x, mSelectionRectangle.y, mSelectionRectangle.width + 1, mSelectionRectangle.height + 1);
 			aGraphics.setColor(Styles.PANE_SELECTION_RECTANGLE_LINE);
@@ -284,28 +247,25 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	protected void paintOverlay(Graphics2D aGraphics)
-	{
+	protected void paintOverlay(Graphics2D aGraphics) {
 	}
 
 
-	protected void paintBoxComponent(Graphics2D aGraphics, Renderable aComponent, boolean aSelected)
-	{
+	protected void paintBoxComponent(Graphics2D aGraphics, Renderable aComponent, boolean aSelected) {
 		Rectangle bounds = aComponent.getBounds();
-		int x = (int)(bounds.x * mScale);
-		int y = (int)(bounds.y * mScale);
-		int width = (int)(bounds.width * mScale);
-		int height = (int)(bounds.height * mScale);
+		int x = (int) (bounds.x * mScale);
+		int y = (int) (bounds.y * mScale);
+		int width = (int) (bounds.width * mScale);
+		int height = (int) (bounds.height * mScale);
 
-		if (aGraphics.hitClip(x, y, width, height))
-		{
+		if (aGraphics.hitClip(x, y, width, height)) {
 			AffineTransform ot = aGraphics.getTransform();
 
 			AffineTransform transform = aGraphics.getTransform();
 			transform.translate(x, y);
 			transform.scale(mScale, mScale);
 
-			Graphics2D ig = (Graphics2D)aGraphics.create();
+			Graphics2D ig = (Graphics2D) aGraphics.create();
 			ig.setTransform(transform);
 			ig.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			ig.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -317,11 +277,10 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	}
 
 
-	public Point calcMousePoint(Point aPoint)
-	{
+	public Point calcMousePoint(Point aPoint) {
 		return new Point(
-			(int)((aPoint.x - mScroll.x) / mScale),
-			(int)((aPoint.y - mScroll.y) / mScale)
+			(int) ((aPoint.x - mScroll.x) / mScale),
+			(int) ((aPoint.y - mScroll.y) / mScale)
 		);
 	}
 }

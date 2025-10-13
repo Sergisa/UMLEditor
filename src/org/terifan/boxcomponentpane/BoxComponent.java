@@ -12,8 +12,7 @@ import java.io.Serializable;
 import static org.terifan.nodeeditor.Styles.*;
 
 
-public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponentPane> implements Serializable, Renderable<T, U>
-{
+public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponentPane> implements Serializable, Renderable<T, U> {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
@@ -30,8 +29,7 @@ public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponen
 	protected Color mTitleForeground;
 
 
-	public BoxComponent(String aTitle)
-	{
+	public BoxComponent(String aTitle) {
 		mTitle = aTitle;
 		mResizableVertical = true;
 		mResizableHorizontal = true;
@@ -44,171 +42,142 @@ public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponen
 	}
 
 
-	public Color getTitleBackground()
-	{
+	public Color getTitleBackground() {
 		return mTitleBackground;
 	}
 
 
-	public Color getTitleForeground()
-	{
+	public Color getTitleForeground() {
 		return mTitleForeground;
 	}
 
 
-	public BoxComponent<T, U> setTitleForeground(Color aColor)
-	{
+	public BoxComponent<T, U> setTitleForeground(Color aColor) {
 		mTitleForeground = aColor;
 		return this;
 	}
 
 
-	public BoxComponent<T, U> setTitleBackground(Color aColor)
-	{
+	public BoxComponent<T, U> setTitleBackground(Color aColor) {
 		mTitleBackground = aColor;
 		return this;
 	}
 
 
-	public String getTitle()
-	{
+	public String getTitle() {
 		return mTitle;
 	}
 
 
-	public T setTitle(String aTitle)
-	{
+	public T setTitle(String aTitle) {
 		mTitle = aTitle;
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public boolean isResizableHorizontal()
-	{
+	public boolean isResizableHorizontal() {
 		return mResizableHorizontal;
 	}
 
 
-	public T setResizableHorizontal(boolean aResizableHorizontal)
-	{
+	public T setResizableHorizontal(boolean aResizableHorizontal) {
 		mResizableHorizontal = aResizableHorizontal;
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public boolean isResizableVertical()
-	{
+	public boolean isResizableVertical() {
 		return mResizableVertical;
 	}
 
 
-	public T setResizableVertical(boolean aResizableVertical)
-	{
+	public T setResizableVertical(boolean aResizableVertical) {
 		mResizableVertical = aResizableVertical;
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public Dimension getMinimumSize()
-	{
+	public Dimension getMinimumSize() {
 		return mMinimumSize;
 	}
 
 
-	public T setMinSize(Dimension aMinSize)
-	{
+	public T setMinSize(Dimension aMinSize) {
 		mMinimumSize.setSize(aMinSize);
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public Dimension getMaximumSize()
-	{
+	public Dimension getMaximumSize() {
 		return mMaximumSize;
 	}
 
 
-	public T setMaxSize(Dimension aMaxSize)
-	{
+	public T setMaxSize(Dimension aMaxSize) {
 		mMaximumSize.setSize(aMaxSize);
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public boolean isMinimized()
-	{
+	public boolean isMinimized() {
 		return mMinimized;
 	}
 
 
-	public T setMinimized(boolean aMinimized)
-	{
+	public T setMinimized(boolean aMinimized) {
 		mMinimized = aMinimized;
 
-		if (!mMinimized && mRestoredSize != null)
-		{
+		if (!mMinimized && mRestoredSize != null) {
 			mBounds.setSize(mRestoredSize);
-		}
-		else
-		{
+		} else {
 			mRestoredSize = mBounds.getSize();
 			setSize(mBounds.width, TITLE_HEIGHT + 6 + 2 * 4);
 		}
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public T setSize(int aWidth, int aHeight)
-	{
+	public T setSize(int aWidth, int aHeight) {
 		mBounds.setSize(aWidth, aHeight);
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public T setSize(Dimension aSize)
-	{
+	public T setSize(Dimension aSize) {
 		return setSize(aSize.width, aSize.height);
 	}
 
 
-	public T setLocation(int aX, int aY)
-	{
+	public T setLocation(int aX, int aY) {
 		mBounds.setLocation(aX, aY);
-		return (T)this;
+		return (T) this;
 	}
 
 
-	public void layout()
-	{
+	public void layout() {
 	}
 
 
 	@Override
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		return mBounds;
 	}
 
 
-	public T setBounds(int aX, int aY, int aWidth, int aHeight)
-	{
+	public T setBounds(int aX, int aY, int aWidth, int aHeight) {
 		mBounds.setBounds(aX, aY, aWidth, aHeight);
-		return (T)this;
+		return (T) this;
 	}
 
 
-	protected void paintBorder(Graphics2D aGraphics, int aX, int aY, int aWidth, int aHeight, boolean aSelected)
-	{
+	protected void paintBorder(Graphics2D aGraphics, int aX, int aY, int aWidth, int aHeight, boolean aSelected) {
 		boolean minimized = isMinimizedState(aHeight);
 		int th = minimized ? TITLE_HEIGHT : TITLE_HEIGHT_PADDED;
 
-		if (minimized)
-		{
+		if (minimized) {
 			aGraphics.setColor(mTitleBackground);
 			aGraphics.fillRoundRect(aX, aY, aWidth, aHeight, BORDE_RADIUS, BORDE_RADIUS);
-		}
-		else
-		{
+		} else {
 			Shape oldClip = aGraphics.getClip();
 
 			aGraphics.setColor(mTitleBackground);
@@ -234,8 +203,7 @@ public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponen
 			.setFont(Styles.BOX_FONT)
 			.render(aGraphics);
 
-		if (aSelected)
-		{
+		if (aSelected) {
 			aGraphics.setColor(aSelected ? BOX_BORDER_SELECTED_COLOR : BOX_BORDER_COLOR);
 			aGraphics.drawRoundRect(aX, aY, aWidth, aHeight, BORDE_RADIUS, BORDE_RADIUS);
 		}
@@ -244,14 +212,12 @@ public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponen
 	}
 
 
-	private boolean isMinimizedState(int aHeight)
-	{
+	private boolean isMinimizedState(int aHeight) {
 		return mMinimized || aHeight <= 4 + 4 + TITLE_HEIGHT;
 	}
 
 
-	protected void paintShadow(Graphics2D aGraphics, int aX, int aY, int aWidth, int aHeight)
-	{
+	protected void paintShadow(Graphics2D aGraphics, int aX, int aY, int aWidth, int aHeight) {
 		boolean state = isMinimizedState(aHeight);
 
 		int bw = BOX_SHADOW.getWidth();
@@ -288,8 +254,7 @@ public abstract class BoxComponent<T extends BoxComponent, U extends BoxComponen
 
 
 	@Override
-	public void paintComponent(U aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected)
-	{
+	public void paintComponent(U aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		int x = 5;
 		int y = 5;
 		int w = aWidth - 10;

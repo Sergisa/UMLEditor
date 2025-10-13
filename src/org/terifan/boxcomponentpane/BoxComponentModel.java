@@ -9,62 +9,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BoxComponentModel<T extends BoxComponent> implements Serializable
-{
+public class BoxComponentModel<T extends BoxComponent> implements Serializable {
 	@Serial
 	private final static long serialVersionUID = 1L;
 	protected final ArrayList<T> mComponents;
 
 
-	public BoxComponentModel()
-	{
+	public BoxComponentModel() {
 		mComponents = new ArrayList<>();
 	}
 
 
-	public int size()
-	{
+	public int size() {
 		return mComponents.size();
 	}
 
 
-	public T getComponent(int aIndex)
-	{
+	public T getComponent(int aIndex) {
 		return mComponents.get(aIndex);
 	}
 
 
-	public BoxComponentModel<T> addComponent(T aComponent)
-	{
+	public BoxComponentModel<T> addComponent(T aComponent) {
 		mComponents.add(aComponent);
 		return this;
 	}
 
 
-	public ArrayList<T> getComponents()
-	{
+	public ArrayList<T> getComponents() {
 		return mComponents;
 	}
 
 
-	public void moveTop(T aComponent)
-	{
-		if (aComponent != null)
-		{
+	public void moveTop(T aComponent) {
+		if (aComponent != null) {
 			mComponents.remove(aComponent);
 			mComponents.addLast(aComponent);
 		}
 	}
 
 
-	public T getComponentAt(Point aPoint)
-	{
-		for (T c : mComponents.reversed())
-		{
+	public T getComponentAt(Point aPoint) {
+		for (T c : mComponents.reversed()) {
 			Rectangle b = c.getBounds();
 
-			if (b.contains(aPoint))
-			{
+			if (b.contains(aPoint)) {
 				return c;
 			}
 		}
@@ -72,11 +61,11 @@ public class BoxComponentModel<T extends BoxComponent> implements Serializable
 		return null;
 	}
 
-	public void removeComponents(List<Node> components){
+	public void removeComponents(List<Node> components) {
 		components.forEach(this::removeComponent);
 	}
 
-	public void removeComponent(Node component){
+	public void removeComponent(Node component) {
 
 		component.getProperties().forEach(property -> {
 			component.getModel().getConnectionsTo(property).forEach(connection -> {

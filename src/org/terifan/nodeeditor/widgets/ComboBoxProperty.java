@@ -19,15 +19,14 @@ import static org.terifan.nodeeditor.Styles.BOX_TITLE_TEXT_SHADOW_COLOR;
 import static org.terifan.nodeeditor.Styles.COMBOBOX_ARROW_COLOR;
 
 
-public class ComboBoxProperty extends Property<ComboBoxProperty>
-{
+public class ComboBoxProperty extends Property<ComboBoxProperty> {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final static float[] RANGES = new float[]
-	{
-		0f, 1f
-	};
+		{
+			0f, 1f
+		};
 
 	protected String mHeader;
 	protected ArrayList<String> mOptions;
@@ -35,8 +34,7 @@ public class ComboBoxProperty extends Property<ComboBoxProperty>
 	protected transient boolean mArmed;
 
 
-	public ComboBoxProperty(String aText, int aSelectedIndex, String... aOptions)
-	{
+	public ComboBoxProperty(String aText, int aSelectedIndex, String... aOptions) {
 		super(aOptions[aSelectedIndex]);
 
 		mHeader = aText;
@@ -48,8 +46,7 @@ public class ComboBoxProperty extends Property<ComboBoxProperty>
 
 
 	@Override
-	protected void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover)
-	{
+	protected void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover) {
 		Paint oldPaint = aGraphics.getPaint();
 		Rectangle bounds = getBounds();
 
@@ -76,28 +73,22 @@ public class ComboBoxProperty extends Property<ComboBoxProperty>
 
 
 	@Override
-	protected boolean mousePressed(NodeEditorPane aPane, Point aClickPoint)
-	{
+	protected boolean mousePressed(NodeEditorPane aPane, Point aClickPoint) {
 		mArmed = true;
 
 		ArrayList<Option> options = new ArrayList<>();
-		for (String option : mOptions)
-		{
-			options.add(new Option()
-			{
+		for (String option : mOptions) {
+			options.add(new Option() {
 				@Override
-				public Rectangle getBounds()
-				{
+				public Rectangle getBounds() {
 					return new Rectangle(0, options.indexOf(this) * Styles.POPUP_DEFAULT_OPTION_HEIGHT, ComboBoxProperty.this.getBounds().width, Styles.POPUP_DEFAULT_OPTION_HEIGHT);
 				}
 
 
 				@Override
-				public void paintOption(Graphics2D aGraphics, boolean aSelected)
-				{
+				public void paintOption(Graphics2D aGraphics, boolean aSelected) {
 					Rectangle bounds = getBounds();
-					if (aSelected)
-					{
+					if (aSelected) {
 						aGraphics.setColor(Styles.POPUP_SELECTION_BACKGROUND);
 						aGraphics.fill(bounds);
 					}
@@ -116,8 +107,7 @@ public class ComboBoxProperty extends Property<ComboBoxProperty>
 
 
 	@Override
-	protected void mouseReleased(NodeEditorPane aPane, Point aClickPoint)
-	{
+	protected void mouseReleased(NodeEditorPane aPane, Point aClickPoint) {
 		mArmed = false;
 
 		aPane.setPopup(null);
@@ -126,20 +116,17 @@ public class ComboBoxProperty extends Property<ComboBoxProperty>
 
 
 	@Override
-	public Object execute(Context aContext)
-	{
+	public Object execute(Context aContext) {
 		return mOptions.get(mSelectedIndex);
 	}
 
 
-	public int getSelectedIndex()
-	{
+	public int getSelectedIndex() {
 		return mSelectedIndex;
 	}
 
 
-	public ComboBoxProperty setSelectedIndex(int aSelectedIndex)
-	{
+	public ComboBoxProperty setSelectedIndex(int aSelectedIndex) {
 		mSelectedIndex = aSelectedIndex;
 
 		setText(mOptions.get(mSelectedIndex));

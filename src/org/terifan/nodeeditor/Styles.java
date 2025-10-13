@@ -6,8 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
-public class Styles
-{
+public class Styles {
 	private final static int a = 230;
 	private final static int b = 254; // alpha must be less than 255 to force Java to blend alpha correctly!
 
@@ -63,134 +62,128 @@ public class Styles
 	public static Color CHECKERS_DARK = new Color(200, 200, 200);
 
 
-	static
-	{
-		try
-		{
+	static {
+		try {
 			BOX_SHADOW = ImageIO.read(Styles.class.getResource("background.png"));
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
 	}
 
 	public static Color[][][] SLIDER_COLORS =
-	{
-		// normal
 		{
-			new Color[]
+			// normal
 			{
-				FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR
+				new Color[]
+					{
+						FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR
+					},
+				new Color[]
+					{
+						FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
+					},
+				new Color[]
+					{
+						BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
+					}
 			},
-			new Color[]
+			// hover
 			{
-				FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
+				new Color[]
+					{
+						new Color(101, 101, 101), new Color(101, 101, 101)
+					},
+				new Color[]
+					{
+						FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
+					},
+				new Color[]
+					{
+						BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
+					}
 			},
-			new Color[]
+			// armed
 			{
-				BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
+				new Color[]
+					{
+						new Color(34, 34, 34), new Color(34, 34, 34)
+					},
+				new Color[]
+					{
+						FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
+					},
+				new Color[]
+					{
+						BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
+					}
 			}
-		},
-		// hover
-		{
-			new Color[]
-			{
-				new Color(101, 101, 101), new Color(101, 101, 101)
-			},
-			new Color[]
-			{
-				FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-			},
-			new Color[]
-			{
-				BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
-			}
-		},
-		// armed
-		{
-			new Color[]
-			{
-				new Color(34, 34, 34), new Color(34, 34, 34)
-			},
-			new Color[]
-			{
-				FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-			},
-			new Color[]
-			{
-				BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
-			}
-		}
-	};
+		};
 
 	public static Color[][] CHECKBOX_COLORS =
-	{
-		// normal
-		new Color[]
 		{
-			FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR
-		},
-		// selected
-		new Color[]
-		{
-			FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-		}
-	};
+			// normal
+			new Color[]
+				{
+					FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR
+				},
+			// selected
+			new Color[]
+				{
+					FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
+				}
+		};
 
 	public static Color[][] COMBOBOX_COLORS =
-	{
-		// normal
-		new Color[]
 		{
-			new Color(40, 40, 40), new Color(40, 40, 40)
-		},
-		// selected
-		new Color[]
-		{
-			FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-		},
-		new Color[]
-		{
-			new Color(61, 61, 61)
-		}
-	};
+			// normal
+			new Color[]
+				{
+					new Color(40, 40, 40), new Color(40, 40, 40)
+				},
+			// selected
+			new Color[]
+				{
+					FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
+				},
+			new Color[]
+				{
+					new Color(61, 61, 61)
+				}
+		};
 
 	public static Color[][] BUTTON_COLORS =
-	{
-		new Color[]
 		{
-			new Color(84, 84, 84), new Color(84, 84, 84)
-		},
-		new Color[]
-		{
-			new Color(181, 181, 181), new Color(153, 153, 153)
-		},
-		new Color[]
-		{
-			new Color(85, 85, 85), new Color(113, 113, 113)
-		}
-	};
+			new Color[]
+				{
+					new Color(84, 84, 84), new Color(84, 84, 84)
+				},
+			new Color[]
+				{
+					new Color(181, 181, 181), new Color(153, 153, 153)
+				},
+			new Color[]
+				{
+					new Color(85, 85, 85), new Color(113, 113, 113)
+				}
+		};
 
 	public static int POPUP_FOOTER_HEIGHT = 5;
 	public static int POPUP_HEADER_HEIGHT = 35;
 	public static int POPUP_DEFAULT_OPTION_HEIGHT = 20;
 	public static Color POPUP_FOREGROUND = new Color(255, 255, 255);
 	public static Color POPUP_HEADER_FOREGROUND = new Color(128, 128, 128);
-	public static Color POPUP_SELECTION_BACKGROUND = new Color(71,114,179);
+	public static Color POPUP_SELECTION_BACKGROUND = new Color(71, 114, 179);
 	public static Color POPUP_HEADER_LINE = new Color(55, 55, 55);
 	public static Color POPUP_BACKGROUND = new Color(16, 16, 16, 220);
 
 
-	public static interface DefaultIcons
-	{
+	public static interface DefaultIcons {
 		public String FOLDER = "folder";
 		public String RUN = "run";
 	}
 
 
-	public static interface DefaultConnectorColors
-	{
+	public static interface DefaultConnectorColors {
 		public Color PURPLE = new Color(0x6363C7);
 		public Color GRAY = new Color(0xA1A1A1);
 		public Color YELLOW = new Color(0xC7C729);
@@ -198,8 +191,7 @@ public class Styles
 	}
 
 
-	public static interface DefaultNodeColors
-	{
+	public static interface DefaultNodeColors {
 		public Color GRAY = new Color(67, 67, 67, a);
 		public Color RED = new Color(0x83314A);
 		public Color GREEN = new Color(0x2B652B);
@@ -212,19 +204,15 @@ public class Styles
 	}
 
 	public static BasicStroke SELECTION_RECTANGLE_STROKE = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]
-	{
-		3
-	}, 0);
-
-
-	public static BufferedImage loadIcon(String aName)
-	{
-		try
 		{
+			3
+		}, 0);
+
+
+	public static BufferedImage loadIcon(String aName) {
+		try {
 			return ImageIO.read(Styles.class.getResource("icons/" + aName + ".png"));
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace(System.err);
 			return null;
 		}

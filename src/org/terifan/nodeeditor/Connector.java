@@ -8,8 +8,7 @@ import java.util.List;
 import static org.terifan.nodeeditor.Styles.DefaultConnectorColors.YELLOW;
 
 
-public class Connector implements Serializable
-{
+public class Connector implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -20,66 +19,56 @@ public class Connector implements Serializable
 	protected Color mColor;
 
 
-	public Connector()
-	{
+	public Connector() {
 		mBounds = new Rectangle(connectorRadius, connectorRadius);
 	}
 
 
-	public Connector(Direction aDirection)
-	{
+	public Connector(Direction aDirection) {
 		this(aDirection, YELLOW);
 	}
 
 
-	public Connector(Direction aDirection, Color aColor)
-	{
+	public Connector(Direction aDirection, Color aColor) {
 		this();
 		mDirection = aDirection;
 		mColor = aColor;
 	}
 
 
-	void bind(Property aNodeItem)
-	{
+	void bind(Property aNodeItem) {
 		mProperty = aNodeItem;
 	}
 
 
-	public Property getProperty()
-	{
+	public Property getProperty() {
 		return mProperty;
 	}
 
 
-	public Direction getDirection()
-	{
+	public Direction getDirection() {
 		return mDirection;
 	}
 
 
-	public Color getColor()
-	{
+	public Color getColor() {
 		return mColor;
 	}
 
 
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		return mBounds;
 	}
 
 
-	Point getConnectorPoint()
-	{
+	Point getConnectorPoint() {
 		Rectangle bounds = mProperty.getNode().getBounds();
 
 		return new Point(bounds.x + mBounds.x + mBounds.width / 2, bounds.y + mBounds.y + mBounds.height / 2);
 	}
 
 
-	public List<Property> getConnectedProperties()
-	{
+	public List<Property> getConnectedProperties() {
 		NodeModel model = mProperty.getNode().getModel();
 
 		return mDirection == Direction.IN ? model.getConnectionsTo(this) : model.getConnectionsFrom(this);
@@ -87,9 +76,8 @@ public class Connector implements Serializable
 
 
 	@Override
-	public String toString()
-	{
-		return "Connector{" + "Node:" + getProperty().getNode().getTitle() + ", Property:" + getProperty().getId() + ", " + "mDirection=" + mDirection + "}\n\t"+
-				getBounds().toString();
+	public String toString() {
+		return "Connector{" + "Node:" + getProperty().getNode().getTitle() + ", Property:" + getProperty().getId() + ", " + "mDirection=" + mDirection + "}\n\t" +
+			getBounds().toString();
 	}
 }

@@ -4,8 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 
-public class Connection implements Serializable
-{
+public class Connection implements Serializable {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
@@ -13,40 +12,34 @@ public class Connection implements Serializable
 	protected Connector mIn;
 
 
-	public Connection(Connector aOut, Connector aIn)
-	{
+	public Connection(Connector aOut, Connector aIn) {
 		mOut = aOut;
 		mIn = aIn;
 	}
 
 
-	public Connector getOut()
-	{
+	public Connector getOut() {
 		return mOut;
 	}
 
 
-	public void setOut(Connector aOut)
-	{
+	public void setOut(Connector aOut) {
 		mOut = aOut;
 	}
 
 
-	public Connector getIn()
-	{
+	public Connector getIn() {
 		return mIn;
 	}
 
 
-	public void setIn(Connector aIn)
-	{
+	public void setIn(Connector aIn) {
 		mIn = aIn;
 	}
 
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Connection{" + "mOut=" + mOut + ", mIn=" + mIn + '}';
 	}
 }

@@ -16,8 +16,7 @@ import java.awt.geom.Path2D;
 import java.util.List;
 
 
-public class Popup implements Renderable<Node, NodeEditorPane>
-{
+public class Popup implements Renderable<Node, NodeEditorPane> {
 	protected final NodeEditorPane mPane;
 	protected final Rectangle mBounds;
 	protected final Property mOwner;
@@ -32,13 +31,12 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 	 * Constructs a new Pop-up.
 	 *
 	 * @param aOwner
-	 * @param aHeader optional text header
-	 * @param aBounds with and heigh will be ignored if the options list contain any elements
-	 * @param aOptions list of selectable options, can be empty
+	 * @param aHeader         optional text header
+	 * @param aBounds         with and heigh will be ignored if the options list contain any elements
+	 * @param aOptions        list of selectable options, can be empty
 	 * @param aResultReceiver
 	 */
-	public Popup(NodeEditorPane aPane, Property aOwner, String aHeader, Rectangle aBounds, List<Option> aOptions, ResultReceiver aResultReceiver)
-	{
+	public Popup(NodeEditorPane aPane, Property aOwner, String aHeader, Rectangle aBounds, List<Option> aOptions, ResultReceiver aResultReceiver) {
 		mHeader = aHeader;
 		mOwner = aOwner;
 		mOptions = aOptions;
@@ -49,45 +47,37 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 
 		mBounds = new Rectangle(mOwner.getNode().getBounds().x + aBounds.x, mOwner.getNode().getBounds().y + aBounds.y, aBounds.width, aBounds.height);
 
-		if (!mOptions.isEmpty())
-		{
+		if (!mOptions.isEmpty()) {
 			Rectangle b = new Rectangle();
-			for (Option option : mOptions)
-			{
+			for (Option option : mOptions) {
 				b.add(option.getBounds());
 			}
 			mBounds.width = b.width;
 			mBounds.height = headerHeight() + Styles.POPUP_FOOTER_HEIGHT + b.height;
 		}
 
-		if (mAboveField)
-		{
+		if (mAboveField) {
 			mBounds.y -= mBounds.height;
-		}
-		else
-		{
+		} else {
 			mBounds.y += aOwner.getBounds().height;
 		}
 		mPane = aPane;
 	}
 
 
-	protected int headerHeight()
-	{
+	protected int headerHeight() {
 		return Strings.isEmptyOrNull(mHeader) ? Styles.POPUP_FOOTER_HEIGHT : Styles.POPUP_HEADER_HEIGHT;
 	}
 
 
 	@Override
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		return mBounds;
 	}
 
 
 	@Override
-	public void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected)
-	{
+	public void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		int w = aWidth;
 		int h = aHeight;
 
@@ -95,8 +85,7 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 
 		Path2D.Double path = new Path2D.Double(Path2D.WIND_EVEN_ODD, 6);
 
-		if (mAboveField)
-		{
+		if (mAboveField) {
 			path.moveTo(10, 0);
 			path.lineTo(w - 10, 0);
 			path.quadTo(w, 0, w, 10);
@@ -104,9 +93,7 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 			path.lineTo(0, h);
 			path.lineTo(0, 10);
 			path.quadTo(0, 0, 10, 0);
-		}
-		else
-		{
+		} else {
 			path.moveTo(0, 0);
 			path.lineTo(w, 0);
 			path.lineTo(w, h - 10);
@@ -119,19 +106,15 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 		aGraphics.setColor(Styles.POPUP_BACKGROUND);
 		aGraphics.fill(path);
 
-		if (!Strings.isEmptyOrNull(mHeader))
-		{
+		if (!Strings.isEmptyOrNull(mHeader)) {
 			int ly = headerHeight() * 6 / 7;
 			TextBox textBox = new TextBox(mHeader).setAnchor(Anchor.WEST).setForeground(Styles.POPUP_HEADER_FOREGROUND);
 
 			aGraphics.setColor(Styles.POPUP_HEADER_LINE);
-			if (mAboveField)
-			{
+			if (mAboveField) {
 				aGraphics.drawLine(0, ly, aWidth, ly);
 				textBox.setBounds(10, 0, aWidth - 10, ly).render(aGraphics);
-			}
-			else
-			{
+			} else {
 				aGraphics.drawLine(0, aHeight - ly, aWidth, aHeight - ly);
 				textBox.setBounds(10, aHeight - ly, aWidth - 10, ly).render(aGraphics);
 			}
@@ -139,12 +122,10 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-		if (!mOptions.isEmpty())
-		{
+		if (!mOptions.isEmpty()) {
 			aGraphics.translate(0, mAboveField ? headerHeight() : Styles.POPUP_FOOTER_HEIGHT);
 
-			for (Option option : mOptions)
-			{
+			for (Option option : mOptions) {
 				option.paintOption(aGraphics, option == mSelectedOption);
 			}
 
@@ -153,28 +134,22 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 	}
 
 
-	public void mouseMoved(Point aPoint)
-	{
-		if (!mOptions.isEmpty())
-		{
+	public void mouseMoved(Point aPoint) {
+		if (!mOptions.isEmpty()) {
 			int x = aPoint.x - mBounds.x;
 			int y = aPoint.y - mBounds.y - (mAboveField ? headerHeight() : Styles.POPUP_FOOTER_HEIGHT);
 			Option s = null;
 
-			if (x >= 0 && x < mBounds.width && y > 0)
-			{
-				for (Option option : mOptions)
-				{
-					if (option.getBounds().contains(x, y))
-					{
+			if (x >= 0 && x < mBounds.width && y > 0) {
+				for (Option option : mOptions) {
+					if (option.getBounds().contains(x, y)) {
 						s = option;
 						break;
 					}
 				}
 			}
 
-			if (mSelectedOption != s)
-			{
+			if (mSelectedOption != s) {
 				mSelectedOption = s;
 				mPane.repaint();
 			}
@@ -182,35 +157,29 @@ public class Popup implements Renderable<Node, NodeEditorPane>
 	}
 
 
-	public void mousePressed(MouseEvent aEvent)
-	{
-		if (mSelectedOption != null)
-		{
+	public void mousePressed(MouseEvent aEvent) {
+		if (mSelectedOption != null) {
 			mResultReceiver.popupResult(mSelectedOption);
 		}
 	}
 
 
-	public void mouseReleased(MouseEvent aEvent)
-	{
+	public void mouseReleased(MouseEvent aEvent) {
 		mOwner.fireMouseReleased(mPane, aEvent.getPoint());
 	}
 
 
-	public void mouseWheelMoved(MouseWheelEvent aEvent)
-	{
+	public void mouseWheelMoved(MouseWheelEvent aEvent) {
 	}
 
 
 	@FunctionalInterface
-	public interface ResultReceiver
-	{
+	public interface ResultReceiver {
 		void popupResult(Option aSelectedOption);
 	}
 
 
-	public interface Option
-	{
+	public interface Option {
 		/**
 		 * Return the bounds of the item within the popup. The popup size will be equal to the combined size of all options.
 		 */

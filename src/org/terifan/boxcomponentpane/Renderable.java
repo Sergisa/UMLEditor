@@ -3,8 +3,7 @@ package org.terifan.boxcomponentpane;
 import java.awt.*;
 
 
-public interface Renderable<T extends BoxComponent, U extends BoxComponentPane>
-{
+public interface Renderable<T extends BoxComponent, U extends BoxComponentPane> {
 	Rectangle getBounds();
 
 

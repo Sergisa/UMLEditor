@@ -1,18 +1,15 @@
 package org.terifan.nodeeditor;
 
-public class Context
-{
+public class Context {
 	private final NodeEditorPane mEditor;
 
 
-	public Context(NodeEditorPane aEditor)
-	{
+	public Context(NodeEditorPane aEditor) {
 		mEditor = aEditor;
 	}
 
 
-	public NodeEditorPane getEditor()
-	{
+	public NodeEditorPane getEditor() {
 		return mEditor;
 	}
 
