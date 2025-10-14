@@ -1,6 +1,6 @@
 package examples;
 
-import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.boxcomponentpane.NodeModel;
 import org.terifan.nodeeditor.Node;
 import org.terifan.nodeeditor.Styles.DefaultNodeColors;
@@ -59,7 +59,7 @@ public class MandelbrotExample {
 			}
 			// --
 
-			NodeCanvasView editor = new NodeCanvasView(model)
+			DiagramView editor = new DiagramView(model)
 				.center();
 
 			JToolBar toolbar = new JToolBar();

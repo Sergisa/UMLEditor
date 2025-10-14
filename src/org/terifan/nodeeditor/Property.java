@@ -1,6 +1,6 @@
 package org.terifan.nodeeditor;
 
-import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.ui.TextBox;
 
 import java.awt.*;
@@ -44,7 +44,7 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-	protected abstract void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, boolean aHover);
+	protected abstract void paintComponent(DiagramView aPane, Graphics2D aGraphics, boolean aHover);
 
 
 	public String getId() {
@@ -104,28 +104,28 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-	protected void connectionsChanged(NodeCanvasView aPane, Point aClickPoint) {
+	protected void connectionsChanged(DiagramView aPane, Point aClickPoint) {
 	}
 
 
 	/**
 	 * Should return true if the clicked point will perform an action. This method return false.
 	 */
-	protected boolean mousePressed(NodeCanvasView aPane, Point aClickPoint) {
+	protected boolean mousePressed(DiagramView aPane, Point aClickPoint) {
 		return false;
 	}
 
 
-	protected void mouseReleased(NodeCanvasView aPane, Point aClickPoint) {
+	protected void mouseReleased(DiagramView aPane, Point aClickPoint) {
 	}
 
 
-	protected void mouseDragged(NodeCanvasView aPane, Point aClickPoint, Point aDragPoint) {
+	protected void mouseDragged(DiagramView aPane, Point aClickPoint, Point aDragPoint) {
 	}
 
 
 	// ugly, remove somehow
-	public void fireMouseReleased(NodeCanvasView aPane, Point aPoint) {
+	public void fireMouseReleased(DiagramView aPane, Point aPoint) {
 		mouseReleased(aPane, aPoint);
 	}
 

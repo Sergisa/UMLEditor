@@ -18,7 +18,7 @@ import java.util.function.Function;
 import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
 
 
-public class NodeCanvasView extends JComponent {
+public class DiagramView extends JComponent {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
@@ -28,13 +28,13 @@ public class NodeCanvasView extends JComponent {
 	private Point mDragEndLocation;
 	private Rectangle mSelectionRectangle;
 	private NodeModel mModel;
-	private ArrayList<NodeCanvasView> mSelectedBoxes;
+	private ArrayList<DiagramView> mSelectedBoxes;
 	private transient Function<String, BufferedImage> mIconProvider;
 
 	private transient Popup mPopup;
 	private boolean mRemoveInConnectionsOnDrop;
 
-	public NodeCanvasView(NodeModel aModel) {
+	public DiagramView(NodeModel aModel) {
 		mSelectedBoxes = new ArrayList<>();
 		mScale = 1;
 		mModel = aModel;
@@ -63,23 +63,23 @@ public class NodeCanvasView extends JComponent {
 		return mScale;
 	}
 
-	public NodeCanvasView setScale(double aScale) {
+	public DiagramView setScale(double aScale) {
 		mScale = aScale;
-		return (NodeCanvasView) this;
+		return this;
 	}
 
 	public NodeModel getModel() {
 		return mModel;
 	}
 
-	public ArrayList<NodeCanvasView> getSelectedNodes() {
+	public ArrayList<DiagramView> getSelectedNodes() {
 		return mSelectedBoxes;
 	}
 
 	/**
 	 * Move all nodes to the center of the screen
 	 */
-	public NodeCanvasView center() {
+	public DiagramView center() {
 		if (mModel.getComponents().isEmpty()) {
 			return this;
 		}
@@ -254,7 +254,7 @@ public class NodeCanvasView extends JComponent {
 		);
 	}
 
-	public NodeCanvasView setPopup(Popup aPopup) {
+	public DiagramView setPopup(Popup aPopup) {
 		mPopup = aPopup;
 		return this;
 	}

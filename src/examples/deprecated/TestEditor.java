@@ -1,6 +1,6 @@
 package examples.deprecated;
 
-import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.boxcomponentpane.NodeModel;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ public class TestEditor {
 		try {
 			NodeModel model = new NodeModel();
 
-			NodeCanvasView editor = new NodeCanvasView(model);
+			DiagramView editor = new DiagramView(model);
 
 			editor.center();
 			editor.setScale(1);

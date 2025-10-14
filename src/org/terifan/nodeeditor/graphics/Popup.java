@@ -1,6 +1,6 @@
 package org.terifan.nodeeditor.graphics;
 
-import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.boxcomponentpane.Renderable;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
@@ -16,7 +16,7 @@ import java.util.List;
 
 
 public class Popup implements Renderable {
-	protected final NodeCanvasView mPane;
+	protected final DiagramView mPane;
 	protected final Rectangle mBounds;
 	protected final Property mOwner;
 	protected final boolean mAboveField;
@@ -35,7 +35,7 @@ public class Popup implements Renderable {
 	 * @param aOptions        list of selectable options, can be empty
 	 * @param aResultReceiver
 	 */
-	public Popup(NodeCanvasView aPane, Property aOwner, String aHeader, Rectangle aBounds, List<Option> aOptions, ResultReceiver aResultReceiver) {
+	public Popup(DiagramView aPane, Property aOwner, String aHeader, Rectangle aBounds, List<Option> aOptions, ResultReceiver aResultReceiver) {
 		mHeader = aHeader;
 		mOwner = aOwner;
 		mOptions = aOptions;
@@ -76,7 +76,7 @@ public class Popup implements Renderable {
 
 
 	@Override
-	public void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
+	public void paintComponent(DiagramView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		int w = aWidth;
 		int h = aHeight;
 

@@ -1,7 +1,7 @@
 package org.terifan.nodeeditor;
 
 import org.terifan.boxcomponentpane.BoxComponent;
-import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.boxcomponentpane.NodeModel;
 
 import java.awt.*;
@@ -88,7 +88,7 @@ public class Node extends BoxComponent<Node> implements Serializable {
 	}
 
 	@Override
-	public void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
+	public void paintComponent(DiagramView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		super.paintComponent(aPane, aGraphics, aWidth, aHeight, aSelected);
 
 		if (!mMinimized) {

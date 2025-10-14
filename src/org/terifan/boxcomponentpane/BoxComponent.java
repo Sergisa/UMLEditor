@@ -225,7 +225,7 @@ public abstract class BoxComponent<T> implements Serializable, Renderable {
 		aGraphics.drawImage(BOX_SHADOW, dx2, dy2, dx3, dy3, sx2, sy2, sx3, sy3, null);
 	}
 
-	public void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
+	public void paintComponent(DiagramView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		int x = 5;
 		int y = 5;
 		int w = aWidth - 10;
