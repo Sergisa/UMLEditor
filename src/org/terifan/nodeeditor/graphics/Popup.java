@@ -1,8 +1,7 @@
 package org.terifan.nodeeditor.graphics;
 
+import org.terifan.boxcomponentpane.NodeCanvasView;
 import org.terifan.boxcomponentpane.Renderable;
-import org.terifan.nodeeditor.Node;
-import org.terifan.nodeeditor.NodeEditorPane;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
 import org.terifan.ui.Anchor;
@@ -16,8 +15,8 @@ import java.awt.geom.Path2D;
 import java.util.List;
 
 
-public class Popup implements Renderable<Node, NodeEditorPane> {
-	protected final NodeEditorPane mPane;
+public class Popup implements Renderable {
+	protected final NodeCanvasView mPane;
 	protected final Rectangle mBounds;
 	protected final Property mOwner;
 	protected final boolean mAboveField;
@@ -36,7 +35,7 @@ public class Popup implements Renderable<Node, NodeEditorPane> {
 	 * @param aOptions        list of selectable options, can be empty
 	 * @param aResultReceiver
 	 */
-	public Popup(NodeEditorPane aPane, Property aOwner, String aHeader, Rectangle aBounds, List<Option> aOptions, ResultReceiver aResultReceiver) {
+	public Popup(NodeCanvasView aPane, Property aOwner, String aHeader, Rectangle aBounds, List<Option> aOptions, ResultReceiver aResultReceiver) {
 		mHeader = aHeader;
 		mOwner = aOwner;
 		mOptions = aOptions;
@@ -77,7 +76,7 @@ public class Popup implements Renderable<Node, NodeEditorPane> {
 
 
 	@Override
-	public void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
+	public void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		int w = aWidth;
 		int h = aHeight;
 

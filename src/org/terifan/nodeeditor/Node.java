@@ -1,6 +1,8 @@
 package org.terifan.nodeeditor;
 
 import org.terifan.boxcomponentpane.BoxComponent;
+import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.NodeModel;
 
 import java.awt.*;
 import java.io.Serial;
@@ -9,8 +11,7 @@ import java.util.ArrayList;
 
 import static org.terifan.nodeeditor.Styles.*;
 
-
-public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializable {
+public class Node extends BoxComponent<Node> implements Serializable {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
@@ -18,14 +19,12 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 	protected int mVerticalSpacing;
 	protected NodeModel mModel;
 
-
 	public Node(String aTitle) {
 		super(aTitle);
 
 		mVerticalSpacing = 3;
 		mProperties = new ArrayList<>();
 	}
-
 
 	public Node(String aTitle, Property... aProperties) {
 		this(aTitle);
@@ -35,16 +34,13 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		}
 	}
 
-
 	void bind(NodeModel aModel) {
 		mModel = aModel;
 	}
 
-
 	public NodeModel getModel() {
 		return mModel;
 	}
-
 
 	public Node addProperty(Property aItem) {
 		mProperties.add(aItem);
@@ -53,21 +49,17 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		return this;
 	}
 
-
 	public int getPropertyCount() {
 		return mProperties.size();
 	}
-
 
 	public ArrayList<Property> getProperties() {
 		return mProperties;
 	}
 
-
 	public Property getProperty(int aIndex) {
 		return mProperties.get(aIndex);
 	}
-
 
 	public <T extends Property> T getProperty(String aPath) {
 		if (aPath == null) {
@@ -95,9 +87,8 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		return (T) item;
 	}
 
-
 	@Override
-	public void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
+	public void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		super.paintComponent(aPane, aGraphics, aWidth, aHeight, aSelected);
 
 		if (!mMinimized) {
@@ -109,14 +100,12 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		paintConnectors(aGraphics);
 	}
 
-
 	@Override
 	public void layout() {
 		computeBounds();
 		layoutNode();
 		layoutConnectors();
 	}
-
 
 	public void computeBounds() {
 		if (mMinimized) {
@@ -146,7 +135,6 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		}
 	}
 
-
 	protected void layoutNode() {
 		if (!mMinimized) {
 			int y = TITLE_HEIGHT_PADDED + 4 + 4;
@@ -171,11 +159,9 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		}
 	}
 
-
 	protected void layoutConnectors() {
 
 	}
-
 
 	private Point calcPoint(int c, int n) {
 		n--;
@@ -186,11 +172,9 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		return new Point((int) x, (int) y);
 	}
 
-
 	public void paintConnectors(Graphics2D aGraphics) {//расчёт в координатах
-		
-	}
 
+	}
 
 	public Property getPropertyAt(Point aPoint) {
 		for (Property item : mProperties) {
@@ -202,11 +186,19 @@ public class Node extends BoxComponent<Node, NodeEditorPane> implements Serializ
 		return null;
 	}
 
-
 	public ArrayList<Node> getConnectedNodes() {
 		return mModel.getConnectedNodes(this);
 	}
 
+//	@Override
+//	public Node setBounds(int aX, int aY, int aWidth, int aHeight) {
+//		return (Node) super.setBounds(aX, aY, aWidth, aHeight);
+//	}
+//
+//	@Override
+//	public Node setTitleBackground(Color aColor) {
+//		return (Node) super.setTitleBackground(aColor);
+//	}
 
 	@Override
 	public String toString() {

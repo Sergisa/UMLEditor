@@ -1,6 +1,6 @@
 package org.terifan.nodeeditor.widgets;
 
-import org.terifan.nodeeditor.NodeEditorPane;
+import org.terifan.boxcomponentpane.NodeCanvasView;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
 import org.terifan.nodeeditor.graphics.Arrow;
@@ -45,7 +45,7 @@ public class ComboBoxProperty extends Property<ComboBoxProperty> {
 
 
 	@Override
-	protected void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover) {
+	protected void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, boolean aHover) {
 		Paint oldPaint = aGraphics.getPaint();
 		Rectangle bounds = getBounds();
 
@@ -72,7 +72,7 @@ public class ComboBoxProperty extends Property<ComboBoxProperty> {
 
 
 	@Override
-	protected boolean mousePressed(NodeEditorPane aPane, Point aClickPoint) {
+	protected boolean mousePressed(NodeCanvasView aPane, Point aClickPoint) {
 		mArmed = true;
 
 		ArrayList<Option> options = new ArrayList<>();
@@ -106,7 +106,7 @@ public class ComboBoxProperty extends Property<ComboBoxProperty> {
 
 
 	@Override
-	protected void mouseReleased(NodeEditorPane aPane, Point aClickPoint) {
+	protected void mouseReleased(NodeCanvasView aPane, Point aClickPoint) {
 		mArmed = false;
 
 		aPane.setPopup(null);

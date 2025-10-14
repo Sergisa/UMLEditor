@@ -1,5 +1,6 @@
 package org.terifan.nodeeditor;
 
+import org.terifan.boxcomponentpane.NodeCanvasView;
 import org.terifan.ui.TextBox;
 
 import java.awt.*;
@@ -43,7 +44,7 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-	protected abstract void paintComponent(NodeEditorPane aPane, Graphics2D aGraphics, boolean aHover);
+	protected abstract void paintComponent(NodeCanvasView aPane, Graphics2D aGraphics, boolean aHover);
 
 
 	public String getId() {
@@ -78,7 +79,6 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-
 	protected Dimension measure() {
 		if (!mUserSetSize && mTextBox.isLayoutRequired()) {
 			mPreferredSize.setSize(mTextBox.measure().getSize());
@@ -104,28 +104,28 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-	protected void connectionsChanged(NodeEditorPane aPane, Point aClickPoint) {
+	protected void connectionsChanged(NodeCanvasView aPane, Point aClickPoint) {
 	}
 
 
 	/**
 	 * Should return true if the clicked point will perform an action. This method return false.
 	 */
-	protected boolean mousePressed(NodeEditorPane aPane, Point aClickPoint) {
+	protected boolean mousePressed(NodeCanvasView aPane, Point aClickPoint) {
 		return false;
 	}
 
 
-	protected void mouseReleased(NodeEditorPane aPane, Point aClickPoint) {
+	protected void mouseReleased(NodeCanvasView aPane, Point aClickPoint) {
 	}
 
 
-	protected void mouseDragged(NodeEditorPane aPane, Point aClickPoint, Point aDragPoint) {
+	protected void mouseDragged(NodeCanvasView aPane, Point aClickPoint, Point aDragPoint) {
 	}
 
 
 	// ugly, remove somehow
-	public void fireMouseReleased(NodeEditorPane aPane, Point aPoint) {
+	public void fireMouseReleased(NodeCanvasView aPane, Point aPoint) {
 		mouseReleased(aPane, aPoint);
 	}
 

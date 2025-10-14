@@ -1,15 +1,17 @@
 package org.terifan.nodeeditor;
 
+import org.terifan.boxcomponentpane.NodeCanvasView;
+
 public class Context {
-	private final NodeEditorPane mEditor;
+	private final NodeCanvasView mEditor;
 
 
-	public Context(NodeEditorPane aEditor) {
+	public Context(NodeCanvasView aEditor) {
 		mEditor = aEditor;
 	}
 
 
-	public NodeEditorPane getEditor() {
+	public NodeCanvasView getEditor() {
 		return mEditor;
 	}
 

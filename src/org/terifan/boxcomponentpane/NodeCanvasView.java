@@ -1,18 +1,24 @@
 package org.terifan.boxcomponentpane;
 
+import org.terifan.nodeeditor.Node;
 import org.terifan.nodeeditor.Styles;
+import org.terifan.nodeeditor.graphics.Popup;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
 
 
-public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane> extends JComponent {
+public class NodeCanvasView extends JComponent {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
@@ -21,95 +27,61 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 	private Point mDragStartLocation;
 	private Point mDragEndLocation;
 	private Rectangle mSelectionRectangle;
-	private BoxComponentModel<T> mModel;
-	private ArrayList<T> mSelectedBoxes;
+	private NodeModel mModel;
+	private ArrayList<NodeCanvasView> mSelectedBoxes;
+	private transient Function<String, BufferedImage> mIconProvider;
 
+	private transient Popup mPopup;
+	private boolean mRemoveInConnectionsOnDrop;
 
-	public BoxComponentPane(BoxComponentModel aModel) {
+	public NodeCanvasView(NodeModel aModel) {
 		mSelectedBoxes = new ArrayList<>();
 		mScale = 1;
 		mModel = aModel;
 		setFocusable(true);
 		setupListeners();
+		//mBindings = new HashMap<>();
+		mRemoveInConnectionsOnDrop = true;
+		setFocusable(true);
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					if (!getSelectedNodes().isEmpty()) {
+						//getModel().removeComponents((List<Node>) getSelectedNodes());
+						repaint();
+					}
+				}
+			}
+		});
 	}
-
 
 	protected void setupListeners() {
-		BoxComponentMouseListener<T, U> mouseListener = new BoxComponentMouseListener<>((U) this);
-		addMouseMotionListener(mouseListener);
-		addMouseListener(mouseListener);
-		addMouseWheelListener(mouseListener);
 	}
-
 
 	public double getScale() {
 		return mScale;
 	}
 
-
-	public U setScale(double aScale) {
+	public NodeCanvasView setScale(double aScale) {
 		mScale = aScale;
-		return (U) this;
+		return (NodeCanvasView) this;
 	}
 
-
-	public BoxComponentModel<T> getModel() {
+	public NodeModel getModel() {
 		return mModel;
 	}
 
-
-	public ArrayList<T> getSelectedNodes() {
+	public ArrayList<NodeCanvasView> getSelectedNodes() {
 		return mSelectedBoxes;
 	}
-
-
-	public U setSelectedBoxes(ArrayList<T> aSelectedBoxes) {
-		mSelectedBoxes = aSelectedBoxes;
-		return (U) this;
-	}
-
-
-	public Point2D.Double getPaneScroll() {
-		return mScroll;
-	}
-
-
-	public Rectangle getSelectionRectangle() {
-		return mSelectionRectangle;
-	}
-
-
-	public void setSelectionRectangle(Rectangle aSelectionRectangle) {
-		mSelectionRectangle = aSelectionRectangle;
-	}
-
-
-	public Point getDragStartLocation() {
-		return mDragStartLocation;
-	}
-
-
-	public void setDragStartLocation(Point aDragStartLocation) {
-		mDragStartLocation = aDragStartLocation;
-	}
-
-
-	public Point getDragEndLocation() {
-		return mDragEndLocation;
-	}
-
-
-	public void setDragEndLocation(Point aDragEndLocation) {
-		mDragEndLocation = aDragEndLocation;
-	}
-
 
 	/**
 	 * Move all nodes to the center of the screen
 	 */
-	public U center() {
+	public NodeCanvasView center() {
 		if (mModel.getComponents().isEmpty()) {
-			return (U) this;
+			return this;
 		}
 
 		Rectangle bounds = new Rectangle(mModel.getComponents().get(0).getBounds());
@@ -126,14 +98,13 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		}
 
 		mScroll = null; // will be centered when pane is repainted
-		return (U) this;
+		return this;
 	}
-
 
 	@Override
 	public Dimension getPreferredSize() {
 		Rectangle bounds = null;
-		for (T box : mModel.getComponents()) {
+		for (Node box : mModel.getComponents()) {
 			box.layout();
 			if (bounds == null) {
 				bounds = box.getBounds();
@@ -144,7 +115,6 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 
 		return bounds.getSize();
 	}
-
 
 	protected void paintBackground(Graphics2D aGraphics) {
 		int w = getWidth();
@@ -177,7 +147,6 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		aGraphics.drawLine(sx, 0, sx, h);
 	}
 
-
 	private void drawGrid(Graphics2D aGraphics, int aW, int aH, double aScale) {
 		int xi = (int) ((mScroll.x - aW / 2) / aScale);
 		int yi = (int) ((mScroll.y - aH / 2) / aScale);
@@ -198,14 +167,13 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		}
 	}
 
-
 	@Override
 	protected void paintComponent(Graphics aGraphics) {
 		if (mScroll == null) {
 			mScroll = new Point.Double(getWidth() / 2.0, getHeight() / 2.0);
 		}
 
-		for (T box : mModel.getComponents()) {
+		for (Node box : mModel.getComponents()) {
 			box.layout();
 		}
 
@@ -222,19 +190,24 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		paintOverlay(g);
 	}
 
-
 	protected void paintBoxComponents(Graphics2D aGraphics) {
+		aGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
+
 		aGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 		aGraphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
-		for (T box : mModel.getComponents()) {
+		for (Node box : mModel.getComponents()) {
 			paintBoxComponent(aGraphics, box, mSelectedBoxes.contains(box));
 		}
 
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+		if (mPopup != null) {
+			paintBoxComponent(aGraphics, mPopup, false);
+		}
 	}
-
 
 	protected void paintSelectionRectangle(Graphics2D aGraphics) {
 		if (mSelectionRectangle != null) {
@@ -246,10 +219,8 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		}
 	}
 
-
 	protected void paintOverlay(Graphics2D aGraphics) {
 	}
-
 
 	protected void paintBoxComponent(Graphics2D aGraphics, Renderable aComponent, boolean aSelected) {
 		Rectangle bounds = aComponent.getBounds();
@@ -276,11 +247,15 @@ public class BoxComponentPane<T extends BoxComponent, U extends BoxComponentPane
 		}
 	}
 
-
 	public Point calcMousePoint(Point aPoint) {
 		return new Point(
 			(int) ((aPoint.x - mScroll.x) / mScale),
 			(int) ((aPoint.y - mScroll.y) / mScale)
 		);
+	}
+
+	public NodeCanvasView setPopup(Popup aPopup) {
+		mPopup = aPopup;
+		return this;
 	}
 }

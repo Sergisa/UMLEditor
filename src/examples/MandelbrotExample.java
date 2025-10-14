@@ -1,8 +1,8 @@
 package examples;
 
+import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.NodeModel;
 import org.terifan.nodeeditor.Node;
-import org.terifan.nodeeditor.NodeEditorPane;
-import org.terifan.nodeeditor.NodeModel;
 import org.terifan.nodeeditor.Styles.DefaultNodeColors;
 import org.terifan.nodeeditor.util.SimpleNodesFactory;
 import org.terifan.nodeeditor.widgets.ValueProperty;
@@ -19,28 +19,30 @@ import java.io.ObjectOutputStream;
 public class MandelbrotExample {
 
 
-	static void main(String... args) {
+	static void main() {
 		try {
 			NodeModel __model = new NodeModel()
-				.addComponent(new Node("Mandelbrot")
-					.setTitleBackground(DefaultNodeColors.BROWN)
-					.setBounds(-500, 100, 150, 0)
-					.addProperty(new ValueProperty("Iterations"))
-					.addProperty(new ValueProperty("Coordinate").setId("coord"))
-					.addProperty(new ValueProperty("X").setId("x"))
-					.addProperty(new ValueProperty("Y").setId("y"))
-					.addProperty(new ValueProperty("Zoom").setId("zoom"))
-					.addProperty(new ValueProperty("Limit").setId("limit"))
+				.addComponent(
+					new Node("Mandelbrot")
+						.setTitleBackground(DefaultNodeColors.BROWN)
+						.setBounds(-500, 100, 150, 0)
+						.addProperty(new ValueProperty("Iterations"))
+						.addProperty(new ValueProperty("Coordinate").setId("coord"))
+						.addProperty(new ValueProperty("X").setId("x"))
+						.addProperty(new ValueProperty("Y").setId("y"))
+						.addProperty(new ValueProperty("Zoom").setId("zoom"))
+						.addProperty(new ValueProperty("Limit").setId("limit"))
 				)
-				.addComponent(new Node("Palette")
-					.setTitleBackground(DefaultNodeColors.GREEN)
-					.setBounds(0, -20, 150, 0)
-					.addProperty(new ValueProperty("Color"))
-					.addProperty(new ValueProperty("Red").setId("rf"))
-					.addProperty(new ValueProperty("Green").setId("gf"))
-					.addProperty(new ValueProperty("Blue").setId("bf"))
-					.addProperty(new ValueProperty("Scale").setId("sf"))
-					.addProperty(new ValueProperty("Iterations").setId("iterations"))
+				.addComponent(
+					new Node("Palette")
+						.setTitleBackground(DefaultNodeColors.GREEN)
+						.setBounds(0, -20, 150, 0)
+						.addProperty(new ValueProperty("Color"))
+						.addProperty(new ValueProperty("Red").setId("rf"))
+						.addProperty(new ValueProperty("Green").setId("gf"))
+						.addProperty(new ValueProperty("Blue").setId("bf"))
+						.addProperty(new ValueProperty("Scale").setId("sf"))
+						.addProperty(new ValueProperty("Iterations").setId("iterations"))
 				)
 				.addComponent(SimpleNodesFactory.createIntermediateColorMix().setLocation(220, -140));
 
@@ -57,7 +59,7 @@ public class MandelbrotExample {
 			}
 			// --
 
-			NodeEditorPane editor = new NodeEditorPane(model)
+			NodeCanvasView editor = new NodeCanvasView(model)
 				.center();
 
 			JToolBar toolbar = new JToolBar();
@@ -118,15 +120,6 @@ public class MandelbrotExample {
 				}
 			});
 
-//			toolbar.add(new AbstractAction("SeparateColor")
-//			{
-//				@Override
-//				public void actionPerformed(ActionEvent aE)
-//				{
-//					model.addComponent(SimpleNodesFactory.createSourceValue());
-//					editor.repaint();
-//				}
-//			});
 
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(toolbar, BorderLayout.NORTH);

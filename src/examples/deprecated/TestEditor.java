@@ -1,94 +1,23 @@
 package examples.deprecated;
 
-import org.terifan.nodeeditor.Node;
-import org.terifan.nodeeditor.NodeEditorPane;
-import org.terifan.nodeeditor.NodeModel;
-import org.terifan.nodeeditor.util.SimpleNodesFactory;
-import org.terifan.nodeeditor.widgets.ValueProperty;
+import org.terifan.boxcomponentpane.NodeCanvasView;
+import org.terifan.boxcomponentpane.NodeModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 
-public class TestEditor
-{
-	static void main(String... args)
-	{
-		try
-		{
+public class TestEditor {
+	static void main(String... args) {
+		try {
 			NodeModel model = new NodeModel();
 
-			NodeEditorPane editor = new NodeEditorPane(model);
+			NodeCanvasView editor = new NodeCanvasView(model);
 
 			editor.center();
 			editor.setScale(1);
 
 			JToolBar toolbar = new JToolBar();
-
-			toolbar.add(new AbstractAction("TexturCoordinate")
-			{
-				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
-					model.addComponent(new Node("TexturCoordinate")
-						.setSize(200, 0)
-						.addProperty(new ValueProperty("UV"))
-					);
-
-					editor.repaint();
-				}
-			});
-
-			toolbar.add(new AbstractAction("SourceImage")
-			{
-				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
-					model.addComponent(SimpleNodesFactory.createSourceTexture());
-					editor.repaint();
-				}
-			});
-
-			toolbar.add(new AbstractAction("Math")
-			{
-				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
-					model.addComponent(SimpleNodesFactory.createIntermediateMath());
-					editor.repaint();
-				}
-			});
-
-			toolbar.add(new AbstractAction("Mix")
-			{
-				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
-					model.addComponent(SimpleNodesFactory.createIntermediateColorMix());
-					editor.repaint();
-				}
-			});
-
-			toolbar.add(new AbstractAction("Alpha")
-			{
-				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
-					model.addComponent(SimpleNodesFactory.createSourceAlpha());
-					editor.repaint();
-				}
-			});
-
-			toolbar.add(new AbstractAction("Color")
-			{
-				@Override
-				public void actionPerformed(ActionEvent aE)
-				{
-					model.addComponent(SimpleNodesFactory.createSourceColorRGBA());
-					editor.repaint();
-				}
-			});
 
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(toolbar, BorderLayout.NORTH);
@@ -96,13 +25,11 @@ public class TestEditor
 
 			JFrame frame = new JFrame();
 			frame.add(panel);
-			frame.setSize((int)(1600 * editor.getScale()), (int)(1000 * editor.getScale()));
+			frame.setSize((int) (1600 * editor.getScale()), (int) (1000 * editor.getScale()));
 			frame.setLocationRelativeTo(null);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
-		}
-		catch (Throwable e)
-		{
+		} catch (Throwable e) {
 			e.printStackTrace(System.out);
 		}
 	}
