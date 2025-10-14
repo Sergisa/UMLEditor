@@ -11,7 +11,7 @@ import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_COLOR;
 import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_SHADOW_COLOR;
 
 
-public abstract class Property<T extends Property> implements Serializable {
+public abstract class Property implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -52,9 +52,9 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-	public T setId(String aId) {
+	public Property setId(String aId) {
 		mId = aId;
-		return (T) this;
+		return this;
 	}
 
 
@@ -73,9 +73,9 @@ public abstract class Property<T extends Property> implements Serializable {
 	}
 
 
-	public T setText(String aText) {
+	public Property setText(String aText) {
 		mTextBox.setText(aText);
-		return (T) this;
+		return this;
 	}
 
 

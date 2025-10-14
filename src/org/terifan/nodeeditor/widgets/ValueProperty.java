@@ -7,7 +7,7 @@ import java.awt.*;
 import java.io.Serial;
 
 
-public class ValueProperty extends Property<ValueProperty> {
+public class ValueProperty extends Property {
 	@Serial
 	private static final long serialVersionUID = 1L;
 

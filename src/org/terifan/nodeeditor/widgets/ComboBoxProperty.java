@@ -18,7 +18,7 @@ import static org.terifan.nodeeditor.Styles.BOX_TITLE_TEXT_SHADOW_COLOR;
 import static org.terifan.nodeeditor.Styles.COMBOBOX_ARROW_COLOR;
 
 
-public class ComboBoxProperty extends Property<ComboBoxProperty> {
+public class ComboBoxProperty extends Property {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
