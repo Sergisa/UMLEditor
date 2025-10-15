@@ -4,37 +4,37 @@ import java.io.Serial;
 import java.io.Serializable;
 
 
-public class Connection implements Serializable {
+public class Connection<T> implements Serializable {
 	@Serial
 	private final static long serialVersionUID = 1L;
 
-	protected Property mOut;
-	protected Property mIn;
+	protected T mFrom;
+	protected T mTo;
 
 
-	public Connection(Property aOut, Property aIn) {
-		mOut = aOut;
-		mIn = aIn;
+	public Connection(T aOut, T aIn) {
+		mFrom = aOut;
+		mTo = aIn;
 	}
 
 
-	public Property getOut() {
-		return mOut;
+	public T getOut() {
+		return mFrom;
 	}
 
 
-	public void setOut(Property aOut) {
-		mOut = aOut;
+	public void setOut(T aOut) {
+		mFrom = aOut;
 	}
 
 
-	public Property getIn() {
-		return mIn;
+	public T getIn() {
+		return mTo;
 	}
 
 
-	public void setIn(Property aIn) {
-		mIn = aIn;
+	public void setIn(T aIn) {
+		mTo = aIn;
 	}
 
 

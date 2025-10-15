@@ -2,6 +2,7 @@ package org.terifan.nodeeditor.graphics;
 
 import org.terifan.math.VectorMath;
 import org.terifan.nodeeditor.Connection;
+import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
 import org.terifan.vecmath.Vec2d;
 
@@ -21,7 +22,7 @@ public class SplineRenderer {
 	}
 
 
-	public static void drawSpline(Graphics2D aGraphics, Connection aConnection, double aScale, Color aBackgroundColor, Color aStartColor, Color aEndColor) {
+	public static void drawSpline(Graphics2D aGraphics, Connection<Property> aConnection, double aScale, Color aBackgroundColor, Color aStartColor, Color aEndColor) {
 		drawSplineImpl(aGraphics, createSpline(aConnection), aScale, aBackgroundColor, aStartColor, aEndColor);
 	}
 
@@ -69,7 +70,7 @@ public class SplineRenderer {
 	}
 
 
-	public static double distance(Connection aConnection, Point aPoint) {
+	public static double distance(Connection<Property> aConnection, Point aPoint) {
 		BSpline spline = createSpline(aConnection);
 		Point2D.Double prev = null;
 		Vec2d p = new Vec2d(aPoint.x, aPoint.y);
@@ -115,7 +116,7 @@ public class SplineRenderer {
 	}
 
 
-	private static BSpline createSpline(Connection aConnection) {
+	private static BSpline createSpline(Connection<Property> aConnection) {
 		Rectangle from = aConnection.getOut().getBounds();
 		Rectangle to = aConnection.getIn().getBounds();
 

@@ -21,12 +21,14 @@ public class MandelbrotExample {
 
 	static void main() {
 		try {
+			ValueProperty mandelbrotIterations = new ValueProperty("Iterations");
+			ValueProperty paletteColor = new ValueProperty("Color");
 			NodeModel __model = new NodeModel()
 				.addComponent(
 					new Node("Mandelbrot")
 						.setTitleBackground(DefaultNodeColors.BROWN)
 						.setBounds(-500, 100, 150, 0)
-						.addProperty(new ValueProperty("Iterations"))
+						.addProperty(mandelbrotIterations)
 						.addProperty(new ValueProperty("Coordinate").setId("coord"))
 						.addProperty(new ValueProperty("X").setId("x"))
 						.addProperty(new ValueProperty("Y").setId("y"))
@@ -37,14 +39,19 @@ public class MandelbrotExample {
 					new Node("Palette")
 						.setTitleBackground(DefaultNodeColors.GREEN)
 						.setBounds(0, -20, 150, 0)
-						.addProperty(new ValueProperty("Color"))
+						.addProperty(paletteColor)
 						.addProperty(new ValueProperty("Red").setId("rf"))
 						.addProperty(new ValueProperty("Green").setId("gf"))
 						.addProperty(new ValueProperty("Blue").setId("bf"))
 						.addProperty(new ValueProperty("Scale").setId("sf"))
 						.addProperty(new ValueProperty("Iterations").setId("iterations"))
 				)
-				.addComponent(SimpleNodesFactory.createIntermediateColorMix().setLocation(220, -140));
+				.addConnection(paletteColor, mandelbrotIterations)
+				.addComponent(
+					SimpleNodesFactory.
+						createIntermediateColorMix().
+						setLocation(220, -140)
+				);
 
 			//__model.print();
 

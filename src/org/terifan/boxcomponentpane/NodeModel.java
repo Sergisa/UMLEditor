@@ -17,7 +17,7 @@ public class NodeModel implements Serializable {
 	private final static long serialVersionUID = 1L;
 	protected final ArrayList<Node> mComponents;
 
-	private final ArrayList<Connection> mConnections;
+	private final ArrayList<Connection<Property>> mConnections;
 
 	public NodeModel() {
 		mComponents = new ArrayList<>();
@@ -77,27 +77,27 @@ public class NodeModel implements Serializable {
 		mComponents.remove(component);
 	}
 
-	public ArrayList<Connection> getConnections() {
+	public ArrayList<Connection<Property>> getConnections() {
 		return mConnections;
 	}
 
 	public NodeModel addConnection(Property aFromItem, Property aToItem) {
-		mConnections.add(new Connection(aFromItem, aToItem));
+		mConnections.add(new Connection<>(aFromItem, aToItem));
 		return this;
 	}
 
-	public List<Connection> getConnectionsTo(Property aProperty) {
+	public List<Connection<Property>> getConnectionsTo(Property aProperty) {
 		return mConnections.stream().filter(connection -> connection.getIn() == aProperty).collect(Collectors.toList());
 	}
 
-	public List<Connection> getConnectionsFrom(Property aProperty) {
+	public List<Connection<Property>> getConnectionsFrom(Property aProperty) {
 		return mConnections.stream().filter(connection -> connection.getOut() == aProperty).collect(Collectors.toList());
 	}
 
 	public ArrayList<Node> getConnectedNodes(Node aNode) {
 		ArrayList<Node> result = new ArrayList<>();
 
-		for (Connection conn : mConnections) {
+		for (Connection<Property> conn : mConnections) {
 			if (conn.getOut().getNode() == aNode) {
 				result.add(conn.getIn().getNode());
 			}
