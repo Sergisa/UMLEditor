@@ -26,6 +26,8 @@ public abstract class BoxComponent<T> implements Serializable, Renderable {
 	protected String mTitle;
 	protected Color mTitleBackground;
 	protected Color mTitleForeground;
+	private final int verticalPadding = 5;
+	public final int horizontalPadding = 5;
 
 	public BoxComponent(String aTitle) {
 		mTitle = aTitle;
@@ -226,10 +228,10 @@ public abstract class BoxComponent<T> implements Serializable, Renderable {
 	}
 
 	public void paintComponent(DiagramView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
-		int x = 5;
-		int y = 5;
-		int w = aWidth - 10;
-		int h = aHeight - 10;
+		int x = horizontalPadding;
+		int y = verticalPadding;
+		int w = aWidth - horizontalPadding * 2;
+		int h = aHeight - verticalPadding * 2;
 
 		paintShadow(aGraphics, x, y, w, h);
 		paintBorder(aGraphics, x, y, w, h, aSelected);

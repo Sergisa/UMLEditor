@@ -1,10 +1,8 @@
 package org.terifan.nodeeditor.graphics;
 
-import org.terifan.math.VectorMath;
 import org.terifan.nodeeditor.Connection;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
-import org.terifan.vecmath.Vec2d;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -13,14 +11,6 @@ import java.awt.geom.Point2D;
 
 
 public class SplineRenderer {
-	private SplineRenderer() {
-	}
-
-
-	public static void drawSpline(Graphics2D aGraphics, Point aFrom, Point aTo, double aScale, Color aBackgroundColor, Color aStartColor, Color aEndColor) {
-		drawSplineImpl(aGraphics, createSpline(aFrom, aTo), aScale, aBackgroundColor, aStartColor, aEndColor);
-	}
-
 
 	public static void drawSpline(Graphics2D aGraphics, Connection<Property> aConnection, double aScale, Color aBackgroundColor, Color aStartColor, Color aEndColor) {
 		drawSplineImpl(aGraphics, createSpline(aConnection), aScale, aBackgroundColor, aStartColor, aEndColor);
@@ -69,29 +59,6 @@ public class SplineRenderer {
 		aGraphics.setStroke(old);
 	}
 
-
-	public static double distance(Connection<Property> aConnection, Point aPoint) {
-		BSpline spline = createSpline(aConnection);
-		Point2D.Double prev = null;
-		Vec2d p = new Vec2d(aPoint.x, aPoint.y);
-		int segments = Math.max(20, (int) spline.getPoint(0).distance(spline.getPoint(1)) / 4);
-		double dist = Double.MAX_VALUE;
-
-		for (double i = 0, s = segments; --s >= 0; i += 1.0 / s) {
-			Point2D.Double next = spline.getPoint(i);
-			if (prev != null) {
-				double d = VectorMath.distanceLineSegment(new Vec2d(prev.x, prev.y), new Vec2d(next.x, next.y), p);
-				if (d < dist) {
-					dist = d;
-				}
-			}
-			prev = next;
-		}
-
-		return dist;
-	}
-
-
 	private static Path2D.Double createPath(BSpline aSpline, double aScale, double aStart, double aEnd) {
 		int segments = Math.max(20, (int) aSpline.getPoint(0).distance(aSpline.getPoint(1)) / 4);
 
@@ -115,43 +82,23 @@ public class SplineRenderer {
 		return path;
 	}
 
+	private static BSpline createSpline(Connection<Property> relation) {
+		Rectangle propertyFromBounds = relation.getFrom().getBounds(); //Координаты внутри блока
+		Rectangle propertyToBounds = relation.getTo().getBounds(); //координаты внутри блока
+		Rectangle nodeFromBounds = relation.getFrom().getNode().getBounds();//координаты блока
+		Rectangle nodeToBounds = relation.getTo().getNode().getBounds();//координаты блока
 
-	private static BSpline createSpline(Connection<Property> aConnection) {
-		Rectangle from = aConnection.getOut().getBounds();
-		Rectangle to = aConnection.getIn().getBounds();
+		int x0 = nodeFromBounds.x + relation.getFrom().getNode().horizontalPadding;
+		int y0 = (int) propertyFromBounds.getCenterY() + nodeFromBounds.y;
+		int x1 = nodeToBounds.x + relation.getFrom().getNode().horizontalPadding;
+		int y1 = (int) propertyToBounds.getCenterY() + nodeToBounds.y;
 
-
-		int x0 = (int) from.getCenterX();
-		int y0 = (int) from.getCenterY();
-		int x1 = (int) to.getCenterX();
-		int y1 = (int) to.getCenterY();
 		int d0 = 16;
 		int d1 = -16;
 
-		return new BSpline(new double[]
-			{
-				x0, x0 + d0, x1 + d1, x1
-			}, new double[]
-			{
-				y0, y0, y1, y1
-			});
-	}
-
-
-	private static BSpline createSpline(Point aFrom, Point aTo) {
-		int x0 = aFrom.x;
-		int y0 = aFrom.y;
-		int x1 = aTo.x;
-		int y1 = aTo.y;
-		int d0 = 16;
-		int d1 = -16;
-
-		return new BSpline(new double[]
-			{
-				x0, x0 + d0, x1 + d1, x1
-			}, new double[]
-			{
-				y0, y0, y1, y1
-			});
+		return new BSpline(
+			new double[]{x0, x0 + d0, x1 + d1, x1},
+			new double[]{y0, y0, y1, y1}
+		);
 	}
 }

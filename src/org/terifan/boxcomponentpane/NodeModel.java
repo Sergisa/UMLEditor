@@ -87,19 +87,19 @@ public class NodeModel implements Serializable {
 	}
 
 	public List<Connection<Property>> getConnectionsTo(Property aProperty) {
-		return mConnections.stream().filter(connection -> connection.getIn() == aProperty).collect(Collectors.toList());
+		return mConnections.stream().filter(connection -> connection.getTo() == aProperty).collect(Collectors.toList());
 	}
 
 	public List<Connection<Property>> getConnectionsFrom(Property aProperty) {
-		return mConnections.stream().filter(connection -> connection.getOut() == aProperty).collect(Collectors.toList());
+		return mConnections.stream().filter(connection -> connection.getFrom() == aProperty).collect(Collectors.toList());
 	}
 
 	public ArrayList<Node> getConnectedNodes(Node aNode) {
 		ArrayList<Node> result = new ArrayList<>();
 
 		for (Connection<Property> conn : mConnections) {
-			if (conn.getOut().getNode() == aNode) {
-				result.add(conn.getIn().getNode());
+			if (conn.getFrom().getNode() == aNode) {
+				result.add(conn.getTo().getNode());
 			}
 		}
 

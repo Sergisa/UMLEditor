@@ -18,22 +18,22 @@ public class Connection<T> implements Serializable {
 	}
 
 
-	public T getOut() {
+	public T getFrom() {
 		return mFrom;
 	}
 
 
-	public void setOut(T aOut) {
+	public void setFrom(T aOut) {
 		mFrom = aOut;
 	}
 
 
-	public T getIn() {
+	public T getTo() {
 		return mTo;
 	}
 
 
-	public void setIn(T aIn) {
+	public void setTo(T aIn) {
 		mTo = aIn;
 	}
 

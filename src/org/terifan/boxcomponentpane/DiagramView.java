@@ -1,8 +1,11 @@
 package org.terifan.boxcomponentpane;
 
+import org.terifan.nodeeditor.Connection;
 import org.terifan.nodeeditor.Node;
+import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
 import org.terifan.nodeeditor.graphics.Popup;
+import org.terifan.nodeeditor.graphics.SplineRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -206,6 +209,11 @@ public class DiagramView extends JComponent {
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 		if (mPopup != null) {
 			paintBoxComponent(aGraphics, mPopup, false);
+		}
+
+		for (Connection<Property> connection : mModel.getConnections()) {
+			Color start = Styles.CONNECTOR_COLOR_INNER_FOCUSED;
+			SplineRenderer.drawSpline(aGraphics, connection, getScale(), Styles.CONNECTOR_COLOR_OUTER, start, start);
 		}
 	}
 
