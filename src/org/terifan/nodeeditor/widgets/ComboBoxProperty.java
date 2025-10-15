@@ -21,6 +21,10 @@ import static org.terifan.nodeeditor.Styles.COMBOBOX_ARROW_COLOR;
 public class ComboBoxProperty extends Property {
 	@Serial
 	private static final long serialVersionUID = 1L;
+	private final int leftPadding = 8;
+	private final int rightPadding = 15;
+	private final int bottomPadding = 6;
+	private final int topPadding = 6;
 
 	private final static float[] RANGES = new float[]
 		{
@@ -41,6 +45,26 @@ public class ComboBoxProperty extends Property {
 		mOptions = new ArrayList<>(Arrays.asList(aOptions));
 
 		mTextBox.setAnchor(Anchor.WEST).setMargins(6, 8, 6, 15).setForeground(Styles.BOX_FOREGROUND_COLOR).setMaxLineCount(1).setFont(Styles.SLIDER_FONT);
+	}
+
+	@Override
+	protected int getLeftPad() {
+		return leftPadding;
+	}
+
+	@Override
+	protected int getRightPad() {
+		return rightPadding;
+	}
+
+	@Override
+	protected int getBottomPad() {
+		return bottomPadding;
+	}
+
+	@Override
+	protected int getTopPad() {
+		return topPadding;
 	}
 
 	@Override

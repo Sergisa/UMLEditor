@@ -26,7 +26,7 @@ public abstract class BoxComponent<T> implements Serializable, Renderable {
 	protected String mTitle;
 	protected Color mTitleBackground;
 	protected Color mTitleForeground;
-	private final int verticalPadding = 5;
+	public final int verticalPadding = 5;
 	public final int horizontalPadding = 5;
 
 	public BoxComponent(String aTitle) {

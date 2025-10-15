@@ -10,6 +10,10 @@ import java.io.Serial;
 
 public class ValueProperty extends Property {
 	private final boolean DEBUG = MandelbrotExample.DEBUG;
+	private final int leftPadding = 0;
+	private final int rightPadding = leftPadding;
+	private final int bottomPadding = 4;
+	private final int topPadding = bottomPadding;
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -19,7 +23,7 @@ public class ValueProperty extends Property {
 	public ValueProperty(String aLabel) {
 		super(aLabel);
 
-		mTextBox.setMargins(2, 0, 2, 0);
+		mTextBox.setMargins(topPadding, leftPadding, bottomPadding, rightPadding);
 	}
 
 
@@ -45,6 +49,25 @@ public class ValueProperty extends Property {
 		return this;
 	}
 
+	@Override
+	protected int getLeftPad() {
+		return leftPadding;
+	}
+
+	@Override
+	protected int getBottomPad() {
+		return bottomPadding;
+	}
+
+	@Override
+	protected int getRightPad() {
+		return rightPadding;
+	}
+
+	@Override
+	protected int getTopPad() {
+		return topPadding;
+	}
 
 	@Override
 	public String toString() {

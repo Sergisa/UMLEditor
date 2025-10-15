@@ -97,8 +97,14 @@ public abstract class Property implements Serializable {
 		return mBounds;
 	}
 
+	protected abstract int getLeftPad();
+
+	protected abstract int getRightPad();
+
+	protected abstract int getTopPad();
 
 	protected void connectionsChanged(DiagramView aPane, Point aClickPoint) {
+	protected abstract int getBottomPad();
 	}
 
 
