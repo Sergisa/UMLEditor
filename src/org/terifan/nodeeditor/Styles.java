@@ -72,99 +72,41 @@ public class Styles {
 
 	public static Color[][][] SLIDER_COLORS =
 		{
-			// normal
-			{
-				new Color[]
-					{
-						FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR
-					},
-				new Color[]
-					{
-						FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-					},
-				new Color[]
-					{
-						BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
-					}
+			{// normal
+				new Color[]{FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR},
+				new Color[]{FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR},
+				new Color[]{BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR}
 			},
-			// hover
-			{
-				new Color[]
-					{
-						new Color(101, 101, 101), new Color(101, 101, 101)
-					},
-				new Color[]
-					{
-						FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-					},
-				new Color[]
-					{
-						BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
-					}
+			{// hover
+				new Color[]{new Color(101, 101, 101), new Color(101, 101, 101)},
+				new Color[]{FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR},
+				new Color[]{BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR}
 			},
-			// armed
-			{
-				new Color[]
-					{
-						new Color(34, 34, 34), new Color(34, 34, 34)
-					},
-				new Color[]
-					{
-						FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-					},
-				new Color[]
-					{
-						BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR
-					}
+			{// armed
+				new Color[]{new Color(34, 34, 34), new Color(34, 34, 34)},
+				new Color[]{FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR},
+				new Color[]{BOX_FOREGROUND_COLOR, BOX_FOREGROUND_COLOR}
 			}
 		};
 
 	public static Color[][] CHECKBOX_COLORS =
 		{
-			// normal
-			new Color[]
-				{
-					FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR
-				},
-			// selected
-			new Color[]
-				{
-					FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-				}
+			new Color[]{FIELD_BACKGROUND_COLOR, FIELD_BACKGROUND_COLOR},// normal
+			new Color[]{FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR}// selected
 		};
 
 	public static Color[][] COMBOBOX_COLORS =
 		{
-			// normal
-			new Color[]
-				{
-					new Color(40, 40, 40), new Color(40, 40, 40)
-				},
-			// selected
-			new Color[]
-				{
-					FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR
-				},
-			new Color[]
-				{
-					new Color(61, 61, 61)
-				}
+			new Color[]{new Color(40, 40, 40), new Color(40, 40, 40)},// normal
+			new Color[]{FIELD_BACKGROUND_SELECTED_COLOR, FIELD_BACKGROUND_SELECTED_COLOR},// selected
+			new Color[]{new Color(61, 61, 61)}
 		};
 
 	public static Color[][] BUTTON_COLORS =
 		{
-			new Color[]
-				{
-					new Color(84, 84, 84), new Color(84, 84, 84)
-				},
-			new Color[]
-				{
-					new Color(181, 181, 181), new Color(153, 153, 153)
-				},
-			new Color[]
-				{
-					new Color(85, 85, 85), new Color(113, 113, 113)
-				}
+			new Color[]{new Color(84, 84, 84), new Color(84, 84, 84)},
+			new Color[]{new Color(181, 181, 181), new Color(153, 153, 153)},
+			new Color[]{new Color(85, 85, 85), new Color(113, 113, 113)}
 		};
 
 	public static int POPUP_FOOTER_HEIGHT = 5;

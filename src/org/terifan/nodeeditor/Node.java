@@ -190,16 +190,6 @@ public class Node extends BoxComponent<Node> implements Serializable {
 		return mModel.getConnectedNodes(this);
 	}
 
-//	@Override
-//	public Node setBounds(int aX, int aY, int aWidth, int aHeight) {
-//		return (Node) super.setBounds(aX, aY, aWidth, aHeight);
-//	}
-//
-//	@Override
-//	public Node setTitleBackground(Color aColor) {
-//		return (Node) super.setTitleBackground(aColor);
-//	}
-
 	@Override
 	public String toString() {
 		return "Node<" + getTitle() + ">";

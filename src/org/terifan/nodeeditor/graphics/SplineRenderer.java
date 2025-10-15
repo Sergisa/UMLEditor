@@ -16,7 +16,6 @@ public class SplineRenderer {
 		drawSplineImpl(aGraphics, createSpline(aConnection), aScale, aBackgroundColor, aStartColor, aEndColor);
 	}
 
-
 	private static void drawSplineImpl(Graphics2D aGraphics, BSpline aSpline, double aScale, Color aBackgroundColor, Color aStartColor, Color aEndColor) {
 		Stroke old = aGraphics.getStroke();
 
