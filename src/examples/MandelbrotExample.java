@@ -10,10 +10,6 @@ import org.terifan.nodeeditor.widgets.ValueProperty;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 
 public class MandelbrotExample {
@@ -23,7 +19,7 @@ public class MandelbrotExample {
 		try {
 			ValueProperty mandelbrotIterations = new ValueProperty("Iterations");
 			ValueProperty paletteColor = new ValueProperty("Color");
-			NodeModel __model = new NodeModel()
+			NodeModel model = new NodeModel()
 				.addComponent(
 					new Node("Mandelbrot")
 						.setTitleBackground(DefaultNodeColors.BROWN)
@@ -53,21 +49,7 @@ public class MandelbrotExample {
 						setLocation(220, -140)
 				);
 
-			//__model.print();
-
-			// -- debugging only, serialize/deserialize model to ensure it's stateless
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			try (ObjectOutputStream dos = new ObjectOutputStream(baos)) {
-				dos.writeObject(__model);
-			}
-			NodeModel model;
-			try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()))) {
-				model = (NodeModel) ois.readObject();
-			}
-			// --
-
-			DiagramView editor = new DiagramView(model)
-				.center();
+			DiagramView editor = new DiagramView(model).center();
 
 			JToolBar toolbar = new JToolBar();
 
