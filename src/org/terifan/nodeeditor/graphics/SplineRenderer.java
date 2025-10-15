@@ -82,15 +82,20 @@ public class SplineRenderer {
 	}
 
 	private static BSpline createSpline(Connection<Property> relation) {
-		Rectangle propertyFromBounds = relation.getFrom().getBounds(); //Координаты внутри блока
-		Rectangle propertyToBounds = relation.getTo().getBounds(); //координаты внутри блока
-		Rectangle nodeFromBounds = relation.getFrom().getNode().getBounds();//координаты блока
-		Rectangle nodeToBounds = relation.getTo().getNode().getBounds();//координаты блока
+		Property fromProperty = relation.getFrom();
+		Property toProperty = relation.getTo();
+		Rectangle propertyFromBounds = fromProperty.getCoordinationAdapter().getBounds(); //Координаты внутри блока
+		Rectangle propertyToBounds = toProperty.getCoordinationAdapter().getBounds(); //координаты внутри блока
 
-		int x0 = nodeFromBounds.x + relation.getFrom().getNode().horizontalPadding;
-		int y0 = (int) propertyFromBounds.getCenterY() + nodeFromBounds.y;
-		int x1 = nodeToBounds.x + relation.getFrom().getNode().horizontalPadding;
-		int y1 = (int) propertyToBounds.getCenterY() + nodeToBounds.y;
+		int x0 = (int) propertyFromBounds.getX() ;
+		int x1 = (int) propertyToBounds.getX();
+
+		int y0 = (int) propertyFromBounds.getCenterY();
+		int y1 = (int) propertyToBounds.getCenterY();
+
+		if(fromProperty.preferLeftConnectionToProperty(toProperty)){
+
+		}
 
 		int d0 = 16;
 		int d1 = -16;

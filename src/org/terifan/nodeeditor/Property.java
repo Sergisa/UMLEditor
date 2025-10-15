@@ -15,7 +15,7 @@ public abstract class Property implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-
+	MetaCoordinatorAdapter coordinationAdapter;
 	private final Rectangle mBounds;
 	private String title;
 	protected Node mNode;
@@ -60,6 +60,7 @@ public abstract class Property implements Serializable {
 
 	void bindToNode(Node aNode) {
 		mNode = aNode;
+		coordinationAdapter = this.new MetaCoordinatorAdapter();
 	}
 
 	public Node getNode() {
@@ -94,6 +95,10 @@ public abstract class Property implements Serializable {
 
 	public Rectangle getBounds() {
 		return mBounds;
+	}
+
+	public MetaCoordinatorAdapter getCoordinationAdapter() {
+		return coordinationAdapter;
 	}
 
 	protected abstract int getLeftPad();
