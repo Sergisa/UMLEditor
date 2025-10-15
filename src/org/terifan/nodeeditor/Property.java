@@ -58,8 +58,7 @@ public abstract class Property implements Serializable {
 		return this;
 	}
 
-
-	void bind(Node aNode) {
+	void bindToNode(Node aNode) {
 		mNode = aNode;
 	}
 

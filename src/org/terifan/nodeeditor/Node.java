@@ -44,7 +44,7 @@ public class Node extends BoxComponent<Node> implements Serializable {
 
 	public Node addProperty(Property aItem) {
 		mProperties.add(aItem);
-		aItem.bind(this);
+		aItem.bindToNode(this);
 
 		return this;
 	}
