@@ -202,8 +202,6 @@ public class Node extends BoxComponent<Node> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Node <" + getTitle() + "> {" +
-			"mBounds=" + mBounds +
-			'}';
+		return "Node<" + getTitle() + ">";
 	}
 }

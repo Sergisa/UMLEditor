@@ -17,7 +17,7 @@ public abstract class Property implements Serializable {
 
 
 	private final Rectangle mBounds;
-
+	private String title;
 	protected Node mNode;
 	protected Dimension mPreferredSize;
 	protected boolean mUserSetSize;
@@ -38,7 +38,7 @@ public abstract class Property implements Serializable {
 
 	protected Property(String aText) {
 		this();
-
+		title = aText;
 		mTextBox.setText(aText);
 		mPreferredSize.setSize(mTextBox.measure().getSize());
 	}
@@ -46,6 +46,10 @@ public abstract class Property implements Serializable {
 
 	protected abstract void paintComponent(DiagramView aPane, Graphics2D aGraphics, boolean aHover);
 
+
+	public String getTitle() {
+		return title;
+	}
 
 	public String getId() {
 		return mId;
@@ -132,6 +136,6 @@ public abstract class Property implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Property{" + "mId=" + getId() + ", Node=" + mNode + "}";
+		return "Property{" + "<" + mNode + "." + getTitle() + ">}";
 	}
 }
