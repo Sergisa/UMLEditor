@@ -107,10 +107,21 @@ public abstract class Property implements Serializable {
 
 	protected abstract int getTopPad();
 
-	protected void connectionsChanged(DiagramView aPane, Point aClickPoint) {
 	protected abstract int getBottomPad();
+
+	public boolean preferLeftConnectionToProperty(Property anotherProperty) {
+		if (anotherProperty.getCoordinationAdapter().getX() < this.getCoordinationAdapter().getX()) {
+			return true;
+		}
+		return false;
 	}
 
+	public boolean preferRightConnectionProperty(Property anotherProperty) {
+		if (this.getCoordinationAdapter().getX() < anotherProperty.getCoordinationAdapter().getX()) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Should return true if the clicked point will perform an action. This method return false.
