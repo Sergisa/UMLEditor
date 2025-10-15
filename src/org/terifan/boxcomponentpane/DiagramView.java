@@ -1,5 +1,6 @@
 package org.terifan.boxcomponentpane;
 
+import examples.MandelbrotExample;
 import org.terifan.nodeeditor.Connection;
 import org.terifan.nodeeditor.Node;
 import org.terifan.nodeeditor.Property;
@@ -24,7 +25,7 @@ import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
 public class DiagramView extends JComponent {
 	@Serial
 	private final static long serialVersionUID = 1L;
-
+	private final boolean DEBUG = MandelbrotExample.DEBUG;
 	private double mScale;
 	private Point2D.Double mScroll;
 	private Point mDragStartLocation;
@@ -250,7 +251,11 @@ public class DiagramView extends JComponent {
 			ig.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 			aComponent.paintComponent(this, ig, bounds.width, bounds.height, aSelected);
-
+			if (DEBUG) {
+				aGraphics.setColor(Color.RED);
+				aGraphics.draw(aComponent.getBounds());
+				System.out.println("RED Bounds ON: " + aComponent.getBounds());
+			}
 			aGraphics.setTransform(ot);
 		}
 	}

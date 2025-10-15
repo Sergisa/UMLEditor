@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 
 
 public class MandelbrotExample {
-
+	public final static boolean DEBUG = false;
 
 	static void main() {
 		try {
