@@ -89,7 +89,7 @@ public class DiagramView extends JComponent {
 		}
 
 		Rectangle bounds = new Rectangle(mModel.getComponents().get(0).getBounds());
-		for (BoxComponent box : mModel.getComponents()) {
+		for (BoxComponent<Node> box : mModel.getComponents()) {
 			box.layout();
 			bounds.add(box.getBounds());
 		}
