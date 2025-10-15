@@ -43,7 +43,6 @@ public class ComboBoxProperty extends Property {
 		mTextBox.setAnchor(Anchor.WEST).setMargins(6, 8, 6, 15).setForeground(Styles.BOX_FOREGROUND_COLOR).setMaxLineCount(1).setFont(Styles.SLIDER_FONT);
 	}
 
-
 	@Override
 	protected void paintComponent(DiagramView aPane, Graphics2D aGraphics, boolean aHover) {
 		Paint oldPaint = aGraphics.getPaint();

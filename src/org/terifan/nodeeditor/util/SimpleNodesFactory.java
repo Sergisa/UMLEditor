@@ -10,7 +10,7 @@ public class SimpleNodesFactory {
 	private final static int SIZE = 150;
 
 	public static Node createSourceTexture() {
-		return (Node) new Node("Texture",
+		return new Node("Texture",
 			new ValueProperty("Color"),
 			new ValueProperty("Alpha"),
 			new ValueProperty("Vector")
@@ -19,35 +19,35 @@ public class SimpleNodesFactory {
 
 
 	public static Node createSourceColor() {
-		return (Node) new Node("Color", new ValueProperty("Color"))
+		return new Node("Color", new ValueProperty("Color"))
 			.setSize(SIZE, 0)
 			.setTitleBackground(Styles.DefaultNodeColors.RED);
 	}
 
 
 	public static Node createSourceColorRGB() {
-		return (Node) new Node("RGB",
+		return new Node("RGB",
 			new ValueProperty("Color")
 		).setSize(SIZE, 0).setTitleBackground(Styles.DefaultNodeColors.RED);
 	}
 
 
 	public static Node createSourceColorRGBA() {
-		return (Node) new Node("RGBA",
+		return new Node("RGBA",
 			new ValueProperty("Color")
 		).setSize(SIZE, 0).setTitleBackground(Styles.DefaultNodeColors.RED);
 	}
 
 
 	public static Node createSourceAlpha() {
-		return (Node) new Node("Alpha",
+		return new Node("Alpha",
 			new ValueProperty("Color")
 		).setSize(SIZE, 0).setTitleBackground(Styles.DefaultNodeColors.RED);
 	}
 
 
 	public static Node createIntermediateMath() {
-		return (Node) new Node("Math",
+		return new Node("Math",
 			new ValueProperty("Value"),
 			new ComboBoxProperty("Operation", 2, "Add", "Subtract", "Multiply", "Divide", "Modulo", "Greater Than").setId("function")
 		).setSize(SIZE, 0).setTitleBackground(Styles.DefaultNodeColors.BLUE);
@@ -55,7 +55,7 @@ public class SimpleNodesFactory {
 
 
 	public static Node createIntermediateColorMix() {
-		return (Node) new Node("ColorMix",
+		return new Node("ColorMix",
 			new ValueProperty("Color"),
 			new ValueProperty("Fac").setId("fac"),
 			new ValueProperty("Color").setId("color1"),
@@ -65,7 +65,7 @@ public class SimpleNodesFactory {
 
 
 	public static Node createSourceValue() {
-		return (Node) new Node("Value",
+		return new Node("Value",
 			new ValueProperty("Value")
 		).setSize(SIZE, 0).setTitleBackground(Styles.DefaultNodeColors.BLUE);
 	}
