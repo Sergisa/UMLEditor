@@ -109,15 +109,8 @@ public abstract class Property implements Serializable {
 
 	protected abstract int getBottomPad();
 
-	public boolean preferLeftConnectionToProperty(Property anotherProperty) {
-		if (anotherProperty.getCoordinationAdapter().getX() < this.getCoordinationAdapter().getX()) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean preferRightConnectionProperty(Property anotherProperty) {
-		if (this.getCoordinationAdapter().getX() < anotherProperty.getCoordinationAdapter().getX()) {
+	public boolean preferRightConnectionToProperty(Property anotherProperty) {
+		if (this.getCoordinationAdapter().getCenterX() < anotherProperty.getCoordinationAdapter().getCenterX()) {
 			return true;
 		}
 		return false;
@@ -165,20 +158,20 @@ public abstract class Property implements Serializable {
 
 		@Override
 		public double getCenterX() {
-			return (this.getX() + (getWidth())) / 2;
+			return (getX() + (getWidth())) / 2;
 		}
 
 		@Override
 		public double getCenterY() {
-			return (this.getY() + (getHeight() - (2 * nodeHPAD))) / 2;
+			return (getY() + (getHeight() - (2 * nodeHPAD))) / 2;
 		}
 
 		public double getRightCoordinate() {
-			return getX() + mBounds.width;
+			return getX() + mNode.getBounds().width - 2 * nodeHPAD;
 		}
 
 		public double getBottomCoordinate() {
-			return getX() + mBounds.height;
+			return getX() + mNode.getBounds().height - 2 + nodeVPAD;
 		}
 
 		@Override

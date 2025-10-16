@@ -84,21 +84,31 @@ public class SplineRenderer {
 	private static BSpline createSpline(Connection<Property> relation) {
 		Property fromProperty = relation.getFrom();
 		Property toProperty = relation.getTo();
-		Rectangle propertyFromBounds = fromProperty.getCoordinationAdapter().getBounds(); //Координаты внутри блока
-		Rectangle propertyToBounds = toProperty.getCoordinationAdapter().getBounds(); //координаты внутри блока
+		Rectangle propertyFromCoordinator = fromProperty.getCoordinationAdapter();
+		Rectangle propertyToCoordinator = toProperty.getCoordinationAdapter();
 
-		int x0 = (int) propertyFromBounds.getX() ;
-		int x1 = (int) propertyToBounds.getX();
-
-		int y0 = (int) propertyFromBounds.getCenterY();
-		int y1 = (int) propertyToBounds.getCenterY();
-
-		if(fromProperty.preferLeftConnectionToProperty(toProperty)){
-
-		}
+		int x0;
+		int x1;
 
 		int d0 = 16;
-		int d1 = -16;
+		int d1 = 16;
+
+		int y0 = (int) propertyFromCoordinator.getBounds().getCenterY();
+		int y1 = (int) propertyToCoordinator.getBounds().getCenterY();
+
+		if (fromProperty.preferRightConnectionToProperty(toProperty)) {
+			x0 = (int) fromProperty.getCoordinationAdapter().getRightCoordinate();
+		} else {
+			x0 = (int) propertyFromCoordinator.getX();
+			d0 *= -1;
+		}
+
+		if (toProperty.preferRightConnectionToProperty(fromProperty)) {
+			x1 = (int) toProperty.getCoordinationAdapter().getRightCoordinate();
+		} else {
+			d1 *= -1;
+			x1 = (int) propertyToCoordinator.getX();
+		}
 
 		return new BSpline(
 			new double[]{x0, x0 + d0, x1 + d1, x1},
