@@ -13,36 +13,38 @@ import java.awt.event.ActionEvent;
 
 
 public class MandelbrotExample {
-	public final static boolean DEBUG = false;
+	public final static boolean DEBUG = true;
 
 	static void main() {
 		try {
 			ValueProperty mandelbrotIterations = new ValueProperty("Iterations");
 			ValueProperty paletteColor = new ValueProperty("Color");
+			ValueProperty paleteRedProperty = new ValueProperty("Red");
 			NodeModel model = new NodeModel()
 				.addComponent(
 					new Node("Mandelbrot")
 						.setTitleBackground(DefaultNodeColors.BROWN)
 						.setBounds(-500, 100, 150, 0)
 						.addProperty(mandelbrotIterations)
-						.addProperty(new ValueProperty("Coordinate").setId("coord"))
-						.addProperty(new ValueProperty("X").setId("x"))
-						.addProperty(new ValueProperty("Y").setId("y"))
-						.addProperty(new ValueProperty("Zoom").setId("zoom"))
-						.addProperty(new ValueProperty("Limit").setId("limit"))
+						.addProperty(new ValueProperty("Coordinate"))
+						.addProperty(new ValueProperty("X"))
+						.addProperty(new ValueProperty("Y"))
+						.addProperty(new ValueProperty("Zoom"))
+						.addProperty(new ValueProperty("Limit"))
 				)
 				.addComponent(
 					new Node("Palette")
 						.setTitleBackground(DefaultNodeColors.GREEN)
 						.setBounds(0, -20, 150, 0)
 						.addProperty(paletteColor)
-						.addProperty(new ValueProperty("Red").setId("rf"))
-						.addProperty(new ValueProperty("Green").setId("gf"))
-						.addProperty(new ValueProperty("Blue").setId("bf"))
-						.addProperty(new ValueProperty("Scale").setId("sf"))
-						.addProperty(new ValueProperty("Iterations").setId("iterations"))
+						.addProperty(paleteRedProperty)
+						.addProperty(new ValueProperty("Green"))
+						.addProperty(new ValueProperty("Blue"))
+						.addProperty(new ValueProperty("Scale"))
+						.addProperty(new ValueProperty("Iterations"))
 				)
 				.addConnection(paletteColor, mandelbrotIterations)
+				.addConnection(paletteColor, paleteRedProperty)
 				.addComponent(
 					SimpleNodesFactory.
 						createIntermediateColorMix().
