@@ -82,7 +82,9 @@ public class NodeModel implements Serializable {
 	}
 
 	public NodeModel addConnection(Property aFromItem, Property aToItem) {
-		mConnections.add(new Connection<>(aFromItem, aToItem));
+		if (aFromItem.getNode() != aToItem.getNode()) {
+			mConnections.add(new Connection<>(aFromItem, aToItem));
+		}
 		return this;
 	}
 
