@@ -59,32 +59,6 @@ public class Node extends BoxComponent<Node> implements Serializable {
 		return mProperties.get(aIndex);
 	}
 
-	public <T extends Property> T getProperty(String aPath) {
-		if (aPath == null) {
-			throw new IllegalArgumentException("Path is null");
-		}
-
-		String id = aPath;
-		Property item = null;
-
-		for (Property pi : mProperties) {
-			Property ab = pi;
-
-			if (id.equals(ab.getId())) {
-				if (item != null) {
-					throw new IllegalStateException("More than one NodeItem have the same name, provide an Identity to either of them: " + ab.getText());
-				}
-				item = pi;
-			}
-		}
-
-		if (item == null) {
-			throw new IllegalArgumentException("Failed to find property: id: " + id + ", node: " + mTitle);
-		}
-
-		return (T) item;
-	}
-
 	@Override
 	public void paintComponent(DiagramView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		super.paintComponent(aPane, aGraphics, aWidth, aHeight, aSelected);
