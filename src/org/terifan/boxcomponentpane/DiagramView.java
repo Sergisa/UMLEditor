@@ -10,10 +10,7 @@ import org.terifan.nodeeditor.graphics.SplineRenderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -82,7 +79,7 @@ public class DiagramView extends JComponent {
 		return mModel;
 	}
 
-	public ArrayList<DiagramView> getSelectedNodes() {
+	public ArrayList<Node> getSelectedNodes() {
 		return mSelectedBoxes;
 	}
 
@@ -217,6 +214,11 @@ public class DiagramView extends JComponent {
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 		aGraphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
+		for (Connection<Property> connection : mModel.getConnections()) {
+			Color start = Styles.CONNECTOR_COLOR_INNER_FOCUSED;
+			SplineRenderer.drawSpline(aGraphics, connection, getScale(), Styles.CONNECTOR_COLOR_OUTER, start, start);
+		}
+
 		for (Node box : mModel.getComponents()) {
 			paintBoxComponent(aGraphics, box, mSelectedBoxes.contains(box));
 		}
@@ -224,11 +226,6 @@ public class DiagramView extends JComponent {
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 		if (mPopup != null) {
 			paintBoxComponent(aGraphics, mPopup, false);
-		}
-
-		for (Connection<Property> connection : mModel.getConnections()) {
-			Color start = Styles.CONNECTOR_COLOR_INNER_FOCUSED;
-			SplineRenderer.drawSpline(aGraphics, connection, getScale(), Styles.CONNECTOR_COLOR_OUTER, start, start);
 		}
 	}
 
@@ -268,7 +265,6 @@ public class DiagramView extends JComponent {
 			if (DEBUG) {
 				aGraphics.setColor(Color.RED);
 				aGraphics.draw(aComponent.getBounds());
-				System.out.println("RED Bounds ON: " + aComponent.getBounds());
 			}
 			aGraphics.setTransform(ot);
 		}
@@ -287,41 +283,56 @@ public class DiagramView extends JComponent {
 	}
 
 	public class MouseListener extends MouseAdapter {
-		private boolean isNodePressed = false;
-		private boolean isConnectorPressed = false;
 		Point startPoint;
+		Node hittedNode;
+		double mZoomSpeed = 1.1;
 
 		@Override
 		public void mousePressed(MouseEvent event) {
 			startPoint = event.getPoint();
-			Point mClickPoint = calcMousePoint(event.getPoint());
-			Node node = getModel().getComponentAt(mClickPoint);
+			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
-				isNodePressed = true;
+				hittedNode = node;
+			} else if (SwingUtilities.isLeftMouseButton(event)) {
+				mSelectionRectangle = new Rectangle(calcMousePoint(startPoint));
 			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent event) {
-			isNodePressed = false;
+			mSelectionRectangle = null;
+			repaint();
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent event) {
-			if (isNodePressed) {
-				System.out.println("NODE DRAG");
-				int dx = event.getPoint().x - startPoint.x;
-				int dy = event.getPoint().y - startPoint.y;
-				getSelectedNodes().getFirst().getBounds().translate(dx, dy);
+			int dx = event.getPoint().x - startPoint.x;
+			int dy = event.getPoint().y - startPoint.y;
+			if (hittedNode != null) {
+				hittedNode.getBounds().translate(dx, dy);
+				mModel.moveTop(hittedNode);
 				repaint();
-			}
-			if (SwingUtilities.isLeftMouseButton(event)) {
-				Point2D.Double paneScroll = getScroll();
-				paneScroll.x += (event.getX() - startPoint.x);
-				paneScroll.y += (event.getY() - startPoint.y);
+			} else {
+				if (SwingUtilities.isRightMouseButton(event)) {
+					Point2D.Double paneScroll = getScroll();
+					paneScroll.x += (event.getX() - startPoint.x);
+					paneScroll.y += (event.getY() - startPoint.y);
+				} else if (SwingUtilities.isLeftMouseButton(event)) {
+					//FIXME: при изменённом масштабе не правильно рисуется прямоугольник
+					mSelectionRectangle.width += (int) (dx * mScale);
+					mSelectionRectangle.height += (int) (dy * mScale);
+				}
 			}
 			startPoint = event.getPoint();
 			repaint();
+		}
+
+		public Node getComponentAtPoint(Point aPoint) {
+			return getModel().getComponentAt(calcMousePoint(aPoint));
+		}
+
+		public boolean isMinimizeButtonPressed(Node node, Point point) {
+			return getMinimizeButtonBounds(node).contains(calcMousePoint(point));
 		}
 
 		@Override
@@ -329,10 +340,9 @@ public class DiagramView extends JComponent {
 			if (SwingUtilities.isRightMouseButton(event)) {
 				return;
 			}
-			Point mClickPoint = calcMousePoint(event.getPoint());
-			Node node = getModel().getComponentAt(mClickPoint);
+			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
-				if (getMinimizeButtonBounds(node).contains(mClickPoint)) {
+				if (isMinimizeButtonPressed(node, event.getPoint())) {
 					node.setMinimized(!node.isMinimized());
 				}
 				if (!event.isControlDown()) getSelectedNodes().clear();
@@ -341,12 +351,25 @@ public class DiagramView extends JComponent {
 			}
 		}
 
-		public void nodeDragged(MouseEvent event) {
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent event) {
 
-		}
+			mScroll.x -= event.getX();
+			mScroll.y -= event.getY();
 
-		public void connectionDragged(MouseEvent event) {
+			if (event.getWheelRotation() == 1) {
+				setScale(getScale() * mZoomSpeed);
+				mScroll.x *= mZoomSpeed;
+				mScroll.y *= mZoomSpeed;
+			} else {
+				setScale(getScale() / mZoomSpeed);
+				mScroll.x /= mZoomSpeed;
+				mScroll.y /= mZoomSpeed;
+			}
 
+			mScroll.x += event.getX();
+			mScroll.y += event.getY();
+			repaint();
 		}
 
 		protected Rectangle getMinimizeButtonBounds(Node aNode) {

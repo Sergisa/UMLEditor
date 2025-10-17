@@ -51,7 +51,7 @@ public class NodeModel implements Serializable {
 	}
 
 	public void moveTop(Node aComponent) {
-		if (aComponent != null) {
+		if (aComponent != null && mComponents.contains(aComponent)) {
 			mComponents.remove(aComponent);
 			mComponents.addLast(aComponent);
 		}
