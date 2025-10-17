@@ -175,12 +175,9 @@ public abstract class Property implements Serializable {
 
 		@Override
 		public Rectangle getBounds() {
-			System.out.print("Node: " + mNode.getBounds());
-			System.out.println("\t\t Property: " + mBounds);
 			Rectangle bounds = new Rectangle();
 			bounds.setLocation((int) getX(), (int) getY());
 
-			System.out.println("\t\t Property AFTER: " + bounds);
 			return bounds;
 		}
 	}
