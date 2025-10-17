@@ -34,13 +34,10 @@ public class NodeModel implements Serializable {
 
 	public Node getComponentAt(Point aPoint) {
 		for (Node c : mComponents.reversed()) {
-			Rectangle b = c.getBounds();
-
-			if (b.contains(aPoint)) {
+			if (c.getBounds().contains(aPoint)) {
 				return c;
 			}
 		}
-
 		return null;
 	}
 
