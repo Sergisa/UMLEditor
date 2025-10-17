@@ -9,6 +9,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
+import static org.terifan.nodeeditor.Styles.TITLE_HEIGHT_PADDED;
+
 
 public class SplineRenderer {
 
@@ -95,6 +97,15 @@ public class SplineRenderer {
 
 		int y0 = (int) propertyFromCoordinator.getBounds().getCenterY();
 		int y1 = (int) propertyToCoordinator.getBounds().getCenterY();
+
+		int nodePad = fromProperty.getNode().horizontalPadding;
+
+		if (fromProperty.getNode().isMinimized()) {
+			y0 = (int) fromProperty.getNode().getBounds().getY() + nodePad + (TITLE_HEIGHT_PADDED / 2);
+		}
+		if (toProperty.getNode().isMinimized()) {
+			y1 = (int) toProperty.getNode().getBounds().getY() + nodePad + (TITLE_HEIGHT_PADDED / 2);
+		}
 
 		if (fromProperty.preferRightConnectionToProperty(toProperty)) {
 			x0 = (int) fromProperty.getCoordinationAdapter().getRightCoordinate();
