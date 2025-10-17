@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -32,7 +34,7 @@ public class DiagramView extends JComponent {
 	private Point mDragEndLocation;
 	private Rectangle mSelectionRectangle;
 	private NodeModel mModel;
-	private ArrayList<DiagramView> mSelectedBoxes;
+	private ArrayList<Node> mSelectedBoxes;
 	private transient Function<String, BufferedImage> mIconProvider;
 
 	private transient Popup mPopup;
@@ -47,6 +49,10 @@ public class DiagramView extends JComponent {
 		//mBindings = new HashMap<>();
 		mRemoveInConnectionsOnDrop = true;
 		setFocusable(true);
+		MouseListener mouseListener = new MouseListener();
+		addMouseListener(mouseListener);
+		addMouseMotionListener(mouseListener);
+		addMouseWheelListener(mouseListener);
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -78,6 +84,14 @@ public class DiagramView extends JComponent {
 
 	public ArrayList<DiagramView> getSelectedNodes() {
 		return mSelectedBoxes;
+	}
+
+	public void setScroll(Point2D.Double mScroll) {
+		this.mScroll = mScroll;
+	}
+
+	public Point2D.Double getScroll() {
+		return mScroll;
 	}
 
 	/**
@@ -270,5 +284,75 @@ public class DiagramView extends JComponent {
 	public DiagramView setPopup(Popup aPopup) {
 		mPopup = aPopup;
 		return this;
+	}
+
+	public class MouseListener extends MouseAdapter {
+		private boolean isNodePressed = false;
+		private boolean isConnectorPressed = false;
+		Point startPoint;
+
+		@Override
+		public void mousePressed(MouseEvent event) {
+			startPoint = event.getPoint();
+			Point mClickPoint = calcMousePoint(event.getPoint());
+			Node node = getModel().getComponentAt(mClickPoint);
+			if (node != null) {
+				isNodePressed = true;
+			}
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent event) {
+			isNodePressed = false;
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent event) {
+			if (isNodePressed) {
+				System.out.println("NODE DRAG");
+				int dx = event.getPoint().x - startPoint.x;
+				int dy = event.getPoint().y - startPoint.y;
+				getSelectedNodes().getFirst().getBounds().translate(dx, dy);
+				repaint();
+			}
+			if (SwingUtilities.isLeftMouseButton(event)) {
+				Point2D.Double paneScroll = getScroll();
+				paneScroll.x += (event.getX() - startPoint.x);
+				paneScroll.y += (event.getY() - startPoint.y);
+			}
+			startPoint = event.getPoint();
+			repaint();
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent event) {
+			if (SwingUtilities.isRightMouseButton(event)) {
+				return;
+			}
+			Point mClickPoint = calcMousePoint(event.getPoint());
+			Node node = getModel().getComponentAt(mClickPoint);
+			if (node != null) {
+				if (getMinimizeButtonBounds(node).contains(mClickPoint)) {
+					node.setMinimized(!node.isMinimized());
+				}
+				if (!event.isControlDown()) getSelectedNodes().clear();
+				getSelectedNodes().add(node);
+				repaint();
+			}
+		}
+
+		public void nodeDragged(MouseEvent event) {
+
+		}
+
+		public void connectionDragged(MouseEvent event) {
+
+		}
+
+		protected Rectangle getMinimizeButtonBounds(Node aNode) {
+			Rectangle b = aNode.getBounds();
+			//TODO: обязательно переписать на константы, что бы не было чисел с неизвестным смыслом
+			return new Rectangle(b.x + 11, b.y + 7, 20, 20);
+		}
 	}
 }
