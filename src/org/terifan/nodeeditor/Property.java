@@ -7,8 +7,7 @@ import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
 
-import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_COLOR;
-import static org.terifan.nodeeditor.Styles.BOX_FOREGROUND_SHADOW_COLOR;
+import static org.terifan.nodeeditor.Styles.*;
 
 
 public abstract class Property implements Serializable {
@@ -143,8 +142,8 @@ public abstract class Property implements Serializable {
 	 * Вычисляет координату свойства. Не Текста, а свойства
 	 */
 	public class MetaCoordinatorAdapter extends Rectangle {
-		private int nodeHPAD = mNode.horizontalPadding;
-		private int nodeVPAD = mNode.verticalPadding;
+		private int nodeHPAD = NODE_BOX_MARGIN_LEFT; //TODO: Разобраться с использованием
+		private int nodeVPAD = NODE_BOX_MARGIN_TOP;
 
 		@Override
 		public double getX() {

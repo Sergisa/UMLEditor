@@ -228,10 +228,10 @@ public abstract class BoxComponent<T> implements Serializable, Renderable {
 	}
 
 	public void paintComponent(DiagramView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
-		int x = horizontalPadding;
-		int y = verticalPadding;
-		int w = aWidth - horizontalPadding * 2;
-		int h = aHeight - verticalPadding * 2;
+		int x = NODE_BOX_MARGIN_LEFT;
+		int y = NODE_BOX_MARGIN_TOP;
+		int w = aWidth - NODE_BOX_MARGIN_LEFT - NODE_BOX_MARGIN_RIGHT;
+		int h = aHeight - NODE_BOX_MARGIN_TOP - NODE_BOX_MARGIN_BOTTOM;
 
 		paintShadow(aGraphics, x, y, w, h);
 		paintBorder(aGraphics, x, y, w, h, aSelected);

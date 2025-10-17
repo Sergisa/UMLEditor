@@ -16,13 +16,11 @@ public class Node extends BoxComponent<Node> implements Serializable {
 	private final static long serialVersionUID = 1L;
 
 	protected final ArrayList<Property> mProperties;
-	protected int mVerticalSpacing;
+	protected int mVerticalSpacing = Styles.PROPERTY_SPACING;
 	protected NodeModel mModel;
 
 	public Node(String aTitle) {
 		super(aTitle);
-
-		mVerticalSpacing = 3;
 		mProperties = new ArrayList<>();
 	}
 

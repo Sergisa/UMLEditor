@@ -7,6 +7,11 @@ import java.io.IOException;
 
 
 public class Styles {
+	public static final int NODE_BOX_MARGIN_TOP = 5;
+	public static final int NODE_BOX_MARGIN_BOTTOM = 5;
+	public static final int NODE_BOX_MARGIN_LEFT = 5;
+	public static final int NODE_BOX_MARGIN_RIGHT = 5;
+	public static final int PROPERTY_SPACING = 3;
 	private final static int a = 230;
 	private final static int b = 254; // alpha must be less than 255 to force Java to blend alpha correctly!
 
