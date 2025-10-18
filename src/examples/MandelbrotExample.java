@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 
 
 public class MandelbrotExample {
-	public final static boolean DEBUG = true;
+	public static boolean DEBUG = true;
 
 	static void main() {
 		try {
@@ -131,6 +131,14 @@ public class MandelbrotExample {
 			frame.setSize(746, 800);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
+			toolbar.add(new AbstractAction("Debug: on") {
+				@Override
+				public void actionPerformed(ActionEvent aE) {
+					MandelbrotExample.DEBUG = !MandelbrotExample.DEBUG;
+					putValue(Action.NAME, MandelbrotExample.DEBUG ? "Debug: on" : "Debug: off");
+					frame.repaint();
+				}
+			});
 		} catch (Throwable e) {
 			e.printStackTrace(System.out);
 		}

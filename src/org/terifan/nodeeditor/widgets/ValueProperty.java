@@ -9,7 +9,6 @@ import java.io.Serial;
 
 
 public class ValueProperty extends Property {
-	private final boolean DEBUG = MandelbrotExample.DEBUG;
 	private final int leftPadding = 0;
 	private final int rightPadding = leftPadding;
 	private final int bottomPadding = 4;
@@ -29,6 +28,7 @@ public class ValueProperty extends Property {
 
 	@Override
 	protected void paintComponent(DiagramView aPane, Graphics2D aGraphics, boolean aHover) {
+		boolean DEBUG = MandelbrotExample.DEBUG;
 		if (DEBUG) {
 			aGraphics.setColor(Color.RED);
 			aGraphics.draw(getBounds());
