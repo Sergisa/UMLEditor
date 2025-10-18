@@ -127,8 +127,8 @@ public class MandelbrotExample {
 
 			JFrame frame = new JFrame();
 			frame.add(panel);
-			frame.setSize(1600, 1000);
-			frame.setLocationRelativeTo(null);
+			frame.setLocation(794, 6);
+			frame.setSize(746, 800);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
 		} catch (Throwable e) {
