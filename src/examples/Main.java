@@ -141,16 +141,27 @@ public class Main {
 			frame.setSize(746, 800);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);
-			toolbar.add(new AbstractAction("Debug: on") {
-				@Override
-				public void actionPerformed(ActionEvent aE) {
-					Main.DEBUG = !Main.DEBUG;
-					putValue(Action.NAME, Main.DEBUG ? "Debug: on" : "Debug: off");
-					frame.repaint();
-				}
-			});
+
+			JToggleButton debuggingToggleButton = getDebuggingToggleButton(frame);
+			toolbar.add(debuggingToggleButton);
 		} catch (Throwable e) {
 			e.printStackTrace(System.out);
 		}
+	}
+
+	private static JToggleButton getDebuggingToggleButton(JFrame frame) {
+		Action toggleAction = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent aE) {
+				Main.DEBUG = !Main.DEBUG;
+				((AbstractButton) aE.getSource()).setText(Main.DEBUG ? "Debug: on" : "Debug: off");
+				frame.repaint();
+			}
+		};
+		JToggleButton debuggingToggleButton = new JToggleButton(toggleAction);
+		debuggingToggleButton.setToolTipText("Отладка");
+		debuggingToggleButton.setText(Main.DEBUG ? "Debug: on" : "Debug: off");
+		debuggingToggleButton.setSelected(Main.DEBUG);
+		return debuggingToggleButton;
 	}
 }
