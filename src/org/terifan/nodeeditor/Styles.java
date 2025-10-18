@@ -44,9 +44,8 @@ public class Styles {
 	public static Color BOX_BORDER_TITLE_COLOR = new Color(67, 67, 67, a);
 	public static Color BOX_TITLE_TEXT_SHADOW_COLOR = new Color(50, 50, 50, a);
 	public static Color PANE_BACKGROUND_COLOR = new Color(29, 29, 29);
-	public static Color PANE_GRID_COLOR_1 = new Color(27, 27, 27);
-	public static Color PANE_GRID_COLOR_2 = new Color(26, 26, 26);
-	public static Color PANE_GRID_COLOR_3 = new Color(25, 25, 25);
+	public static Color MAIN_AXIS_COLOR = Color.gray;
+	public static Color SECONDARY_GRID_COLOR = new Color(69, 69, 69);
 	public static Color PANE_SELECTION_RECTANGLE_LINE = new Color(255, 255, 255);
 	public static Color PANE_SELECTION_RECTANGLE_BACKGROUND = new Color(255, 255, 255, 15);
 

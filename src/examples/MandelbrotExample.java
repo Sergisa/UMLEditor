@@ -51,7 +51,7 @@ public class MandelbrotExample {
 						setLocation(220, -140)
 				);
 
-			DiagramView editor = new DiagramView(model).center();
+			DiagramView editor = new DiagramView(model).centerItems();
 
 			JToolBar toolbar = new JToolBar();
 
@@ -107,6 +107,14 @@ public class MandelbrotExample {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
 					model.addComponent(SimpleNodesFactory.createSourceValue());
+					editor.repaint();
+				}
+			});
+
+			toolbar.add(new AbstractAction("Reset Zoom") {
+				@Override
+				public void actionPerformed(ActionEvent aE) {
+					editor.resetScale();
 					editor.repaint();
 				}
 			});
