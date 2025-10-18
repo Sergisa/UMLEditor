@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public interface NodeViewEventListener {
+	public void onPaneClicked(MouseEvent event, Point aPoint);
+
 	void onNodeClicked(MouseEvent event, Node node);
 
 	void onCoordinateShifting(MouseEvent event);

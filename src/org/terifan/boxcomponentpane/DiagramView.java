@@ -325,24 +325,38 @@ public class DiagramView extends JComponent {
 				repaint();
 				return;
 			}
-			String templateMessage = "MousePoint: (%s, %s) \n\t\t Calced(%s, %s)";
-			System.out.printf((templateMessage) + "%n",
-				event.getX(),
-				event.getY(),
-				calcMousePoint(event.getPoint()).x,
-				calcMousePoint(event.getPoint()).y
-			);
+
 			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
 				onNodeClicked(event, node);
 				repaint();
 			} else {
-				getSelectedNodes().clear();
+				onPaneClicked(event, event.getPoint());
 			}
 		}
 
 		@Override
+		public void onPaneClicked(MouseEvent event, Point aPoint) {
+			String templateMessage = "InCoordinateSystem: (%s, %s) \t ViewPoint: (%s, %s)";
+			System.out.printf((templateMessage) + "%n",
+				calcMousePoint(event.getPoint()).x,
+				calcMousePoint(event.getPoint()).y,
+				event.getX(),
+				event.getY()
+			);
+			getSelectedNodes().clear();
+		}
+
+		@Override
 		public void onNodeClicked(MouseEvent event, Node node) {
+			String templateMessage = "<Node>\"%s\" (X,Y)(%s, %s) \t (W,H)(←·→%s, %s)";
+			System.out.printf((templateMessage) + "%n",
+				node.getTitle(),
+				node.getBounds().x,
+				node.getBounds().y,
+				node.getBounds().width,
+				node.getBounds().height
+			);
 			if (isMinimizeButtonPressed(node, event.getPoint())) {
 				node.setMinimized(!node.isMinimized());
 			}
