@@ -45,6 +45,10 @@ public class DiagramView extends JComponent {
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 	}
 
+	public void centerCoordinateSystem() {
+		coordinateShift = new Point.Double(getWidth() / 2.0, getHeight() / 2.0);
+	}
+
 	public void resetScale() {
 		scale = 1;
 		scaledAdapter.setScale(scale);

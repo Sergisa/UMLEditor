@@ -119,6 +119,14 @@ public class MandelbrotExample {
 				}
 			});
 
+			toolbar.add(new AbstractAction("Reset Position") {
+				@Override
+				public void actionPerformed(ActionEvent aE) {
+					editor.centerCoordinateSystem();
+					editor.repaint();
+				}
+			});
+
 
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(toolbar, BorderLayout.NORTH);
