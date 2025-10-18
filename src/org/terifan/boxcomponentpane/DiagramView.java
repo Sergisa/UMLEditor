@@ -292,24 +292,36 @@ public class DiagramView extends JComponent {
 			int dx = calcMousePoint(event.getPoint()).x - calcMousePoint(startPoint).x;
 			int dy = calcMousePoint(event.getPoint()).y - calcMousePoint(startPoint).y;
 			if (hittedNode != null) {
-				hittedNode.getBounds().translate(dx, dy);
+				onComponentShifting(dx, dy);
 				mModel.moveTop(hittedNode);
 				repaint();
 			} else {
 				if (SwingUtilities.isRightMouseButton(event)) {
-					coordinateShift.x += (event.getX() - startPoint.x);
-					coordinateShift.y += (event.getY() - startPoint.y);
+					onCoordinateShifting(event);
 				} else if (SwingUtilities.isLeftMouseButton(event)) {
-					//FIXME: при изменённом масштабе не правильно рисуется прямоугольник
-					//TODO: Не надо перезаписывать точку и все будет хорошо
 					if (mSelectionRectangle != null) {
-						mSelectionRectangle.width += dx;
-						mSelectionRectangle.height += dy;
+						onExtendSelectionRectangle(dx,dy);
 					}
 				}
 			}
 			startPoint = event.getPoint();
 			repaint();
+		}
+
+		private void onCoordinateShifting(MouseEvent event) {
+			coordinateShift.x += (event.getX() - startPoint.x);
+			coordinateShift.y += (event.getY() - startPoint.y);
+		}
+
+		private void onComponentShifting(int dx, int dy) {
+			hittedNode.getBounds().translate(dx, dy);
+		}
+
+		private void onExtendSelectionRectangle(int dx, int dy) {
+			//FIXME: при изменённом масштабе не правильно рисуется прямоугольник
+			//TODO: Не надо перезаписывать точку и все будет хорошо
+			mSelectionRectangle.width += dx;
+			mSelectionRectangle.height += dy;
 		}
 
 		public Node getComponentAtPoint(Point aPoint) {
