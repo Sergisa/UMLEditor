@@ -1,5 +1,6 @@
 package examples;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.boxcomponentpane.NodeModel;
 import org.terifan.nodeeditor.Node;
@@ -16,6 +17,7 @@ public class MandelbrotExample {
 	public static boolean DEBUG = true;
 
 	static void main() {
+		FlatDarculaLaf.setup();
 		try {
 			ValueProperty mandelbrotIterations = new ValueProperty("Iterations");
 			ValueProperty paletteColor = new ValueProperty("Color");
