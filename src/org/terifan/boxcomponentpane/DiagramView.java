@@ -271,19 +271,19 @@ public class DiagramView extends JComponent {
 
 		@Override
 		public void mousePressed(MouseEvent event) {
-			startPoint = event.getPoint();
+			startPoint = calcMousePoint(event.getPoint());
 			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
 				hittedNode = node;
 			} else if (SwingUtilities.isLeftMouseButton(event)) {
-				mSelectionRectangle = new Rectangle(calcMousePoint(startPoint));
+				mSelectionRectangle = new Rectangle(startPoint);
 			}
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent event) {
 			if (hittedNode != null) {
-				onComponentShifting(startPoint, event.getPoint());
+				onComponentShifting(startPoint, calcMousePoint(event.getPoint()));
 				mModel.moveTop(hittedNode);
 				repaint();
 			} else {
@@ -291,11 +291,12 @@ public class DiagramView extends JComponent {
 					onCoordinateShifting(event);
 				} else if (SwingUtilities.isLeftMouseButton(event)) {
 					if (mSelectionRectangle != null) {
-						onExtendSelectionRectangle(startPoint, event.getPoint());
+						onExtendSelectionRectangle(startPoint, calcMousePoint(event.getPoint()));
 					}
 				}
 			}
-			if (hittedNode != null || SwingUtilities.isRightMouseButton(event)) startPoint = event.getPoint();
+			if (hittedNode != null || SwingUtilities.isRightMouseButton(event))
+				startPoint = calcMousePoint(event.getPoint());
 			repaint();
 		}
 
@@ -340,16 +341,16 @@ public class DiagramView extends JComponent {
 		}
 
 		private void onComponentShifting(Point startPoint, Point newPoint) {
-			int dx = calcMousePoint(newPoint).x - calcMousePoint(startPoint).x;
-			int dy = calcMousePoint(newPoint).y - calcMousePoint(startPoint).y;
+			int dx = newPoint.x - startPoint.x;
+			int dy = newPoint.y - startPoint.y;
 			hittedNode.getBounds().translate(dx, dy);
 		}
 
 		private void onExtendSelectionRectangle(Point startPoint, Point newPoint) {
-			int x0 = (int) (Math.min(calcMousePoint(startPoint).x, calcMousePoint(newPoint).x) * scale);
-			int y0 = (int) (Math.min(calcMousePoint(startPoint).y, calcMousePoint(newPoint).y) * scale);
-			int x1 = (int) (Math.max(calcMousePoint(startPoint).x, calcMousePoint(newPoint).x) * scale);
-			int y1 = (int) (Math.max(calcMousePoint(startPoint).y, calcMousePoint(newPoint).y) * scale);
+			int x0 = (int) (Math.min(startPoint.x, newPoint.x) * scale);
+			int y0 = (int) (Math.min(startPoint.y, newPoint.y) * scale);
+			int x1 = (int) (Math.max(startPoint.x, newPoint.x) * scale);
+			int y1 = (int) (Math.max(startPoint.y, newPoint.y) * scale);
 			mSelectionRectangle.setBounds(x0, y0, x1 - x0, y1 - y0);
 		}
 
