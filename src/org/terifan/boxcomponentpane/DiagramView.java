@@ -288,6 +288,8 @@ public class DiagramView extends JComponent {
 			if (node != null) {
 				hittedNode = node;
 			} else if (SwingUtilities.isLeftMouseButton(event)) {
+				//NOTE: это либо перетаскивание координатной плоскости
+				// либо начало выделения
 				onStartSelectionRectangle(startPoint, event.isControlDown());
 			}
 		}
