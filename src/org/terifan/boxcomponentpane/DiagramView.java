@@ -271,7 +271,7 @@ public class DiagramView extends JComponent {
 		mPopup = aPopup;
 	}
 
-	public class MouseListener extends MouseAdapter {
+	public class MouseListener extends MouseAdapter implements NodeViewEventListener {
 		Point startPoint;
 		Node hittedNode;
 
@@ -289,7 +289,7 @@ public class DiagramView extends JComponent {
 		@Override
 		public void mouseDragged(MouseEvent event) {
 			if (hittedNode != null) {
-				onComponentShifting(startPoint, calcMousePoint(event.getPoint()));
+				onNodeMoving(startPoint, calcMousePoint(event.getPoint()));
 				mModel.moveTop(hittedNode);
 				repaint();
 			} else {
@@ -339,6 +339,7 @@ public class DiagramView extends JComponent {
 			}
 		}
 
+		@Override
 		public void onNodeClicked(MouseEvent event, Node node) {
 			if (isMinimizeButtonPressed(node, event.getPoint())) {
 				node.setMinimized(!node.isMinimized());
@@ -352,21 +353,25 @@ public class DiagramView extends JComponent {
 			}
 		}
 
+		@Override
 		public void onCoordinateShifting(MouseEvent event) {
 			coordinateShift.x += (event.getX() - startPoint.x);
 			coordinateShift.y += (event.getY() - startPoint.y);
 		}
 
-		public void onComponentShifting(Point startPoint, Point newPoint) {
+		@Override
+		public void onNodeMoving(Point startPoint, Point newPoint) {
 			int dx = newPoint.x - startPoint.x;
 			int dy = newPoint.y - startPoint.y;
 			hittedNode.getBounds().translate(dx, dy);
 		}
 
+		@Override
 		public void onStartSelectionRectangle(Point startPoint, boolean addingToSelection) {
 			mSelectionRectangle = new Rectangle(startPoint);
 		}
 
+		@Override
 		public void onExtendSelectionRectangle(Point startPoint, Point newPoint) {
 			//TODO: попытаться использовать функцию Rectangle.add()
 			int x0 = (int) (Math.min(startPoint.x, newPoint.x) * scale);
@@ -376,6 +381,7 @@ public class DiagramView extends JComponent {
 			mSelectionRectangle.setBounds(x0, y0, x1 - x0, y1 - y0);
 		}
 
+		@Override
 		public void onSelectionRectangleEnd() {
 			mSelectionRectangle.x /= scale;
 			mSelectionRectangle.y /= scale;

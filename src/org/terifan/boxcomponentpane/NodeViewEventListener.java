@@ -1,0 +1,20 @@
+package org.terifan.boxcomponentpane;
+
+import org.terifan.nodeeditor.Node;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+
+public interface NodeViewEventListener {
+	void onNodeClicked(MouseEvent event, Node node);
+
+	void onCoordinateShifting(MouseEvent event);
+
+	void onNodeMoving(Point startPoint, Point newPoint);
+
+	void onStartSelectionRectangle(Point startPoint, boolean addingToSelection);
+
+	void onExtendSelectionRectangle(Point startPoint, Point newPoint);
+
+	void onSelectionRectangleEnd();
+}
