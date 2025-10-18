@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
 import java.io.Serial;
 import java.util.ArrayList;
 
-import static org.terifan.nodeeditor.Styles.SELECTION_RECTANGLE_STROKE;
+import static org.terifan.nodeeditor.Styles.*;
 
 
 public class DiagramView extends JComponent {
@@ -251,10 +251,13 @@ public class DiagramView extends JComponent {
 			ig.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 			aComponent.paintComponent(this, ig, originalObjectBounds.width, originalObjectBounds.height, aSelected);
-			boolean DEBUG = Main.DEBUG;
-			if (DEBUG) {
+			if (Main.DEBUG) {
 				aGraphics.setColor(Color.RED);
 				aGraphics.draw(scaledAdapter.setObject(aComponent).getBounds());
+				aGraphics.setColor(Color.GREEN);
+				Rectangle innerRectangle = scaledAdapter.setObject(aComponent).getBounds();
+				innerRectangle.grow((int) (-NODE_BOX_MARGIN_LEFT * scale), (int) (-NODE_BOX_MARGIN_TOP * scale));
+				aGraphics.draw(innerRectangle);
 			}
 			aGraphics.setTransform(ot);
 		}
