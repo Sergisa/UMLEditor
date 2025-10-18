@@ -282,7 +282,7 @@ public class DiagramView extends JComponent {
 			if (node != null) {
 				hittedNode = node;
 			} else if (SwingUtilities.isLeftMouseButton(event)) {
-				mSelectionRectangle = new Rectangle(startPoint);
+				onStartSelectionRectangle(startPoint, event.isControlDown());
 			}
 		}
 
@@ -309,8 +309,10 @@ public class DiagramView extends JComponent {
 		@Override
 		public void mouseReleased(MouseEvent event) {
 			hittedNode = null;
+			if (mSelectionRectangle != null) {
+				onSelectionRectangleEnd();
+			}
 			mSelectionRectangle = null;
-			//TODO: пересчитать координаты прямоугольника выделения для определения попавших в него элементов
 			repaint();
 		}
 
@@ -330,34 +332,61 @@ public class DiagramView extends JComponent {
 			);
 			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
-				if (isMinimizeButtonPressed(node, event.getPoint())) {
-					node.setMinimized(!node.isMinimized());
-				}
-				if (!event.isControlDown()) getSelectedNodes().clear();
-				getSelectedNodes().add(node);
+				onNodeClicked(event, node);
 				repaint();
 			} else {
 				getSelectedNodes().clear();
 			}
 		}
 
-		private void onCoordinateShifting(MouseEvent event) {
+		public void onNodeClicked(MouseEvent event, Node node) {
+			if (isMinimizeButtonPressed(node, event.getPoint())) {
+				node.setMinimized(!node.isMinimized());
+			}
+			if (getSelectedNodes().size() == 1) {
+				if (getSelectedNodes().getFirst() == node) getSelectedNodes().remove(node);
+				else getSelectedNodes().set(0, node);
+			} else {
+				if (!event.isControlDown()) getSelectedNodes().clear();
+				getSelectedNodes().add(node);
+			}
+		}
+
+		public void onCoordinateShifting(MouseEvent event) {
 			coordinateShift.x += (event.getX() - startPoint.x);
 			coordinateShift.y += (event.getY() - startPoint.y);
 		}
 
-		private void onComponentShifting(Point startPoint, Point newPoint) {
+		public void onComponentShifting(Point startPoint, Point newPoint) {
 			int dx = newPoint.x - startPoint.x;
 			int dy = newPoint.y - startPoint.y;
 			hittedNode.getBounds().translate(dx, dy);
 		}
 
-		private void onExtendSelectionRectangle(Point startPoint, Point newPoint) {
+		public void onStartSelectionRectangle(Point startPoint, boolean addingToSelection) {
+			mSelectionRectangle = new Rectangle(startPoint);
+		}
+
+		public void onExtendSelectionRectangle(Point startPoint, Point newPoint) {
+			//TODO: попытаться использовать функцию Rectangle.add()
 			int x0 = (int) (Math.min(startPoint.x, newPoint.x) * scale);
 			int y0 = (int) (Math.min(startPoint.y, newPoint.y) * scale);
 			int x1 = (int) (Math.max(startPoint.x, newPoint.x) * scale);
 			int y1 = (int) (Math.max(startPoint.y, newPoint.y) * scale);
 			mSelectionRectangle.setBounds(x0, y0, x1 - x0, y1 - y0);
+		}
+
+		public void onSelectionRectangleEnd() {
+			mSelectionRectangle.x /= scale;
+			mSelectionRectangle.y /= scale;
+			mSelectionRectangle.width /= scale;
+			mSelectionRectangle.height /= scale;
+			mSelectedBoxes.clear();
+			for (Node node : getModel().getComponents()) {
+				if (mSelectionRectangle.intersects(node.getBounds())) {
+					mSelectedBoxes.add(node);
+				}
+			}
 		}
 
 		public Node getComponentAtPoint(Point aPoint) {
