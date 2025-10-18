@@ -300,14 +300,14 @@ public class DiagramView extends JComponent {
 				repaint();
 			} else {
 				if (SwingUtilities.isRightMouseButton(event)) {
-					onCoordinateShifting(event);
+					onCoordinateShifting(startPoint, calcMousePoint(event.getPoint()));
 				} else if (SwingUtilities.isLeftMouseButton(event)) {
 					if (mSelectionRectangle != null) {
 						onExtendSelectionRectangle(startPoint, calcMousePoint(event.getPoint()));
 					}
 				}
 			}
-			if (hittedNode != null || SwingUtilities.isRightMouseButton(event))
+			if (hittedNode != null || SwingUtilities.isRightMouseButton(event) || SwingUtilities.isMiddleMouseButton(event))
 				startPoint = calcMousePoint(event.getPoint());
 			repaint();
 		}
@@ -374,9 +374,9 @@ public class DiagramView extends JComponent {
 		}
 
 		@Override
-		public void onCoordinateShifting(MouseEvent event) {
-			coordinateShift.x += (event.getX() - startPoint.x);
-			coordinateShift.y += (event.getY() - startPoint.y);
+		public void onCoordinateShifting(Point startPoint, Point newPoint) {
+			coordinateShift.x += (newPoint.x - startPoint.x) * scale;
+			coordinateShift.y += (newPoint.y - startPoint.y) * scale;
 		}
 
 		@Override

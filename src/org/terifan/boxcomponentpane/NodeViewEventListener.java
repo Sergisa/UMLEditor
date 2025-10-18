@@ -10,7 +10,7 @@ public interface NodeViewEventListener {
 
 	void onNodeClicked(MouseEvent event, Node node);
 
-	void onCoordinateShifting(MouseEvent event);
+	void onCoordinateShifting(Point startPoint, Point eventPoint);
 
 	void onNodeMoving(Point startPoint, Point newPoint);
 
