@@ -276,8 +276,7 @@ public class DiagramView extends JComponent {
 			if (node != null) {
 				hittedNode = node;
 			} else if (SwingUtilities.isLeftMouseButton(event)) {
-				//mSelectionRectangle = new Rectangle(calcMousePoint(startPoint));
-				mSelectionRectangle = new Rectangle();
+				mSelectionRectangle = new Rectangle(calcMousePoint(startPoint));
 			}
 		}
 
@@ -290,10 +289,9 @@ public class DiagramView extends JComponent {
 
 		@Override
 		public void mouseDragged(MouseEvent event) {
-			int dx = event.getPoint().x - startPoint.x;
-			int dy = event.getPoint().y - startPoint.y;
+			int dx = calcMousePoint(event.getPoint()).x - calcMousePoint(startPoint).x;
+			int dy = calcMousePoint(event.getPoint()).y - calcMousePoint(startPoint).y;
 			if (hittedNode != null) {
-				//FIXME: при изменённом масштабе не правильно смещается блок
 				hittedNode.getBounds().translate(dx, dy);
 				mModel.moveTop(hittedNode);
 				repaint();
@@ -305,20 +303,12 @@ public class DiagramView extends JComponent {
 					//FIXME: при изменённом масштабе не правильно рисуется прямоугольник
 					//TODO: Не надо перезаписывать точку и все будет хорошо
 					if (mSelectionRectangle != null) {
-
-						int x0 = (int)(Math.min(startPoint.x, event.getPoint().x) * scale); //x of selection rectangle
-						int y0 = (int)(Math.min(startPoint.y, event.getPoint().y) * scale); //y of selection rectangle
-						int x1 = (int)(Math.max(startPoint.x, event.getPoint().x) * scale);
-						int y1 = (int)(Math.max(startPoint.y, event.getPoint().y) * scale);
-
-						mSelectionRectangle.setBounds(x0, y0, x1 - x0, y1 - y0);
-
-						/*mSelectionRectangle.width += dx;
-						mSelectionRectangle.height += dy;*/
+						mSelectionRectangle.width += dx;
+						mSelectionRectangle.height += dy;
 					}
 				}
 			}
-			//if(mSelectionRectangle!=null)startPoint = event.getPoint();
+			startPoint = event.getPoint();
 			repaint();
 		}
 
