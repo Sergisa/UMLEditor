@@ -282,10 +282,8 @@ public class DiagramView extends JComponent {
 
 		@Override
 		public void mouseDragged(MouseEvent event) {
-			int dx = calcMousePoint(event.getPoint()).x - calcMousePoint(startPoint).x;
-			int dy = calcMousePoint(event.getPoint()).y - calcMousePoint(startPoint).y;
 			if (hittedNode != null) {
-				onComponentShifting(dx, dy);
+				onComponentShifting(startPoint, event.getPoint());
 				mModel.moveTop(hittedNode);
 				repaint();
 			} else {
@@ -293,11 +291,11 @@ public class DiagramView extends JComponent {
 					onCoordinateShifting(event);
 				} else if (SwingUtilities.isLeftMouseButton(event)) {
 					if (mSelectionRectangle != null) {
-						onExtendSelectionRectangle(dx, dy);
+						onExtendSelectionRectangle(startPoint, event.getPoint());
 					}
 				}
 			}
-			startPoint = event.getPoint();
+			if (hittedNode != null || SwingUtilities.isRightMouseButton(event)) startPoint = event.getPoint();
 			repaint();
 		}
 
@@ -305,6 +303,7 @@ public class DiagramView extends JComponent {
 		public void mouseReleased(MouseEvent event) {
 			hittedNode = null;
 			mSelectionRectangle = null;
+			//TODO: пересчитать координаты прямоугольника выделения для определения попавших в него элементов
 			repaint();
 		}
 
@@ -315,12 +314,13 @@ public class DiagramView extends JComponent {
 				repaint();
 				return;
 			}
-			int x = event.getX();
-			int y = event.getY();
-			int cx = calcMousePoint(event.getPoint()).x;
-			int cy = calcMousePoint(event.getPoint()).y;
-			String templateMessage = "MousePoint: (%s, %s) \n\t\t (%s, %s)";
-			System.out.printf((templateMessage) + "%n", x, y, cx, cy);
+			String templateMessage = "MousePoint: (%s, %s) \n\t\t Calced(%s, %s)";
+			System.out.printf((templateMessage) + "%n",
+				event.getX(),
+				event.getY(),
+				calcMousePoint(event.getPoint()).x,
+				calcMousePoint(event.getPoint()).y
+			);
 			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
 				if (isMinimizeButtonPressed(node, event.getPoint())) {
@@ -339,15 +339,18 @@ public class DiagramView extends JComponent {
 			coordinateShift.y += (event.getY() - startPoint.y);
 		}
 
-		private void onComponentShifting(int dx, int dy) {
+		private void onComponentShifting(Point startPoint, Point newPoint) {
+			int dx = calcMousePoint(newPoint).x - calcMousePoint(startPoint).x;
+			int dy = calcMousePoint(newPoint).y - calcMousePoint(startPoint).y;
 			hittedNode.getBounds().translate(dx, dy);
 		}
 
-		private void onExtendSelectionRectangle(int dx, int dy) {
-			//FIXME: при изменённом масштабе не правильно рисуется прямоугольник
-			//TODO: Не надо перезаписывать точку и все будет хорошо
-			mSelectionRectangle.width += dx;
-			mSelectionRectangle.height += dy;
+		private void onExtendSelectionRectangle(Point startPoint, Point newPoint) {
+			int x0 = (int) (Math.min(calcMousePoint(startPoint).x, calcMousePoint(newPoint).x) * scale);
+			int y0 = (int) (Math.min(calcMousePoint(startPoint).y, calcMousePoint(newPoint).y) * scale);
+			int x1 = (int) (Math.max(calcMousePoint(startPoint).x, calcMousePoint(newPoint).x) * scale);
+			int y1 = (int) (Math.max(calcMousePoint(startPoint).y, calcMousePoint(newPoint).y) * scale);
+			mSelectionRectangle.setBounds(x0, y0, x1 - x0, y1 - y0);
 		}
 
 		public Node getComponentAtPoint(Point aPoint) {
