@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 
-public class MandelbrotExample {
+public class Main {
 	public static boolean DEBUG = true;
 
 	static void main() {
@@ -144,8 +144,8 @@ public class MandelbrotExample {
 			toolbar.add(new AbstractAction("Debug: on") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					MandelbrotExample.DEBUG = !MandelbrotExample.DEBUG;
-					putValue(Action.NAME, MandelbrotExample.DEBUG ? "Debug: on" : "Debug: off");
+					Main.DEBUG = !Main.DEBUG;
+					putValue(Action.NAME, Main.DEBUG ? "Debug: on" : "Debug: off");
 					frame.repaint();
 				}
 			});

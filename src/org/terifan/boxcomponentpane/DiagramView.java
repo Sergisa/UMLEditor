@@ -1,6 +1,6 @@
 package org.terifan.boxcomponentpane;
 
-import examples.MandelbrotExample;
+import examples.Main;
 import org.terifan.nodeeditor.*;
 import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.SplineRenderer;
@@ -251,7 +251,7 @@ public class DiagramView extends JComponent {
 			ig.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 			aComponent.paintComponent(this, ig, originalObjectBounds.width, originalObjectBounds.height, aSelected);
-			boolean DEBUG = MandelbrotExample.DEBUG;
+			boolean DEBUG = Main.DEBUG;
 			if (DEBUG) {
 				aGraphics.setColor(Color.RED);
 				aGraphics.draw(scaledAdapter.setObject(aComponent).getBounds());

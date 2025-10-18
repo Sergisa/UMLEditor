@@ -1,6 +1,6 @@
 package org.terifan.nodeeditor.widgets;
 
-import examples.MandelbrotExample;
+import examples.Main;
 import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.nodeeditor.Property;
 
@@ -28,7 +28,7 @@ public class ValueProperty extends Property {
 
 	@Override
 	protected void paintComponent(DiagramView aPane, Graphics2D aGraphics, boolean aHover) {
-		boolean DEBUG = MandelbrotExample.DEBUG;
+		boolean DEBUG = Main.DEBUG;
 		if (DEBUG) {
 			aGraphics.setColor(Color.RED);
 			aGraphics.draw(getBounds());
