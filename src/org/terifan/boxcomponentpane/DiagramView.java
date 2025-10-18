@@ -254,7 +254,13 @@ public class DiagramView extends JComponent {
 		}
 	}
 
+	/**
+	 *
+	 * @param aPoint Точка в системе координат Gui компонента. Система координат, растущая вправо и вниз из верхнего левого угла
+	 * @return Возвращает точку в установленной системе координат
+	 */
 	public Point calcMousePoint(Point aPoint) {
+		// получение точки в центрированной системе координат модели
 		return new Point(
 			(int) ((aPoint.x - coordinateShift.x) / scale),
 			(int) ((aPoint.y - coordinateShift.y) / scale)
