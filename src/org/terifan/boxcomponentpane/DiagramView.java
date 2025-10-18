@@ -281,13 +281,6 @@ public class DiagramView extends JComponent {
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent event) {
-			hittedNode = null;
-			mSelectionRectangle = null;
-			repaint();
-		}
-
-		@Override
 		public void mouseDragged(MouseEvent event) {
 			int dx = calcMousePoint(event.getPoint()).x - calcMousePoint(startPoint).x;
 			int dy = calcMousePoint(event.getPoint()).y - calcMousePoint(startPoint).y;
@@ -300,7 +293,7 @@ public class DiagramView extends JComponent {
 					onCoordinateShifting(event);
 				} else if (SwingUtilities.isLeftMouseButton(event)) {
 					if (mSelectionRectangle != null) {
-						onExtendSelectionRectangle(dx,dy);
+						onExtendSelectionRectangle(dx, dy);
 					}
 				}
 			}
@@ -308,28 +301,11 @@ public class DiagramView extends JComponent {
 			repaint();
 		}
 
-		private void onCoordinateShifting(MouseEvent event) {
-			coordinateShift.x += (event.getX() - startPoint.x);
-			coordinateShift.y += (event.getY() - startPoint.y);
-		}
-
-		private void onComponentShifting(int dx, int dy) {
-			hittedNode.getBounds().translate(dx, dy);
-		}
-
-		private void onExtendSelectionRectangle(int dx, int dy) {
-			//FIXME: при изменённом масштабе не правильно рисуется прямоугольник
-			//TODO: Не надо перезаписывать точку и все будет хорошо
-			mSelectionRectangle.width += dx;
-			mSelectionRectangle.height += dy;
-		}
-
-		public Node getComponentAtPoint(Point aPoint) {
-			return getModel().getComponentAt(calcMousePoint(aPoint));
-		}
-
-		public boolean isMinimizeButtonPressed(Node node, Point point) {
-			return getMinimizeButtonBounds(node).contains(calcMousePoint(point));
+		@Override
+		public void mouseReleased(MouseEvent event) {
+			hittedNode = null;
+			mSelectionRectangle = null;
+			repaint();
 		}
 
 		@Override
@@ -356,6 +332,30 @@ public class DiagramView extends JComponent {
 			} else {
 				getSelectedNodes().clear();
 			}
+		}
+
+		private void onCoordinateShifting(MouseEvent event) {
+			coordinateShift.x += (event.getX() - startPoint.x);
+			coordinateShift.y += (event.getY() - startPoint.y);
+		}
+
+		private void onComponentShifting(int dx, int dy) {
+			hittedNode.getBounds().translate(dx, dy);
+		}
+
+		private void onExtendSelectionRectangle(int dx, int dy) {
+			//FIXME: при изменённом масштабе не правильно рисуется прямоугольник
+			//TODO: Не надо перезаписывать точку и все будет хорошо
+			mSelectionRectangle.width += dx;
+			mSelectionRectangle.height += dy;
+		}
+
+		public Node getComponentAtPoint(Point aPoint) {
+			return getModel().getComponentAt(calcMousePoint(aPoint));
+		}
+
+		public boolean isMinimizeButtonPressed(Node node, Point point) {
+			return getMinimizeButtonBounds(node).contains(calcMousePoint(point));
 		}
 
 		@Override
