@@ -147,10 +147,12 @@ public class DiagramView extends JComponent {
 				drawGrid(aGraphics, w, h, s);
 			}
 		}
-
+		Stroke cachedStroke = aGraphics.getStroke();
+		aGraphics.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		aGraphics.setColor(Styles.MAIN_AXIS_COLOR);
 		aGraphics.drawLine(0, sy, w, sy);
 		aGraphics.drawLine(sx, 0, sx, h);
+		aGraphics.setStroke(cachedStroke);
 	}
 
 	private void drawGrid(Graphics2D aGraphics, int aW, int aH, double aScale) {
