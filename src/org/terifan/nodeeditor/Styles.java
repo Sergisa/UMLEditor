@@ -19,6 +19,8 @@ public class Styles {
 	public static float CONNECTOR_STROKE_WIDTH_OUTER = 4.0f;
 	public static Color CONNECTOR_COLOR_OUTER = new Color(30, 30, 30);
 	public static Color CONNECTOR_COLOR_INNER_FOCUSED = new Color(255, 255, 255);
+	public static Color SPLINE_COLOR = new Color(133, 133, 133);
+	public static Color SPLINE_COLOR_ACTIVE = new Color(255, 255, 255, b);
 	public static Color CONNECTOR_COLOR_INNER = new Color(128, 128, 128);
 	public static Color CONNECTOR_COLOR_INNER_SELECTED = new Color(192, 0, 0);
 	public static Color CONNECTOR_COLOR_OUTER_SELECTED = new Color(128, 0, 0);

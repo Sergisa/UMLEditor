@@ -210,8 +210,10 @@ public class DiagramView extends JComponent {
 		aGraphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
 		for (Connection<Property> connection : mModel.getConnections()) {
-			Color start = Styles.CONNECTOR_COLOR_INNER_FOCUSED;
-			SplineRenderer.drawSpline(aGraphics, connection, scale, Styles.CONNECTOR_COLOR_OUTER, start, start);
+			Color splineColor = SPLINE_COLOR;
+			if (mSelectedBoxes.contains(connection.getFrom().getNode()) || mSelectedBoxes.contains(connection.getTo().getNode()))
+				splineColor = SPLINE_COLOR_ACTIVE;
+			SplineRenderer.drawSpline(aGraphics, connection, scale, Styles.CONNECTOR_COLOR_OUTER, splineColor, splineColor);
 		}
 
 		for (Node box : mModel.getComponents()) {
