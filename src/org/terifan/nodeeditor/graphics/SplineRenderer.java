@@ -15,17 +15,13 @@ import static org.terifan.nodeeditor.Styles.TITLE_HEIGHT_PADDED;
 public class SplineRenderer {
 
 	public static void drawSpline(Graphics2D aGraphics, Connection<Property> aConnection, double aScale, Color aBackgroundColor, Color aStartColor, Color aEndColor) {
-		drawSplineImpl(aGraphics, createSpline(aConnection), aScale, aBackgroundColor, aStartColor, aEndColor);
-	}
-
-	private static void drawSplineImpl(Graphics2D aGraphics, BSpline aSpline, double aScale, Color aBackgroundColor, Color aStartColor, Color aEndColor) {
 		Stroke old = aGraphics.getStroke();
 
 		float strokeScale = (float) Math.sqrt(aScale);
 		BasicStroke STROKE_OUTER = new BasicStroke(Styles.CONNECTOR_STROKE_WIDTH_OUTER * strokeScale, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
 		BasicStroke STROKE_INNER = new BasicStroke(Styles.CONNECTOR_STROKE_WIDTH_INNER * strokeScale, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
 
-		Path2D.Double spline = createPath(aSpline, aScale, 0.0, 1.0);
+		Path2D.Double spline = createPath(createSpline(aConnection), aScale, 0.0, 1.0);
 		aGraphics.setStroke(STROKE_OUTER);
 		aGraphics.setColor(aBackgroundColor);
 		aGraphics.draw(spline);
@@ -37,7 +33,6 @@ public class SplineRenderer {
 			aGraphics.setColor(aStartColor);
 			aGraphics.draw(spline);
 		}
-
 		aGraphics.setStroke(old);
 	}
 
