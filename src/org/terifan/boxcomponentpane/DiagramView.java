@@ -254,10 +254,12 @@ public class DiagramView extends JComponent {
 			if (Main.DEBUG) {
 				aGraphics.setColor(Color.RED);
 				aGraphics.draw(scaledAdapter.setObject(aComponent).getBounds());
-				aGraphics.setColor(Color.GREEN);
-				Rectangle innerRectangle = scaledAdapter.setObject(aComponent).getBounds();
-				innerRectangle.grow((int) (-NODE_BOX_MARGIN_LEFT * scale), (int) (-NODE_BOX_MARGIN_TOP * scale));
-				aGraphics.draw(innerRectangle);
+				if (aComponent instanceof Node && !aSelected) {
+					aGraphics.setColor(Color.GREEN);
+					Rectangle innerRectangle = scaledAdapter.setObject(aComponent).getBounds();
+					innerRectangle.grow((int) (-NODE_BOX_MARGIN_LEFT * scale), (int) (-NODE_BOX_MARGIN_TOP * scale));
+					aGraphics.draw(innerRectangle);
+				}
 			}
 			aGraphics.setTransform(ot);
 		}
