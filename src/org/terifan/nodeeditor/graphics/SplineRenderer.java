@@ -22,39 +22,20 @@ public class SplineRenderer {
 		Stroke old = aGraphics.getStroke();
 
 		float strokeScale = (float) Math.sqrt(aScale);
-		BasicStroke STROKE_WIDE = new BasicStroke(Styles.CONNECTOR_STROKE_WIDTH_OUTER * strokeScale, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
-		BasicStroke STROKE_THIN = new BasicStroke(Styles.CONNECTOR_STROKE_WIDTH_INNER * strokeScale, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
+		BasicStroke STROKE_OUTER = new BasicStroke(Styles.CONNECTOR_STROKE_WIDTH_OUTER * strokeScale, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
+		BasicStroke STROKE_INNER = new BasicStroke(Styles.CONNECTOR_STROKE_WIDTH_INNER * strokeScale, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
 
 		Path2D.Double spline = createPath(aSpline, aScale, 0.0, 1.0);
-		aGraphics.setStroke(STROKE_WIDE);
+		aGraphics.setStroke(STROKE_OUTER);
 		aGraphics.setColor(aBackgroundColor);
 		aGraphics.draw(spline);
-		aGraphics.setStroke(STROKE_THIN);
 
+		aGraphics.setStroke(STROKE_INNER);
 		if (aStartColor.equals(aEndColor)) {
+			//GradientPaint gp = new GradientPaint(25, 25, Color.red, 15, 25, Color.orange, true);
+			//aGraphics.setPaint(gp);
 			aGraphics.setColor(aStartColor);
 			aGraphics.draw(spline);
-		} else {
-			int r0 = aStartColor.getRed();
-			int r1 = aEndColor.getRed();
-			int g0 = aStartColor.getGreen();
-			int g1 = aEndColor.getGreen();
-			int b0 = aStartColor.getBlue();
-			int b1 = aEndColor.getBlue();
-
-			int segments = Math.max(16, (int) Math.pow(aSpline.getPoint(0).distance(aSpline.getPoint(1)), 0.5));
-
-			for (int i = 0; i < segments; i++) {
-				spline = createPath(aSpline, aScale, i / (double) segments, (i + 1) / (double) segments);
-
-				double a = i / (double) (segments - 1);
-				int r = (int) (a * r1 + (1 - a) * r0);
-				int g = (int) (a * g1 + (1 - a) * g0);
-				int b = (int) (a * b1 + (1 - a) * b0);
-
-				aGraphics.setColor(new Color(r, g, b));
-				aGraphics.draw(spline);
-			}
 		}
 
 		aGraphics.setStroke(old);
