@@ -21,7 +21,7 @@ public class DiagramView extends JComponent {
 	private final static long serialVersionUID = 1L;
 	private final NodeModel mModel;
 	private Rectangle mSelectionRectangle;
-	private final ArrayList<Node> mSelectedBoxes;
+	private final ArrayList<Node> mSelectedNodes;
 	ScaledObjectAdapter scaledAdapter;
 	private Point2D.Double coordinateShift;
 	private double scale = 1;
@@ -31,7 +31,7 @@ public class DiagramView extends JComponent {
 	private final boolean mRemoveInConnectionsOnDrop = true;
 
 	public DiagramView(NodeModel aModel) {
-		mSelectedBoxes = new ArrayList<>();
+		mSelectedNodes = new ArrayList<>();
 		mModel = aModel;
 		setFocusable(true);
 		scaledAdapter = new ScaledObjectAdapter(scale);
@@ -73,7 +73,7 @@ public class DiagramView extends JComponent {
 	}
 
 	public ArrayList<Node> getSelectedNodes() {
-		return mSelectedBoxes;
+		return mSelectedNodes;
 	}
 
 	/**
@@ -215,13 +215,13 @@ public class DiagramView extends JComponent {
 
 		for (Connection<Property> connection : mModel.getConnections()) {
 			Color splineColor = SPLINE_COLOR;
-			if (mSelectedBoxes.contains(connection.getFrom().getNode()) || mSelectedBoxes.contains(connection.getTo().getNode()))
+			if (mSelectedNodes.contains(connection.getFrom().getNode()) || mSelectedNodes.contains(connection.getTo().getNode()))
 				splineColor = SPLINE_COLOR_ACTIVE;
 			SplineRenderer.drawSpline(aGraphics, connection, scale, Styles.CONNECTOR_COLOR_OUTER, splineColor, splineColor);
 		}
 
 		for (Node box : mModel.getComponents()) {
-			paintBoxComponent(aGraphics, box, mSelectedBoxes.contains(box));
+			paintBoxComponent(aGraphics, box, mSelectedNodes.contains(box));
 		}
 
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -405,7 +405,13 @@ public class DiagramView extends JComponent {
 		public void onNodeMoving(Point startPoint, Point newPoint) {
 			int dx = newPoint.x - startPoint.x;
 			int dy = newPoint.y - startPoint.y;
-			hittedNode.getBounds().translate(dx, dy);
+			if (!mSelectedNodes.isEmpty()) {
+				for (Node node : mSelectedNodes) {
+					node.getBounds().translate(dx, dy);
+				}
+			} else {
+				hittedNode.getBounds().translate(dx, dy);
+			}
 		}
 
 		@Override
@@ -429,10 +435,10 @@ public class DiagramView extends JComponent {
 			mSelectionRectangle.y /= scale;
 			mSelectionRectangle.width /= scale;
 			mSelectionRectangle.height /= scale;
-			mSelectedBoxes.clear();
+			mSelectedNodes.clear();
 			for (Node node : getModel().getComponents()) {
 				if (mSelectionRectangle.intersects(node.getBounds())) {
-					mSelectedBoxes.add(node);
+					mSelectedNodes.add(node);
 				}
 			}
 		}
