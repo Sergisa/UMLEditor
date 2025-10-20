@@ -17,7 +17,7 @@ public class NodeModel implements Serializable, NodeSelectionModel {
 	private final static long serialVersionUID = 1L;
 	protected final ArrayList<Node> mComponents;
 	private final List<Node> selectedNodes;
-	private final List<NodeSelectionModel.Observer> selectionListener = new ArrayList<>();
+	private final List<NodeSelectionModel.Observer> selectionListeners = new ArrayList<>();
 	private final ArrayList<Connection<Property>> mConnections;
 
 	public NodeModel() {
@@ -114,34 +114,34 @@ public class NodeModel implements Serializable, NodeSelectionModel {
 
 	@Override
 	public void subscribe(Observer subscriber) {
-		selectionListener.add(subscriber);
+		selectionListeners.add(subscriber);
 	}
 
 	@Override
 	public void selectNodes(List<Node> nodes) {
 		for (Node entity : nodes) selectNode(entity);
-		selectionListener.forEach(listener -> listener.onNodesSelected(nodes));
+		selectionListeners.forEach(listener -> listener.onNodesSelected(nodes));
 	}
 
 	@Override
 	public void selectNode(Node node) {
 		if (selectedNodes.contains(node)) return;
 		selectedNodes.add(node);
-		selectionListener.forEach(listener -> listener.onNodeSelected(node));
+		selectionListeners.forEach(listener -> listener.onNodeSelected(node));
 	}
 
 	@Override
 	public void requestUnselectAll() {
 		if (selectedNodes.isEmpty()) return;
 		selectedNodes.clear();
-		selectionListener.forEach(NodeSelectionModel.Observer::onUnselect);
+		selectionListeners.forEach(NodeSelectionModel.Observer::onUnselect);
 	}
 
 	@Override
 	public void requestUnselectNode(Node node) {
 		if (selectedNodes.isEmpty()) return;
 		selectedNodes.remove(node);
-		selectionListener.forEach(NodeSelectionModel.Observer::onUnselect);
+		selectionListeners.forEach(NodeSelectionModel.Observer::onUnselect);
 	}
 
 	public String toString() {
