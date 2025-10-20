@@ -16,7 +16,7 @@ import java.util.List;
 import static org.terifan.nodeeditor.Styles.*;
 
 
-public class DiagramView extends JComponent {
+public class DiagramView extends JComponent implements NodeSelectionModel.Observer {
 	@Serial
 	private final static long serialVersionUID = 1L;
 	private final NodeModel mModel;
@@ -31,6 +31,7 @@ public class DiagramView extends JComponent {
 
 	public DiagramView(NodeModel aModel) {
 		mModel = aModel;
+		mModel.subscribe(this);
 		setFocusable(true);
 		scaledAdapter = new ScaledObjectAdapter(scale);
 		MouseListener mouseListener = new MouseListener();
@@ -109,15 +110,16 @@ public class DiagramView extends JComponent {
 				case KeyEvent.VK_EQUALS:
 				case KeyEvent.VK_ADD:
 					increaseScale(scaleSpeed);
+					repaint();
 					break;
 				case KeyEvent.VK_SUBTRACT:
 				case KeyEvent.VK_MINUS:
 					decreaseScale(scaleSpeed);
+					repaint();
 					break;
 				case KeyEvent.VK_ESCAPE:
 					mModel.requestUnselectAll();
 			}
-			repaint();
 		}
 	}
 
@@ -284,6 +286,21 @@ public class DiagramView extends JComponent {
 		mPopup = aPopup;
 	}
 
+	@Override
+	public void onNodeSelected(Node node) {
+		repaint();
+	}
+
+	@Override
+	public void onNodesSelected(List<Node> nodes) {
+		//repaint();
+	}
+
+	@Override
+	public void onUnselect() {
+		repaint();
+	}
+
 	public class MouseListener extends MouseAdapter implements NodeViewEventListener {
 		Point startPoint;
 		Node hittedNode;
@@ -310,15 +327,16 @@ public class DiagramView extends JComponent {
 			} else {
 				if (SwingUtilities.isRightMouseButton(event)) {
 					onCoordinateShifting(startPoint, calcMousePoint(event.getPoint()));
+					repaint();
 				} else if (SwingUtilities.isLeftMouseButton(event)) {
 					if (mSelectionRectangle != null) {
 						onExtendSelectionRectangle(startPoint, calcMousePoint(event.getPoint()));
+						repaint();
 					}
 				}
 			}
 			if (hittedNode != null || SwingUtilities.isRightMouseButton(event) || SwingUtilities.isMiddleMouseButton(event))
 				startPoint = calcMousePoint(event.getPoint());
-			repaint();
 		}
 
 		@Override
@@ -328,7 +346,6 @@ public class DiagramView extends JComponent {
 				onSelectionRectangleEnd();
 			}
 			mSelectionRectangle = null;
-			repaint();
 		}
 
 		@Override
@@ -340,7 +357,6 @@ public class DiagramView extends JComponent {
 					onPropertyClicked(event, clickedProperty);
 				}
 				onNodeClicked(event, node);
-				repaint();
 			} else {
 				onPaneClicked(event, event.getPoint());
 			}
@@ -435,11 +451,14 @@ public class DiagramView extends JComponent {
 			mSelectionRectangle.width /= scale;
 			mSelectionRectangle.height /= scale;
 			mModel.requestUnselectAll();
+			boolean foundAnyNodeInSelection = false;
 			for (Node node : getModel().getComponents()) {
 				if (mSelectionRectangle.intersects(node.getBounds())) {
+					foundAnyNodeInSelection = true;
 					mModel.selectNode(node);
 				}
 			}
+			if (!foundAnyNodeInSelection) repaint();
 		}
 
 		public boolean isMinimizeButtonPressed(Node node, Point point) {
