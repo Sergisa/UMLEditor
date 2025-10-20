@@ -42,6 +42,13 @@ public class DiagramView extends JComponent {
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);
 		addMouseWheelListener(mouseListener);
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				centerCoordinateSystem();
+				repaint();
+			}
+		});
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 	}
 
