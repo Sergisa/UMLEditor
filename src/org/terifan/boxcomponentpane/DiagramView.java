@@ -7,10 +7,7 @@ import org.terifan.nodeeditor.graphics.SplineRenderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.Serial;
@@ -340,12 +337,6 @@ public class DiagramView extends JComponent {
 
 		@Override
 		public void mouseClicked(MouseEvent event) {
-			if (SwingUtilities.isRightMouseButton(event)) {
-				mPopup = null;
-				repaint();
-				return;
-			}
-
 			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
 				Property clickedProperty = node.getPropertyAt(calcMousePoint(event.getPoint()));
@@ -361,41 +352,47 @@ public class DiagramView extends JComponent {
 
 		@Override
 		public void onPaneClicked(MouseEvent event, Point aPoint) {
-			String templateMessage = "InCoordinateSystem: (%s, %s) \t ViewPoint: (%s, %s)";
-			System.out.printf((templateMessage) + "%n",
-				calcMousePoint(event.getPoint()).x,
-				calcMousePoint(event.getPoint()).y,
-				event.getX(),
-				event.getY()
-			);
+			if (SwingUtilities.isRightMouseButton(event)) {
+				String templateMessage = "InCoordinateSystem: (%s, %s) \t ViewPoint: (%s, %s)";
+				System.out.printf((templateMessage) + "%n",
+					calcMousePoint(event.getPoint()).x,
+					calcMousePoint(event.getPoint()).y,
+					event.getX(),
+					event.getY()
+				);
+			}
 			getSelectedNodes().clear();
 		}
 
 		@Override
 		public void onNodeClicked(MouseEvent event, Node node) {
-			String templateMessage = "<Node>\"%s\" (X,Y)(%s, %s) \t (W,H)(←·→%s, %s)";
-			System.out.printf((templateMessage) + "%n",
-				node.getTitle(),
-				node.getBounds().x,
-				node.getBounds().y,
-				node.getBounds().width,
-				node.getBounds().height
-			);
-			if (isMinimizeButtonPressed(node, event.getPoint())) {
-				node.setMinimized(!node.isMinimized());
+			if (SwingUtilities.isRightMouseButton(event)) {
+				String templateMessage = "<Node>\"%s\" (X,Y)(%s, %s) \t (W,H)(←·→%s, %s)";
+				System.out.printf((templateMessage) + "%n",
+					node.getTitle(),
+					node.getBounds().x,
+					node.getBounds().y,
+					node.getBounds().width,
+					node.getBounds().height
+				);
 			}
-			if (getSelectedNodes().size() == 1) {
-				if (getSelectedNodes().getFirst() == node) getSelectedNodes().remove(node);
-				else getSelectedNodes().set(0, node);
-			} else {
-				if (!event.isControlDown()) getSelectedNodes().clear();
-				getSelectedNodes().add(node);
+			if (SwingUtilities.isLeftMouseButton(event)) {
+				if (isMinimizeButtonPressed(node, event.getPoint())) {
+					node.setMinimized(!node.isMinimized());
+				}
+				if (getSelectedNodes().size() == 1) {
+					if (getSelectedNodes().getFirst() == node) getSelectedNodes().remove(node);
+					else getSelectedNodes().set(0, node);
+				} else {
+					if (!event.isControlDown()) getSelectedNodes().clear();
+					getSelectedNodes().add(node);
+				}
 			}
 		}
 
 		@Override
 		public void onPropertyClicked(MouseEvent event, Property property) {
-			System.out.println("PropertyClicked: " + property.toString());
+			if (SwingUtilities.isRightMouseButton(event)) System.out.println("PropertyClicked: " + property.toString());
 		}
 
 		@Override
