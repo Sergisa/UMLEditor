@@ -12,16 +12,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class NodeModel implements Serializable {
+public class NodeModel implements Serializable, NodeSelectionModel {
 	@Serial
 	private final static long serialVersionUID = 1L;
 	protected final ArrayList<Node> mComponents;
-
+	private final List<Node> selectedNodes;
+	private final List<NodeSelectionModel.Observer> selectionListener = new ArrayList<>();
 	private final ArrayList<Connection<Property>> mConnections;
 
 	public NodeModel() {
 		mComponents = new ArrayList<>();
 		mConnections = new ArrayList<>();
+		selectedNodes = new ArrayList<>();
 	}
 
 	public int size() {
@@ -62,7 +64,6 @@ public class NodeModel implements Serializable {
 	}
 
 	public void removeComponent(Node component) {
-
 		component.getProperties().forEach(property -> {
 			getConnectionsTo(property).forEach(connection -> {
 				getConnections().remove(connection);
@@ -71,6 +72,7 @@ public class NodeModel implements Serializable {
 				getConnections().remove(connection);
 			});
 		});
+		selectedNodes.remove(component);
 		mComponents.remove(component);
 	}
 
@@ -103,6 +105,43 @@ public class NodeModel implements Serializable {
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<Node> getSelectedNodes() {
+		return selectedNodes;
+	}
+
+	@Override
+	public void subscribe(Observer subscriber) {
+		selectionListener.add(subscriber);
+	}
+
+	@Override
+	public void selectNodes(List<Node> entities) {
+		for (Node entity : entities) selectNode(entity);
+		selectionListener.forEach(listener -> listener.onNodesSelected(entities));
+	}
+
+	@Override
+	public void selectNode(Node entity) {
+		if (selectedNodes.contains(entity)) return;
+		selectedNodes.add(entity);
+		selectionListener.forEach(listener -> listener.onNodeSelected(entity));
+	}
+
+	@Override
+	public void requestUnselectAll() {
+		if (selectedNodes.isEmpty()) return;
+		selectedNodes.clear();
+		selectionListener.forEach(NodeSelectionModel.Observer::onUnselect);
+	}
+
+	@Override
+	public void requestUnselectNode(Node node) {
+		if (selectedNodes.isEmpty()) return;
+		selectedNodes.remove(node);
+		selectionListener.forEach(NodeSelectionModel.Observer::onUnselect);
 	}
 
 	public String toString() {

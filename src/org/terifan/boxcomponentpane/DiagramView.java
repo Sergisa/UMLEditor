@@ -11,7 +11,7 @@ import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.Serial;
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.terifan.nodeeditor.Styles.*;
 
@@ -21,7 +21,6 @@ public class DiagramView extends JComponent {
 	private final static long serialVersionUID = 1L;
 	private final NodeModel mModel;
 	private Rectangle mSelectionRectangle;
-	private final ArrayList<Node> mSelectedNodes;
 	ScaledObjectAdapter scaledAdapter;
 	private Point2D.Double coordinateShift;
 	private double scale = 1;
@@ -31,7 +30,6 @@ public class DiagramView extends JComponent {
 	private final boolean mRemoveInConnectionsOnDrop = true;
 
 	public DiagramView(NodeModel aModel) {
-		mSelectedNodes = new ArrayList<>();
 		mModel = aModel;
 		setFocusable(true);
 		scaledAdapter = new ScaledObjectAdapter(scale);
@@ -72,10 +70,6 @@ public class DiagramView extends JComponent {
 		return mModel;
 	}
 
-	public ArrayList<Node> getSelectedNodes() {
-		return mSelectedNodes;
-	}
-
 	/**
 	 * Move all nodes to the center of the screen
 	 */
@@ -106,8 +100,10 @@ public class DiagramView extends JComponent {
 		if ((e.getID() == KeyEvent.KEY_PRESSED) && (e.getModifiersEx() == 0)) {
 			switch (e.getKeyCode()) {
 				case KeyEvent.VK_DELETE:
-					if (!getSelectedNodes().isEmpty()) {
-						getModel().removeComponents(getSelectedNodes());
+					if (!mModel.getSelectedNodes().isEmpty()) {
+						//NOTE в противном случаем получим ConcurrentModificationException.
+						// Поэтому List.copyOf()
+						getModel().removeComponents(List.copyOf(mModel.getSelectedNodes()));
 					}
 					break;
 				case KeyEvent.VK_EQUALS:
@@ -119,7 +115,7 @@ public class DiagramView extends JComponent {
 					decreaseScale(scaleSpeed);
 					break;
 				case KeyEvent.VK_ESCAPE:
-					getSelectedNodes().clear();
+					mModel.requestUnselectAll();
 			}
 			repaint();
 		}
@@ -215,13 +211,13 @@ public class DiagramView extends JComponent {
 
 		for (Connection<Property> connection : mModel.getConnections()) {
 			Color splineColor = SPLINE_COLOR;
-			if (mSelectedNodes.contains(connection.getFrom().getNode()) || mSelectedNodes.contains(connection.getTo().getNode()))
+			if (mModel.getSelectedNodes().contains(connection.getFrom().getNode()) || mModel.getSelectedNodes().contains(connection.getTo().getNode()))
 				splineColor = SPLINE_COLOR_ACTIVE;
 			SplineRenderer.drawSpline(aGraphics, connection, scale, Styles.CONNECTOR_COLOR_OUTER, splineColor, splineColor);
 		}
 
 		for (Node box : mModel.getComponents()) {
-			paintBoxComponent(aGraphics, box, mSelectedNodes.contains(box));
+			paintBoxComponent(aGraphics, box, mModel.getSelectedNodes().contains(box));
 		}
 
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -361,7 +357,7 @@ public class DiagramView extends JComponent {
 					event.getY()
 				);
 			}
-			getSelectedNodes().clear();
+			mModel.requestUnselectAll();
 		}
 
 		@Override
@@ -380,12 +376,15 @@ public class DiagramView extends JComponent {
 				if (isMinimizeButtonPressed(node, event.getPoint())) {
 					node.setMinimized(!node.isMinimized());
 				}
-				if (getSelectedNodes().size() == 1) {
-					if (getSelectedNodes().getFirst() == node) getSelectedNodes().remove(node);
-					else getSelectedNodes().set(0, node);
+				if (event.isControlDown()) {
+					if (mModel.getSelectedNodes().contains(node)) {
+						mModel.requestUnselectNode(node);
+					} else {
+						mModel.selectNode(node);
+					}
 				} else {
-					if (!event.isControlDown()) getSelectedNodes().clear();
-					getSelectedNodes().add(node);
+					mModel.requestUnselectAll();
+					mModel.selectNode(node);
 				}
 			}
 		}
@@ -405,8 +404,8 @@ public class DiagramView extends JComponent {
 		public void onNodeMoving(Point startPoint, Point newPoint) {
 			int dx = newPoint.x - startPoint.x;
 			int dy = newPoint.y - startPoint.y;
-			if (!mSelectedNodes.isEmpty()) {
-				for (Node node : mSelectedNodes) {
+			if (!mModel.getSelectedNodes().isEmpty()) {
+				for (Node node : mModel.getSelectedNodes()) {
 					node.getBounds().translate(dx, dy);
 				}
 			} else {
@@ -435,10 +434,10 @@ public class DiagramView extends JComponent {
 			mSelectionRectangle.y /= scale;
 			mSelectionRectangle.width /= scale;
 			mSelectionRectangle.height /= scale;
-			mSelectedNodes.clear();
+			mModel.requestUnselectAll();
 			for (Node node : getModel().getComponents()) {
 				if (mSelectionRectangle.intersects(node.getBounds())) {
-					mSelectedNodes.add(node);
+					mModel.selectNode(node);
 				}
 			}
 		}
