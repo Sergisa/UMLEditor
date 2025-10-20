@@ -1,4 +1,4 @@
-package org.terifan.boxcomponentpane;
+package org.terifan.model;
 
 import org.terifan.nodeeditor.Node;
 

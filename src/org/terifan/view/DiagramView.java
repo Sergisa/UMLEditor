@@ -1,6 +1,9 @@
-package org.terifan.boxcomponentpane;
+package org.terifan.view;
 
 import examples.Main;
+import org.terifan.model.BaseNodeModel;
+import org.terifan.model.NodeModel;
+import org.terifan.model.NodeSelectionModel;
 import org.terifan.nodeeditor.*;
 import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.SplineRenderer;
@@ -16,10 +19,10 @@ import java.util.List;
 import static org.terifan.nodeeditor.Styles.*;
 
 
-public class DiagramView extends JComponent implements NodeSelectionModel.Observer, INodeModel.Observer {
+public class DiagramView extends JComponent implements NodeSelectionModel.Observer, NodeModel.Observer {
 	@Serial
 	private final static long serialVersionUID = 1L;
-	private final NodeModel mModel;
+	private final BaseNodeModel mModel;
 	private Rectangle mSelectionRectangle;
 	ScaledObjectAdapter scaledAdapter;
 	private Point2D.Double coordinateShift;
@@ -29,8 +32,8 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	private transient Popup mPopup;
 	private final boolean mRemoveInConnectionsOnDrop = true;
 
-	public DiagramView(INodeModel model, NodeSelectionModel selectionModel) {
-		mModel = (NodeModel) model;
+	public DiagramView(NodeModel model, NodeSelectionModel selectionModel) {
+		mModel = (BaseNodeModel) model;
 		model.subscribe(this);
 		selectionModel.subscribe(this);
 		setFocusable(true);
@@ -68,7 +71,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 		scaledAdapter.setScale(scale);
 	}
 
-	public NodeModel getModel() {
+	public BaseNodeModel getModel() {
 		return mModel;
 	}
 

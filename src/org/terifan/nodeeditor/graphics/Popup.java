@@ -1,12 +1,12 @@
 package org.terifan.nodeeditor.graphics;
 
-import org.terifan.boxcomponentpane.DiagramView;
-import org.terifan.boxcomponentpane.Renderable;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
 import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
 import org.terifan.util.Strings;
+import org.terifan.view.DiagramView;
+import org.terifan.view.Renderable;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

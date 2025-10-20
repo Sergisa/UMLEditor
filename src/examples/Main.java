@@ -1,12 +1,12 @@
 package examples;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import org.terifan.boxcomponentpane.DiagramView;
-import org.terifan.boxcomponentpane.NodeModel;
+import org.terifan.model.BaseNodeModel;
 import org.terifan.nodeeditor.Node;
 import org.terifan.nodeeditor.Styles.DefaultNodeColors;
 import org.terifan.nodeeditor.util.SimpleNodesFactory;
 import org.terifan.nodeeditor.widgets.ValueProperty;
+import org.terifan.view.DiagramView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +22,7 @@ public class Main {
 			ValueProperty mandelbrotIterations = new ValueProperty("Iterations");
 			ValueProperty paletteColor = new ValueProperty("Color");
 			ValueProperty paleteRedProperty = new ValueProperty("Red");
-			NodeModel model = new NodeModel()
+			BaseNodeModel model = new BaseNodeModel()
 				.addNode(
 					new Node("Mandelbrot")
 						.setTitleBackground(DefaultNodeColors.BROWN)

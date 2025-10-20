@@ -1,6 +1,5 @@
 package org.terifan.nodeeditor.widgets;
 
-import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
 import org.terifan.nodeeditor.graphics.Arrow;
@@ -8,6 +7,7 @@ import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.Popup.Option;
 import org.terifan.ui.Anchor;
 import org.terifan.ui.TextBox;
+import org.terifan.view.DiagramView;
 
 import java.awt.*;
 import java.io.Serial;

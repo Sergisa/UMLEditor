@@ -1,4 +1,4 @@
-package org.terifan.boxcomponentpane;
+package org.terifan.model;
 
 import org.terifan.nodeeditor.Connection;
 import org.terifan.nodeeditor.Node;
@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class NodeModel implements Serializable, NodeSelectionModel, INodeModel {
+public class BaseNodeModel implements Serializable, NodeSelectionModel, NodeModel {
 	@Serial
 	private final static long serialVersionUID = 1L;
 	protected final ArrayList<Node> mComponents;
 	private final List<Node> selectedNodes;
 	private final List<NodeSelectionModel.Observer> selectionListeners = new ArrayList<>();
-	private final List<INodeModel.Observer> modelChangeListeners = new ArrayList<>();
+	private final List<NodeModel.Observer> modelChangeListeners = new ArrayList<>();
 	private final ArrayList<Connection<Property>> mConnections;
 
-	public NodeModel() {
+	public BaseNodeModel() {
 		mComponents = new ArrayList<>();
 		mConnections = new ArrayList<>();
 		selectedNodes = new ArrayList<>();
@@ -44,7 +44,7 @@ public class NodeModel implements Serializable, NodeSelectionModel, INodeModel {
 		return null;
 	}
 
-	public NodeModel addNode(Node aComponent) {
+	public BaseNodeModel addNode(Node aComponent) {
 		mComponents.add(aComponent);
 		return this;
 	}
@@ -88,12 +88,12 @@ public class NodeModel implements Serializable, NodeSelectionModel, INodeModel {
 		return mConnections;
 	}
 
-	public NodeModel addConnection(Property aFromItem, Property aToItem) {
+	public BaseNodeModel addConnection(Property aFromItem, Property aToItem) {
 		return addConnection(new Connection<>(aFromItem, aToItem));
 	}
 
 	@Override
-	public NodeModel addConnection(Connection<Property> aConnection) {
+	public BaseNodeModel addConnection(Connection<Property> aConnection) {
 		//TODO: применить класс ConnectionResolver который будет отвечать на вопрос одобрить или запретить соединение
 		Property aFromItem = aConnection.getFrom();
 		Property aToItem = aConnection.getTo();
@@ -144,7 +144,7 @@ public class NodeModel implements Serializable, NodeSelectionModel, INodeModel {
 	}
 
 	@Override
-	public void subscribe(INodeModel.Observer subscriber) {
+	public void subscribe(NodeModel.Observer subscriber) {
 		modelChangeListeners.add(subscriber);
 	}
 

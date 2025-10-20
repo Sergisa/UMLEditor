@@ -1,6 +1,6 @@
 package org.terifan.nodeeditor;
 
-import org.terifan.boxcomponentpane.DiagramView;
+import org.terifan.view.DiagramView;
 
 public class Context {
 	private final DiagramView mEditor;

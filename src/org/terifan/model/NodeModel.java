@@ -1,4 +1,4 @@
-package org.terifan.boxcomponentpane;
+package org.terifan.model;
 
 import org.terifan.nodeeditor.Connection;
 import org.terifan.nodeeditor.Node;
@@ -6,7 +6,7 @@ import org.terifan.nodeeditor.Property;
 
 import java.awt.*;
 
-public interface INodeModel {
+public interface NodeModel {
 	interface Observer {
 		void entityCreated(Node node);
 
@@ -73,7 +73,7 @@ public interface INodeModel {
 
 	Node getComponentAt(Point point);
 
-	NodeModel addNode(Node node);
+	BaseNodeModel addNode(Node node);
 
 	void removeNode(Node node);
 
@@ -81,7 +81,7 @@ public interface INodeModel {
 
 	void moveToFront(Node node);
 
-	NodeModel addConnection(Connection<Property> link);
+	BaseNodeModel addConnection(Connection<Property> link);
 
 	//int numEntities();
 

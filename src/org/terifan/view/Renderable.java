@@ -1,4 +1,4 @@
-package org.terifan.boxcomponentpane;
+package org.terifan.view;
 
 import java.awt.*;
 

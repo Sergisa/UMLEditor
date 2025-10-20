@@ -1,7 +1,7 @@
 package org.terifan.nodeeditor;
 
-import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.ui.TextBox;
+import org.terifan.view.DiagramView;
 
 import java.awt.*;
 import java.io.Serial;

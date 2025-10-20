@@ -1,8 +1,8 @@
 package org.terifan.nodeeditor.widgets;
 
 import examples.Main;
-import org.terifan.boxcomponentpane.DiagramView;
 import org.terifan.nodeeditor.Property;
+import org.terifan.view.DiagramView;
 
 import java.awt.*;
 import java.io.Serial;

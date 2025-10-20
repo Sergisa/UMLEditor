@@ -1,7 +1,7 @@
 package org.terifan.nodeeditor;
 
-import org.terifan.boxcomponentpane.DiagramView;
-import org.terifan.boxcomponentpane.Renderable;
+import org.terifan.view.DiagramView;
+import org.terifan.view.Renderable;
 
 import java.awt.*;
 

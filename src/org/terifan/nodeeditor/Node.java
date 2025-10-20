@@ -1,8 +1,8 @@
 package org.terifan.nodeeditor;
 
-import org.terifan.boxcomponentpane.BoxComponent;
-import org.terifan.boxcomponentpane.DiagramView;
-import org.terifan.boxcomponentpane.NodeModel;
+import org.terifan.model.BaseNodeModel;
+import org.terifan.view.BoxComponent;
+import org.terifan.view.DiagramView;
 
 import java.awt.*;
 import java.io.Serial;
@@ -17,7 +17,7 @@ public class Node extends BoxComponent<Node> implements Serializable {
 
 	protected final ArrayList<Property> mProperties;
 	protected int mVerticalSpacing = Styles.PROPERTY_SPACING;
-	protected NodeModel mModel;
+	protected BaseNodeModel mModel;
 
 	public Node(String aTitle) {
 		super(aTitle);
@@ -32,11 +32,11 @@ public class Node extends BoxComponent<Node> implements Serializable {
 		}
 	}
 
-	void bind(NodeModel aModel) {
+	void bind(BaseNodeModel aModel) {
 		mModel = aModel;
 	}
 
-	public NodeModel getModel() {
+	public BaseNodeModel getModel() {
 		return mModel;
 	}
 
