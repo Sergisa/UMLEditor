@@ -14,6 +14,7 @@ import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.terifan.nodeeditor.Styles.*;
@@ -26,6 +27,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	private Rectangle mSelectionRectangle;
 	ScaledObjectAdapter scaledAdapter;
 	private Point2D.Double coordinateShift;
+	List<Connector<Property>> connectors;
 	private double scale = 1;
 	double scaleSpeed = 1.1;
 
@@ -34,6 +36,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 
 	public DiagramView(NodeModel model, NodeSelectionModel selectionModel) {
 		mModel = (BaseNodeModel) model;
+		connectors = new ArrayList<>();
 		model.subscribe(this);
 		selectionModel.subscribe(this);
 		setFocusable(true);
@@ -49,6 +52,11 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 				repaint();
 			}
 		});
+		for (Node node : mModel.getNodes()) {
+			for (Property property : node.getProperties()) {
+				connectors.add(Connector.buildConnector(property));
+			}
+		}
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 	}
 
@@ -59,6 +67,10 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	public void resetScale() {
 		scale = 1;
 		scaledAdapter.setScale(scale);
+	}
+
+	public double getScale() {
+		return scale;
 	}
 
 	private void increaseScale(double value) {
@@ -202,6 +214,9 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 
 		g.translate((int) coordinateShift.x, (int) coordinateShift.y);
 		paintBoxComponents(g);
+		for (Connector connector : connectors) {
+			connector.paintComponent(this, g, 0, 0, true);
+		}
 		paintSelectionRectangle(g);
 		g.setTransform(oldTransform);
 	}
@@ -534,6 +549,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			coordinateShift.x += event.getX();
 			coordinateShift.y += event.getY();
 			repaint();
+			System.out.println("SCALE: " + scale);
 		}
 
 		@Override

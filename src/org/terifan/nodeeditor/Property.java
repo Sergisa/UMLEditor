@@ -97,7 +97,7 @@ public abstract class Property implements Serializable {
 	}
 
 	public MetaCoordinatorAdapter getCoordinationAdapter() {
-		return coordinationAdapter;
+		return this.new MetaCoordinatorAdapter();
 	}
 
 	protected abstract int getLeftPad();
@@ -145,32 +145,27 @@ public abstract class Property implements Serializable {
 		private int nodeHPAD = NODE_BOX_MARGIN_LEFT; //TODO: Разобраться с использованием
 		private int nodeVPAD = NODE_BOX_MARGIN_TOP;
 
-		@Override
-		public double getX() {
-			return nodeHPAD + mNode.getBounds().x + getLeftPad();
-		}
-
-		@Override
-		public double getY() {
-			return nodeVPAD + mNode.getBounds().y + mBounds.getY() + getTopPad();
+		public MetaCoordinatorAdapter() {
+			this.x = NODE_BOX_MARGIN_LEFT + mNode.getBounds().x + getLeftPad();
+			this.y = NODE_BOX_MARGIN_TOP + mNode.getBounds().y + (int) mBounds.getY() + getTopPad();
 		}
 
 		@Override
 		public double getCenterX() {
-			return (getX() + (getWidth())) / 2;
+			return (x + (getWidth())) / 2;
 		}
 
 		@Override
 		public double getCenterY() {
-			return (getY() + (getHeight() - (2 * nodeHPAD))) / 2;
+			return (y + (getHeight() - (2 * nodeHPAD))) / 2;
 		}
 
 		public double getRightCoordinate() {
-			return getX() + mNode.getBounds().width - 2 * nodeHPAD;
+			return x + mNode.getBounds().width - 2 * nodeHPAD;
 		}
 
 		public double getBottomCoordinate() {
-			return getX() + mNode.getBounds().height - 2 + nodeVPAD;
+			return x + mNode.getBounds().height - 2 + nodeVPAD;
 		}
 
 		@Override
