@@ -341,6 +341,10 @@ public class DiagramView extends JComponent {
 
 			Node node = getComponentAtPoint(event.getPoint());
 			if (node != null) {
+				Property clickedProperty = node.getPropertyAt(calcMousePoint(event.getPoint()));
+				if (clickedProperty != null) {
+					onPropertyClicked(event, clickedProperty);
+				}
 				onNodeClicked(event, node);
 				repaint();
 			} else {
@@ -380,6 +384,11 @@ public class DiagramView extends JComponent {
 				if (!event.isControlDown()) getSelectedNodes().clear();
 				getSelectedNodes().add(node);
 			}
+		}
+
+		@Override
+		public void onPropertyClicked(MouseEvent event, Property property) {
+			System.out.println("PropertyClicked: " + property.toString());
 		}
 
 		@Override

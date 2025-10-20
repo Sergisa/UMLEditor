@@ -95,7 +95,7 @@ public class ComboBoxProperty extends Property {
 
 
 	@Override
-	protected boolean mousePressed(DiagramView aPane, Point aClickPoint) {
+	public boolean mousePressed(DiagramView aPane, Point aClickPoint) {
 		mArmed = true;
 
 		ArrayList<Option> options = new ArrayList<>();
@@ -129,7 +129,7 @@ public class ComboBoxProperty extends Property {
 
 
 	@Override
-	protected void mouseReleased(DiagramView aPane, Point aClickPoint) {
+	public void mouseReleased(DiagramView aPane, Point aClickPoint) {
 		mArmed = false;
 
 		aPane.setPopup(null);

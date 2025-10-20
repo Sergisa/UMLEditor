@@ -118,11 +118,11 @@ public abstract class Property implements Serializable {
 	/**
 	 * Should return true if the clicked point will perform an action. This method return false.
 	 */
-	protected boolean mousePressed(DiagramView aPane, Point aClickPoint) {
+	public boolean mousePressed(DiagramView aPane, Point aClickPoint) {
 		return false;
 	}
 
-	protected void mouseReleased(DiagramView aPane, Point aClickPoint) {
+	public void mouseReleased(DiagramView aPane, Point aClickPoint) {
 	}
 
 	protected void mouseDragged(DiagramView aPane, Point aClickPoint, Point aDragPoint) {
@@ -135,7 +135,7 @@ public abstract class Property implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Property{" + "<" + mNode + "." + getTitle() + ">}";
+		return "Property<" + mNode + "." + getTitle() + ">";
 	}
 
 	/**
