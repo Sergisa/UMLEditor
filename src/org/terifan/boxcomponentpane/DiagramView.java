@@ -295,7 +295,7 @@ public class DiagramView extends JComponent {
 		@Override
 		public void mousePressed(MouseEvent event) {
 			startPoint = calcMousePoint(event.getPoint());
-			Node node = getComponentAtPoint(event.getPoint());
+			Node node = mModel.getComponentAt(calcMousePoint(event.getPoint()));
 			if (node != null) {
 				hittedNode = node;
 			} else if (SwingUtilities.isLeftMouseButton(event)) {
@@ -337,7 +337,7 @@ public class DiagramView extends JComponent {
 
 		@Override
 		public void mouseClicked(MouseEvent event) {
-			Node node = getComponentAtPoint(event.getPoint());
+			Node node = mModel.getComponentAt(calcMousePoint(event.getPoint()));
 			if (node != null) {
 				Property clickedProperty = node.getPropertyAt(calcMousePoint(event.getPoint()));
 				if (clickedProperty != null) {
@@ -441,10 +441,6 @@ public class DiagramView extends JComponent {
 					mSelectedNodes.add(node);
 				}
 			}
-		}
-
-		public Node getComponentAtPoint(Point aPoint) {
-			return getModel().getComponentAt(calcMousePoint(aPoint));
 		}
 
 		public boolean isMinimizeButtonPressed(Node node, Point point) {
