@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class NodeModel implements Serializable, NodeSelectionModel {
+public class NodeModel implements Serializable, NodeSelectionModel, INodeModel {
 	@Serial
 	private final static long serialVersionUID = 1L;
 	protected final ArrayList<Node> mComponents;
 	private final List<Node> selectedNodes;
 	private final List<NodeSelectionModel.Observer> selectionListeners = new ArrayList<>();
+	private final List<INodeModel.Observer> modelChangeListeners = new ArrayList<>();
 	private final ArrayList<Connection<Property>> mConnections;
 
 	public NodeModel() {
@@ -43,27 +44,34 @@ public class NodeModel implements Serializable, NodeSelectionModel {
 		return null;
 	}
 
-	public NodeModel addComponent(Node aComponent) {
+	public NodeModel addNode(Node aComponent) {
 		mComponents.add(aComponent);
 		return this;
 	}
 
-	public ArrayList<Node> getComponents() {
+	public ArrayList<Node> getNodes() {
 		return mComponents;
 	}
 
-	public void moveTop(Node aComponent) {
+	public void moveToFront(Node aComponent) {
 		if (aComponent != null && mComponents.contains(aComponent)) {
 			mComponents.remove(aComponent);
 			mComponents.addLast(aComponent);
 		}
 	}
 
-	public void removeComponents(List<Node> components) {
-		components.forEach(this::removeComponent);
+	public void moveToBack(Node aComponent) {
+		if (aComponent != null && mComponents.contains(aComponent)) {
+			mComponents.remove(aComponent);
+			mComponents.addFirst(aComponent);
+		}
 	}
 
-	public void removeComponent(Node component) {
+	public void removeComponents(List<Node> components) {
+		components.forEach(this::removeNode);
+	}
+
+	public void removeNode(Node component) {
 		component.getProperties().forEach(property -> {
 			getConnectionsTo(property).forEach(connection -> {
 				getConnections().remove(connection);
@@ -81,10 +89,28 @@ public class NodeModel implements Serializable, NodeSelectionModel {
 	}
 
 	public NodeModel addConnection(Property aFromItem, Property aToItem) {
+		return addConnection(new Connection<>(aFromItem, aToItem));
+	}
+
+	@Override
+	public NodeModel addConnection(Connection<Property> aConnection) {
+		//TODO: применить класс ConnectionResolver который будет отвечать на вопрос одобрить или запретить соединение
+		Property aFromItem = aConnection.getFrom();
+		Property aToItem = aConnection.getTo();
 		if (aFromItem.getNode() != aToItem.getNode()) {
-			mConnections.add(new Connection<>(aFromItem, aToItem));
+			mConnections.add(aConnection);
 		}
 		return this;
+	}
+
+	@Override
+	public void notifyEntityMoved(Node node) {
+		modelChangeListeners.forEach(listener -> listener.entityMoved(node));
+	}
+
+	@Override
+	public void notifyEntityUpdated(Node node) {
+
 	}
 
 	public List<Connection<Property>> getConnectionsTo(Property aProperty) {
@@ -113,8 +139,13 @@ public class NodeModel implements Serializable, NodeSelectionModel {
 	}
 
 	@Override
-	public void subscribe(Observer subscriber) {
+	public void subscribe(NodeSelectionModel.Observer subscriber) {
 		selectionListeners.add(subscriber);
+	}
+
+	@Override
+	public void subscribe(INodeModel.Observer subscriber) {
+		modelChangeListeners.add(subscriber);
 	}
 
 	@Override

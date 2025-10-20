@@ -23,7 +23,7 @@ public class Main {
 			ValueProperty paletteColor = new ValueProperty("Color");
 			ValueProperty paleteRedProperty = new ValueProperty("Red");
 			NodeModel model = new NodeModel()
-				.addComponent(
+				.addNode(
 					new Node("Mandelbrot")
 						.setTitleBackground(DefaultNodeColors.BROWN)
 						.setBounds(-500, 100, 150, 0)
@@ -34,7 +34,7 @@ public class Main {
 						.addProperty(new ValueProperty("Zoom"))
 						.addProperty(new ValueProperty("Limit"))
 				)
-				.addComponent(
+				.addNode(
 					new Node("Palette")
 						.setTitleBackground(DefaultNodeColors.GREEN)
 						.setBounds(0, -20, 150, 0)
@@ -47,20 +47,20 @@ public class Main {
 				)
 				.addConnection(paletteColor, mandelbrotIterations)
 				.addConnection(paletteColor, paleteRedProperty)
-				.addComponent(
+				.addNode(
 					SimpleNodesFactory.
 						createIntermediateColorMix().
 						setLocation(220, -140)
 				);
 
-			DiagramView editor = new DiagramView(model).centerItems();
+			DiagramView editor = new DiagramView(model, model).centerItems();
 
 			JToolBar toolbar = new JToolBar();
 
 			toolbar.add(new AbstractAction("Math") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					model.addComponent(SimpleNodesFactory.createIntermediateMath());
+					model.addNode(SimpleNodesFactory.createIntermediateMath());
 					editor.repaint();
 				}
 			});
@@ -68,7 +68,7 @@ public class Main {
 			toolbar.add(new AbstractAction("Mix") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					model.addComponent(SimpleNodesFactory.createIntermediateColorMix());
+					model.addNode(SimpleNodesFactory.createIntermediateColorMix());
 					editor.repaint();
 				}
 			});
@@ -76,7 +76,7 @@ public class Main {
 			toolbar.add(new AbstractAction("Alpha") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					model.addComponent(SimpleNodesFactory.createSourceAlpha());
+					model.addNode(SimpleNodesFactory.createSourceAlpha());
 					editor.repaint();
 				}
 			});
@@ -84,7 +84,7 @@ public class Main {
 			toolbar.add(new AbstractAction("Color") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					model.addComponent(SimpleNodesFactory.createSourceColor());
+					model.addNode(SimpleNodesFactory.createSourceColor());
 					editor.repaint();
 				}
 			});
@@ -92,7 +92,7 @@ public class Main {
 			toolbar.add(new AbstractAction("RGB") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					model.addComponent(SimpleNodesFactory.createSourceColorRGB());
+					model.addNode(SimpleNodesFactory.createSourceColorRGB());
 					editor.repaint();
 				}
 			});
@@ -100,7 +100,7 @@ public class Main {
 			toolbar.add(new AbstractAction("RGBA") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					model.addComponent(SimpleNodesFactory.createSourceColorRGBA());
+					model.addNode(SimpleNodesFactory.createSourceColorRGBA());
 					editor.repaint();
 				}
 			});
@@ -108,7 +108,7 @@ public class Main {
 			toolbar.add(new AbstractAction("Value") {
 				@Override
 				public void actionPerformed(ActionEvent aE) {
-					model.addComponent(SimpleNodesFactory.createSourceValue());
+					model.addNode(SimpleNodesFactory.createSourceValue());
 					editor.repaint();
 				}
 			});

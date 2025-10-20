@@ -16,7 +16,7 @@ import java.util.List;
 import static org.terifan.nodeeditor.Styles.*;
 
 
-public class DiagramView extends JComponent implements NodeSelectionModel.Observer {
+public class DiagramView extends JComponent implements NodeSelectionModel.Observer, INodeModel.Observer {
 	@Serial
 	private final static long serialVersionUID = 1L;
 	private final NodeModel mModel;
@@ -29,9 +29,10 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	private transient Popup mPopup;
 	private final boolean mRemoveInConnectionsOnDrop = true;
 
-	public DiagramView(NodeModel aModel) {
-		mModel = aModel;
-		mModel.subscribe(this);
+	public DiagramView(INodeModel model, NodeSelectionModel selectionModel) {
+		mModel = (NodeModel) model;
+		model.subscribe(this);
+		selectionModel.subscribe(this);
 		setFocusable(true);
 		scaledAdapter = new ScaledObjectAdapter(scale);
 		MouseListener mouseListener = new MouseListener();
@@ -75,12 +76,12 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	 * Move all nodes to the center of the screen
 	 */
 	public DiagramView centerItems() {
-		if (mModel.getComponents().isEmpty()) {
+		if (mModel.getNodes().isEmpty()) {
 			return this;
 		}
 
-		Rectangle bounds = new Rectangle(mModel.getComponents().getFirst().getBounds());
-		for (BoxComponent<Node> box : mModel.getComponents()) {
+		Rectangle bounds = new Rectangle(mModel.getNodes().getFirst().getBounds());
+		for (BoxComponent<Node> box : mModel.getNodes()) {
 			box.layout();
 			bounds.add(box.getBounds());
 		}
@@ -88,7 +89,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 		int dx = -(int) bounds.getCenterX();
 		int dy = -(int) bounds.getCenterY();
 
-		for (BoxComponent<Node> box : mModel.getComponents()) {
+		for (BoxComponent<Node> box : mModel.getNodes()) {
 			box.getBounds().translate(dx, dy);
 		}
 
@@ -126,7 +127,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	@Override
 	public Dimension getPreferredSize() {
 		Rectangle bounds = new Rectangle();
-		for (Node box : mModel.getComponents()) {
+		for (Node box : mModel.getNodes()) {
 			box.layout();
 			bounds.add(box.getBounds());
 		}
@@ -187,7 +188,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			coordinateShift = new Point.Double(getWidth() / 2.0, getHeight() / 2.0);
 		}
 
-		for (Node box : mModel.getComponents()) {
+		for (Node box : mModel.getNodes()) {
 			box.layout();
 		}
 
@@ -218,7 +219,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			SplineRenderer.drawSpline(aGraphics, connection, scale, Styles.CONNECTOR_COLOR_OUTER, splineColor, splineColor);
 		}
 
-		for (Node box : mModel.getComponents()) {
+		for (Node box : mModel.getNodes()) {
 			paintBoxComponent(aGraphics, box, mModel.getSelectedNodes().contains(box));
 		}
 
@@ -301,6 +302,51 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 		repaint();
 	}
 
+	@Override
+	public void entityCreated(Node node) {
+		repaint();
+	}
+
+	@Override
+	public void entityDestroyed(Node node) {
+		repaint();
+	}
+
+	@Override
+	public void entityUpdated(Node node) {
+
+	}
+
+	@Override
+	public void entityMoved(Node node) {
+		repaint();
+	}
+
+	@Override
+	public void entityReordered(Node node) {
+
+	}
+
+	@Override
+	public void linkCreated(Connection link) {
+
+	}
+
+	@Override
+	public void linkDestroyed(Connection link) {
+
+	}
+
+	@Override
+	public void linkUpdated(Connection link) {
+
+	}
+
+	@Override
+	public void linkStyleChanged(Connection link) {
+
+	}
+
 	public class MouseListener extends MouseAdapter implements NodeViewEventListener {
 		Point startPoint;
 		Node hittedNode;
@@ -321,9 +367,9 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 		@Override
 		public void mouseDragged(MouseEvent event) {
 			if (hittedNode != null) {
+				mModel.moveToFront(hittedNode);
 				onNodeMoving(startPoint, calcMousePoint(event.getPoint()));
-				mModel.moveTop(hittedNode);
-				repaint();
+				//repaint();
 			} else {
 				if (SwingUtilities.isRightMouseButton(event)) {
 					onCoordinateShifting(startPoint, calcMousePoint(event.getPoint()));
@@ -423,9 +469,11 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			if (!mModel.getSelectedNodes().isEmpty()) {
 				for (Node node : mModel.getSelectedNodes()) {
 					node.getBounds().translate(dx, dy);
+					mModel.notifyEntityMoved(hittedNode);
 				}
 			} else {
 				hittedNode.getBounds().translate(dx, dy);
+				mModel.notifyEntityMoved(hittedNode);
 			}
 		}
 
@@ -452,7 +500,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			mSelectionRectangle.height /= scale;
 			mModel.requestUnselectAll();
 			boolean foundAnyNodeInSelection = false;
-			for (Node node : getModel().getComponents()) {
+			for (Node node : getModel().getNodes()) {
 				if (mSelectionRectangle.intersects(node.getBounds())) {
 					foundAnyNodeInSelection = true;
 					mModel.selectNode(node);
