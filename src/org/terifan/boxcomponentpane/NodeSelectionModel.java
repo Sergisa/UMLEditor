@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface NodeSelectionModel {
 	interface Observer {
-		void onNodesSelected(List<Node> entity);
+		void onNodesSelected(List<Node> nodes);
 
-		void onNodeSelected(Node entity);
+		void onNodeSelected(Node node);
 
 		//public void onLinkSelected(Connection<Path> link);
 
@@ -21,11 +21,11 @@ public interface NodeSelectionModel {
 
 	//Connection<Path> selectedLink();
 
-	void selectNodes(List<Node> entity);
+	void selectNodes(List<Node> nodes);
 
 	//public void requestSelectLink(Connection<Path> link);
 
-	void selectNode(Node entity);
+	void selectNode(Node node);
 
 	void requestUnselectAll();
 

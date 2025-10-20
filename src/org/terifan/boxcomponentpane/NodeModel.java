@@ -118,16 +118,16 @@ public class NodeModel implements Serializable, NodeSelectionModel {
 	}
 
 	@Override
-	public void selectNodes(List<Node> entities) {
-		for (Node entity : entities) selectNode(entity);
-		selectionListener.forEach(listener -> listener.onNodesSelected(entities));
+	public void selectNodes(List<Node> nodes) {
+		for (Node entity : nodes) selectNode(entity);
+		selectionListener.forEach(listener -> listener.onNodesSelected(nodes));
 	}
 
 	@Override
-	public void selectNode(Node entity) {
-		if (selectedNodes.contains(entity)) return;
-		selectedNodes.add(entity);
-		selectionListener.forEach(listener -> listener.onNodeSelected(entity));
+	public void selectNode(Node node) {
+		if (selectedNodes.contains(node)) return;
+		selectedNodes.add(node);
+		selectionListener.forEach(listener -> listener.onNodeSelected(node));
 	}
 
 	@Override
