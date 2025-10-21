@@ -1,7 +1,5 @@
 package org.terifan.view;
 
-import org.terifan.nodeeditor.Node;
-import org.terifan.nodeeditor.Property;
 import org.terifan.nodeeditor.Styles;
 
 import java.awt.*;
@@ -19,22 +17,20 @@ public class Connector<P> implements Serializable, Renderable {
 	protected Color mColor;
 
 	private P owner;
-	private int x;
-	private int y;
 
 	public Connector(Rectangle bounds) {
 		mBounds = bounds;
 	}
 
-	public Connector() {
+	public Connector(P owner) {
 		this(new Rectangle());
+		this.owner = owner;
+		mBounds.setSize(connectorRadius * 2, connectorRadius * 2);
 		mColor = YELLOW;
 	}
 
 	public static <P> Connector<P> buildConnector(P owner) {
-		Connector<P> connector = new Connector<>();
-		connector.setOwner(owner);
-		return connector;
+		return new Connector<>(owner);
 	}
 
 	@Override
@@ -45,14 +41,11 @@ public class Connector<P> implements Serializable, Renderable {
 	@Override
 	public void paintComponent(DiagramView aPane, Graphics2D aGraphics, int aWidth, int aHeight, boolean aSelected) {
 		aGraphics.setColor(mColor);
-		Property property = (Property) owner;
-		Node node = property.getNode();
-		Property.MetaCoordinatorAdapter adapter = property.getCoordinationAdapter();
 		aGraphics.fillOval(
-			node.getBounds().x,
-			adapter.y - connectorRadius / 2,
-			connectorRadius * 2,
-			connectorRadius * 2
+			mBounds.x,
+			mBounds.y,
+			mBounds.width,
+			mBounds.height
 		);
 	}
 

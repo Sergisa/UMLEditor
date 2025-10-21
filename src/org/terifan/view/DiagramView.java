@@ -27,7 +27,6 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	private Rectangle mSelectionRectangle;
 	ScaledObjectAdapter scaledAdapter;
 	private Point2D.Double coordinateShift;
-	List<Connector<Property>> connectors;
 	private double scale = 1;
 	double scaleSpeed = 1.1;
 
@@ -36,7 +35,6 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 
 	public DiagramView(NodeModel model, NodeSelectionModel selectionModel) {
 		mModel = (BaseNodeModel) model;
-		connectors = new ArrayList<>();
 		model.subscribe(this);
 		selectionModel.subscribe(this);
 		setFocusable(true);
@@ -52,11 +50,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 				repaint();
 			}
 		});
-		for (Node node : mModel.getNodes()) {
-			for (Property property : node.getProperties()) {
-				connectors.add(Connector.buildConnector(property));
-			}
-		}
+
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 	}
 
@@ -214,9 +208,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 
 		g.translate((int) coordinateShift.x, (int) coordinateShift.y);
 		paintBoxComponents(g);
-		for (Connector connector : connectors) {
-			connector.paintComponent(this, g, 0, 0, true);
-		}
+
 		paintSelectionRectangle(g);
 		g.setTransform(oldTransform);
 	}
@@ -239,6 +231,21 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 
 		for (Node box : mModel.getNodes()) {
 			paintBoxComponent(aGraphics, box, mModel.getSelectedNodes().contains(box));
+			List<Connector<Property>> connectors = new ArrayList<>();
+			for (Property property : box.getProperties()) {
+				Connector<Property> connector = Connector.buildConnector(property);
+				connector.getBounds().setLocation(
+					(int) (property.getCoordinationAdapter().getX() * scale),
+					(int) (property.getCoordinationAdapter().getY() * scale)
+				);
+				connector.getBounds().width *= scale;
+				connector.getBounds().height *= scale;
+				connectors.add(connector);
+			}
+
+			for (Connector<Property> connector : connectors) {
+				connector.paintComponent(this, aGraphics, 0, 0, true);
+			}
 		}
 
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -269,10 +276,13 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			transform.scale(scale, scale);
 
 			Graphics2D ig = (Graphics2D) aGraphics.create();
+
 			ig.setTransform(transform);
 			ig.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			ig.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
+			//NOTE: Здесь рисуется Node
+			// коннекторы рисуются в нём
 			aComponent.paintComponent(this, ig, originalObjectBounds.width, originalObjectBounds.height, aSelected);
 			if (Main.DEBUG) {
 				aGraphics.setColor(Color.RED);
@@ -549,7 +559,6 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			coordinateShift.x += event.getX();
 			coordinateShift.y += event.getY();
 			repaint();
-			System.out.println("SCALE: " + scale);
 		}
 
 		@Override
