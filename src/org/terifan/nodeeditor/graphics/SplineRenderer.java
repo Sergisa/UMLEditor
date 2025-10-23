@@ -36,7 +36,7 @@ public class SplineRenderer {
 		aGraphics.setStroke(old);
 	}
 
-	private static Path2D.Double createPath(BSpline aSpline, double aScale, double aStart, double aEnd) {
+	public static Path2D.Double createPath(BSpline aSpline, double aScale, double aStart, double aEnd) {
 		int segments = Math.max(20, (int) aSpline.getPoint(0).distance(aSpline.getPoint(1)) / 4);
 
 		Path2D.Double path = new Path2D.Double(Path2D.WIND_EVEN_ODD, segments);
@@ -59,7 +59,18 @@ public class SplineRenderer {
 		return path;
 	}
 
-	private static BSpline createSpline(Connection<Property> relation) {
+	public static BSpline createSpline(int x0, int y0, int x1, int y1, int d0, int d1) {
+		return new BSpline(
+			new double[]{x0, x0 + d0, x1 + d1, x1},
+			new double[]{y0, y0, y1, y1}
+		);
+	}
+
+	public static BSpline createSpline(Point from, Point to, int d0, int d1) {
+		return createSpline(from.x, from.y, to.x, to.y, d0, d1);
+	}
+
+	public static BSpline createSpline(Connection<Property> relation) {
 		Property fromProperty = relation.getFrom();
 		Property toProperty = relation.getTo();
 		Rectangle propertyFromCoordinator = fromProperty.getCoordinationAdapter();
@@ -97,9 +108,6 @@ public class SplineRenderer {
 			x1 = (int) propertyToCoordinator.getX();
 		}
 
-		return new BSpline(
-			new double[]{x0, x0 + d0, x1 + d1, x1},
-			new double[]{y0, y0, y1, y1}
-		);
+		return createSpline(new Point(x0, y0), new Point(x1, y1), d0, d1);
 	}
 }

@@ -5,6 +5,7 @@ import org.terifan.model.BaseNodeModel;
 import org.terifan.model.NodeModel;
 import org.terifan.model.NodeSelectionModel;
 import org.terifan.nodeeditor.*;
+import org.terifan.nodeeditor.graphics.BSpline;
 import org.terifan.nodeeditor.graphics.Popup;
 import org.terifan.nodeeditor.graphics.SplineRenderer;
 
@@ -25,11 +26,12 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	private final static long serialVersionUID = 1L;
 	private final BaseNodeModel mModel;
 	private Rectangle mSelectionRectangle;
+	BSpline phantomSpline;
 	ScaledObjectAdapter scaledAdapter;
 	private Point2D.Double coordinateShift;
 	private double scale = 1;
 	double scaleSpeed = 1.1;
-
+	List<Connector<Property>> connectors;
 	private transient Popup mPopup;
 	private final boolean mRemoveInConnectionsOnDrop = true;
 
@@ -197,23 +199,25 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			coordinateShift = new Point.Double(getWidth() / 2.0, getHeight() / 2.0);
 		}
 
-		for (Node box : mModel.getNodes()) {
-			box.layout();
+		for (Node node : mModel.getNodes()) {
+			node.layout();
 		}
 
 		Graphics2D g = (Graphics2D) aGraphics;
 		AffineTransform oldTransform = g.getTransform();
 
 		paintBackground(g);
-
+		//NOTE: смещение системы координат на центр
 		g.translate((int) coordinateShift.x, (int) coordinateShift.y);
-		paintBoxComponents(g);
 
+		paintNode(g);
 		paintSelectionRectangle(g);
-		g.setTransform(oldTransform);
+
+		g.setTransform(oldTransform); //NOTE: возврат
 	}
 
-	protected void paintBoxComponents(Graphics2D aGraphics) {
+	protected void paintNode(Graphics2D aGraphics) {
+		//NOTE: координаты смещены в центр
 		aGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
@@ -228,24 +232,29 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 				splineColor = SPLINE_COLOR_ACTIVE;
 			SplineRenderer.drawSpline(aGraphics, connection, scale, Styles.CONNECTOR_COLOR_OUTER, splineColor, splineColor);
 		}
-
+		if (phantomSpline != null) {
+			aGraphics.draw(SplineRenderer.createPath(phantomSpline, scale, 0, 1));
+		}
+		connectors = new ArrayList<>();
 		for (Node box : mModel.getNodes()) {
 			paintBoxComponent(aGraphics, box, mModel.getSelectedNodes().contains(box));
-			List<Connector<Property>> connectors = new ArrayList<>();
 			for (Property property : box.getProperties()) {
 				Connector<Property> connector = Connector.buildConnector(property);
 				connector.getBounds().setLocation(
-					(int) (property.getCoordinationAdapter().getX() * scale),
-					(int) (property.getCoordinationAdapter().getY() * scale)
+					(int) (property.getCoordinationAdapter().getX()),
+					(int) (property.getCoordinationAdapter().getY())
 				);
-				connector.getBounds().width *= scale;
-				connector.getBounds().height *= scale;
 				connectors.add(connector);
 			}
 
-			for (Connector<Property> connector : connectors) {
-				connector.paintComponent(this, aGraphics, 0, 0, true);
-			}
+		}
+		for (Connector<Property> connector : connectors) {
+			aGraphics.fillOval(
+				(int) (connector.getBounds().x * scale),
+				(int) (connector.getBounds().y * scale),
+				(int) (connector.getBounds().width * scale),
+				(int) (connector.getBounds().height * scale)
+			);
 		}
 
 		aGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -265,7 +274,14 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	}
 
 	protected void paintBoxComponent(Graphics2D aGraphics, Renderable aComponent, boolean aSelected) {
+		//NOTE: координаты смещены в центр
 		Rectangle originalObjectBounds = aComponent.getBounds();
+		/**
+		 * 		int x = (int) (bounds.x * mScale);
+		 * 		int y = (int) (bounds.y * mScale);
+		 * 		int width = (int) (bounds.width * mScale);
+		 * 		int height = (int) (bounds.height * mScale);
+		 */
 		Rectangle scaledBounds = scaledAdapter.setObject(aComponent).getBounds();
 
 		if (aGraphics.hitClip(scaledBounds.x, scaledBounds.y, scaledBounds.width, scaledBounds.height)) {
@@ -274,9 +290,8 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			AffineTransform transform = aGraphics.getTransform();
 			transform.translate(scaledBounds.x, scaledBounds.y);
 			transform.scale(scale, scale);
-
+			//NOTE: Генерируем новую систему координат для Node
 			Graphics2D ig = (Graphics2D) aGraphics.create();
-
 			ig.setTransform(transform);
 			ig.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			ig.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -294,7 +309,7 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 					aGraphics.draw(innerRectangle);
 				}
 			}
-			aGraphics.setTransform(ot);
+			//aGraphics.setTransform(ot);
 		}
 	}
 
@@ -378,12 +393,17 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 	public class MouseListener extends MouseAdapter implements NodeViewEventListener {
 		Point startPoint;
 		Node hittedNode;
+		Connector<Property> hittedConnector;
 
 		@Override
 		public void mousePressed(MouseEvent event) {
 			startPoint = calcMousePoint(event.getPoint());
 			Node node = mModel.getComponentAt(calcMousePoint(event.getPoint()));
-			if (node != null) {
+			Connector<Property> connector = getConnectorAt((event.getPoint()));
+			if (connector != null) {
+				//NOTE: Это начало связи
+				hittedConnector = connector;
+			} else if (node != null) {
 				hittedNode = node;
 			} else if (SwingUtilities.isLeftMouseButton(event)) {
 				//NOTE: это либо перетаскивание координатной плоскости
@@ -393,11 +413,18 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 		}
 
 		@Override
+		public void mouseMoved(MouseEvent e) {
+
+		}
+
+		@Override
 		public void mouseDragged(MouseEvent event) {
-			if (hittedNode != null) {
+			if (hittedConnector != null) {
+				onConnectionDragging(event);
+				repaint();
+			} else if (hittedNode != null) {
 				mModel.moveToFront(hittedNode);
 				onNodeMoving(startPoint, calcMousePoint(event.getPoint()));
-				//repaint();
 			} else {
 				if (SwingUtilities.isRightMouseButton(event)) {
 					onCoordinateShifting(startPoint, calcMousePoint(event.getPoint()));
@@ -416,16 +443,27 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 		@Override
 		public void mouseReleased(MouseEvent event) {
 			hittedNode = null;
+			Connector<Property> endConnector = getConnectorAt(event.getPoint());
 			if (mSelectionRectangle != null) {
 				onSelectionRectangleEnd();
 			}
+			if (hittedConnector != null && endConnector != null) {
+				onConnectionEnd(hittedConnector, endConnector);
+			} else if (endConnector == null) {
+				repaint();
+			}
+			hittedConnector = null;
+			phantomSpline = null;
 			mSelectionRectangle = null;
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent event) {
 			Node node = mModel.getComponentAt(calcMousePoint(event.getPoint()));
-			if (node != null) {
+			Connector<?> connector = getConnectorAt(event.getPoint());
+			if (connector != null) {
+				onConnectorClicked(event, connector);
+			} else if (node != null) {
 				Property clickedProperty = node.getPropertyAt(calcMousePoint(event.getPoint()));
 				if (clickedProperty != null) {
 					onPropertyClicked(event, clickedProperty);
@@ -479,6 +517,21 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			}
 		}
 
+		public void onConnectorClicked(MouseEvent event, Connector<?> connector) {
+			if (SwingUtilities.isRightMouseButton(event)) System.out.println("Clicked connector" + connector);
+		}
+
+		public void onConnectionDragging(MouseEvent event) {
+			int dx = hittedConnector.getBounds().getLocation().x - calcMousePoint(event.getPoint()).x;
+			int d0 = (dx < 0) ? 1 : -1;
+			int d1 = (dx > 0) ? 1 : -1;
+			phantomSpline = SplineRenderer.createSpline(
+				hittedConnector.getBounds().getLocation(),
+				calcMousePoint(event.getPoint()),
+				d0 * 16, d1 * 16
+			);
+		}
+
 		@Override
 		public void onPropertyClicked(MouseEvent event, Property property) {
 			if (SwingUtilities.isRightMouseButton(event)) System.out.println("PropertyClicked: " + property.toString());
@@ -518,6 +571,15 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			int x1 = (int) (Math.max(startPoint.x, newPoint.x) * scale);
 			int y1 = (int) (Math.max(startPoint.y, newPoint.y) * scale);
 			mSelectionRectangle.setBounds(x0, y0, x1 - x0, y1 - y0);
+		}
+
+		public void onConnectionEnd(Connector<Property> startConnector, Connector<Property> endConnector) {
+			if (startConnector != endConnector) {
+				System.out.print("\t" + startConnector);
+				System.out.println(" -->> " + endConnector);
+				mModel.addConnection(startConnector.getOwner(), endConnector.getOwner());
+			}
+			repaint();
 		}
 
 		@Override
@@ -575,6 +637,15 @@ public class DiagramView extends JComponent implements NodeSelectionModel.Observ
 			Rectangle b = aNode.getBounds();
 			//TODO: обязательно переписать на константы, что бы не было чисел с неизвестным смыслом
 			return new Rectangle(b.x + 11, b.y + 7, 20, 20);
+		}
+
+		private Connector<Property> getConnectorAt(Point point) {
+			for (Connector<Property> connector : connectors) {
+				if (connector.getBounds().contains(calcMousePoint(point))) {
+					return connector;
+				}
+			}
+			return null;
 		}
 	}
 }
